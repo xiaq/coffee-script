@@ -421,7 +421,7 @@ exports.Block = class Block extends Base
   # Perform all steps of the Tame transform
   tameTransform : ->
     @walkAstTame()
-    @walkAstCps(false)
+    #@walkAstCps(false)
     @cpsRotate()
 
 #### Literal
