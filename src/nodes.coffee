@@ -2063,6 +2063,12 @@ exports.Switch = class Switch extends Base
     @otherwise?.makeReturn res
     this
 
+  callContinuation : ->
+    code = CALL_CONTINUATION()
+    for [condition,block] in @cases
+      block.push code
+    @otherwise?.push code
+
   compileNode: (o) ->
     idt1 = o.indent + TAB
     idt2 = o.indent = idt1 + TAB
@@ -2123,7 +2129,8 @@ exports.If = class If extends Base
   # to be a statement. Otherwise a conditional operator is safe.
   isStatement: (o) ->
     o?.level is LEVEL_TOP or
-      @bodyNode().isStatement(o) or @elseBodyNode()?.isStatement(o)
+      @bodyNode().isStatement(o) or @elseBodyNode()?.isStatement(o) or
+      @hasContinuation()
 
   jumps: (o) -> @body.jumps(o) or @elseBody?.jumps(o)
 
@@ -2229,7 +2236,7 @@ CpsCascade =
 InlineDeferral =
 
   # Generate this code, inline. Is there a better way?
-  # 
+  #
   # tame =
   #   Deferrals : class
   #     constructor: (@continuation) ->
@@ -2241,7 +2248,7 @@ InlineDeferral =
   #       (inner_params...) =>
   #         defer_params?.assign_fn?.apply(null, inner_params)
   #         @_fulfill()
-  # 
+  #
   generate : ->
     k = new Literal "continuation"
     cnt = new Literal "count"
@@ -2249,10 +2256,10 @@ InlineDeferral =
     ns = new Value new Literal tame.const.ns
 
     # make the constructor:
-    # 
+    #
     #   constructor: (@continuation) ->
     #     @count = 1
-    # 
+    #
     k_member = new Value new Literal "this"
     k_member.add new Access k
     p1 = new Param k_member
@@ -2266,10 +2273,10 @@ InlineDeferral =
     constructor_assign = new Assign constructor_name, constructor_code
 
     # make the _fulfill member:
-    # 
+    #
     #   _fulfill : ->
     #     @continuation if ! --@count
-    # 
+    #
     if_expr = new Call k_member, []
     if_body = new Block [ if_expr ]
     decr = new Op '--', cnt_member
@@ -2286,7 +2293,7 @@ InlineDeferral =
     #     (inner_params...) =>
     #       defer_params?.assign_fn?.apply(null, inner_params)
     #       @_fulfill()
-    # 
+    #
     inc = new Op "++", cnt_member
     ip = new Literal "inner_params"
     dp = new Literal "defer_params"
@@ -2314,10 +2321,10 @@ InlineDeferral =
     obj = new Obj assignments, true
     body = new Block [ new Value obj ]
     klass = new Class null, null, body
-    
+
     # tame =
     #   Deferrals : <class>
-    # 
+    #
     klass_assign = new Assign cn, klass, "object"
     ns_obj = new Obj [ klass_assign ], true
     ns_val = new Value ns_obj
