@@ -1832,7 +1832,6 @@ exports.Await = class Await extends Base
 
   compileNode: (o) ->
     @transform()
-    o.indent += TAB
     @body.compile o
 
   # We still need to walk our children to see if there are any embedded
