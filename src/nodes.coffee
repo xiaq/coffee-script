@@ -55,7 +55,7 @@ exports.Base = class Base
   # Statements converted into expressions via closure-wrapping share a scope
   # object with their parent closure, to preserve the expected lexical scope.
   compileClosure: (o) ->
-    if @jumps() or this instanceof Throw
+    if @jumps()
       throw SyntaxError 'cannot use a pure statement in an expression.'
     o.sharedScope = yes
     Closure.wrap(this).compileNode o
@@ -379,20 +379,24 @@ exports.Block = class Block extends Base
       break unless exp instanceof Comment or exp instanceof Literal
     o = merge(o, level: LEVEL_TOP)
     if i
-      rest = @expressions.splice i, @expressions.length
-      code = @compileNode(o)
+      rest = @expressions.splice i, 9e9
+      [spaced, @spaced] = [@spaced, no]
+      [code  , @spaced] = [(@compileNode o), spaced]
       @expressions = rest
     post = @compileNode o
     {scope} = o
     if scope.expressions is this
       declars = o.scope.hasDeclarations()
       assigns = scope.hasAssignments
-      if (declars or assigns) and i
-        code += '\n'
-      if declars
-        code += "#{@tab}var #{ scope.declaredVariables().join(', ') };\n"
-      if assigns
-        code += "#{@tab}var #{ multident scope.assignedVariables().join(', '), @tab };\n"
+      if declars or assigns
+        code += '\n' if i
+        code += "#{@tab}var "
+        if declars
+          code += scope.declaredVariables().join ', '
+        if assigns
+          code += ",\n#{@tab + TAB}" if declars
+          code += scope.assignedVariables().join ",\n#{@tab + TAB}"
+        code += ';\n'
     code + post
 
   cpsRotate : ->
@@ -494,8 +498,8 @@ exports.Literal = class Literal extends Base
     return call.compile o
 
   jumps: (o) ->
-    return no unless @isStatement()
-    if not (o and (o.loop or o.block and (@value isnt 'continue'))) then this else no
+    return this if @value is 'break' and not (o?.loop or o?.block)
+    return this if @value is 'continue' and not o?.loop
 
   compileNode: (o) ->
     code = if @isUndefined

@@ -94,13 +94,17 @@ exports.run = (cb) ->
   CoffeeScript.run fs.readFileSync('Cakefile').toString(), filename: 'Cakefile'
   oparse = new optparse.OptionParser switches
   return printTasks() unless args.length
-  options = oparse.parse(args)
+  try
+    options = oparse.parse(args)
+  catch e
+    return fatalError "#{e}"
   for arg in options.arguments
     await invoke(arg,defer())
 
 # Display the list of Cake tasks in a format similar to `rake -T`
 printTasks = ->
-  console.log ''
+  cakefilePath = path.join path.relative(__originalDirname, process.cwd()), 'Cakefile'
+  console.log "#{cakefilePath} defines the following tasks:\n"
   for name, task of tasks
     spaces = 20 - name.length
     spaces = if spaces > 0 then Array(spaces + 1).join(' ') else ''
@@ -108,10 +112,13 @@ printTasks = ->
     console.log "cake #{name}#{spaces} #{desc}"
   console.log oparse.help() if switches.length
 
-# Print an error and exit when attempting to call an undefined task.
-missingTask = (task) ->
-  console.log "No such task: \"#{task}\""
+# Print an error and exit when attempting to use an invalid task/option.
+fatalError = (message) ->
+  console.error message + '\n'
+  console.log 'To see a list of all tasks/options, run "cake"'
   process.exit 1
+
+missingTask = (task) -> fatalError "No such task: #{task}"
 
 # When `cake` is invoked, search in the current and all parent directories
 # to find the relevant Cakefile.

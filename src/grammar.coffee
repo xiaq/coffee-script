@@ -77,7 +77,6 @@ grammar =
   # Pure statements which cannot be expressions.
   Statement: [
     o 'Return'
-    o 'Throw'
     o 'Comment'
     o 'STATEMENT',                              -> new Literal $1
     o 'Await'
@@ -110,6 +109,7 @@ grammar =
     o 'For'
     o 'Switch'
     o 'Class'
+    o 'Throw'
     o 'Defer'
   ]
 
@@ -139,6 +139,7 @@ grammar =
     o 'AlphaNumeric'
     o 'JS',                                     -> new Literal $1
     o 'REGEX',                                  -> new Literal $1
+    o 'DEBUGGER',                               -> new Literal $1
     o 'BOOL',                                   ->
       val = new Literal $1
       val.isUndefined = yes if $1 is 'undefined'
@@ -231,7 +232,7 @@ grammar =
   SimpleAssignable: [
     o 'Identifier',                             -> new Value $1
     o 'Value Accessor',                         -> $1.add $2
-    o 'Invocation Accessor',                    -> new Value $1, [$2]
+    o 'Invocation Accessor',                    -> new Value $1, [].concat $2
     o 'ThisProperty'
   ]
 
