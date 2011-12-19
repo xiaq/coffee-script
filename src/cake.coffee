@@ -19,7 +19,6 @@ existsSync   = fs.existsSync or path.existsSync
 
 # Keep track of the list of defined tasks, the accepted options, and so on.
 tasks     = {}
-atasks    = {}
 options   = {}
 switches  = []
 oparse    = null
@@ -29,12 +28,9 @@ helpers.extend global,
 
   # Define a Cake task with a short name, an optional sentence description,
   # and the function to run as the action itself.
-  task: (name, description, action, async) ->
+  task: (name, description, action) ->
     [action, description] = [description, action] unless action
-    tasks[name] = {name, description, action, async}
-
-  atask: (name, description, action) ->
-    task name, description, action, true
+    tasks[name] = {name, description, action}
 
   # Define an option that the Cakefile accepts. The parsed options hash,
   # containing all of the command-line options passed, will be made available
@@ -45,11 +41,7 @@ helpers.extend global,
   # Invoke another task in the current Cakefile.
   invoke: (name, cb) ->
     missingTask name unless (t = tasks[name])
-    if t.async
-      await t.action(options, defer())
-    else
-      t.action options
-    cb()
+    t.action options
 
 # Run `cake`. Executes all of the tasks you pass, in order. Note that Node's
 # asynchrony may cause tasks to execute in a different order than you'd expect.
@@ -67,7 +59,7 @@ exports.run = (cb) ->
   catch e
     return fatalError "#{e}"
   for arg in options.arguments
-    await invoke(arg,defer())
+    invoke arg
 
 # Display the list of Cake tasks in a format similar to `rake -T`
 printTasks = ->
