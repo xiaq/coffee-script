@@ -1,5 +1,5 @@
 
-            {
+{
          }   }   {
         {   {  }  }
          }   }{  {
@@ -11,9 +11,9 @@
     |                 |               \_____\___/|_| |_| \___|\___|
     |                 ;--.
     |                (__  \            _____           _       _
-    |                 | )  )          / ____|         (_)     | |
-    |                 |/  /          | (___   ___ _ __ _ _ __ | |_
-    |                 (  /            \___ \ / __| '__| | '_ \| __|
+    |                 | )  )          / ____|         (_)     | |    \|/
+    |                 |/  /          | (___   ___ _ __ _ _ __ | |_   -*-
+    |                 (  /            \___ \ / __| '__| | '_ \| __|  /|\
     |                 |/              ____) | (__| |  | | |_) | |_
     |                 |              |_____/ \___|_|  |_| .__/ \__|
      `-.._________..-'                                  | |
@@ -21,6 +21,10 @@
 
 
   CoffeeScript is a little language that compiles into JavaScript.
+  
+  **This is AdvancedCoffeeSubstitute, which has all of the features of
+  regular CoffeeScript, but adds "await" and "defer", cleaning
+  up the callback pyarmids in your coffee code.
 
   Install Node.js, and then the CoffeeScript compiler:
   sudo bin/cake install
