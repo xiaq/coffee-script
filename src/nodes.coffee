@@ -199,24 +199,11 @@ exports.Base = class Base
   #
   # AST Walking Routines for CPS Pivots, etc.
   #
-  #  There are five passes:
-  #    1. Extract expresions
-  #    2. Assign Defers to their awaits
-  #    3. Find await's and trace upward.
-  #    4. Find loops found in #1, and flood downward
-  #    5. Find break/continue found in #2, and trace upward
+  #  There are three passes:
+  #    1. Find await's and trace upward.
+  #    2. Find loops found in #1, and flood downward
+  #    3. Find break/continue found in #2, and trace upward
   #
-  tameAssignDefersToAwait : (aw) ->
-    for child in @flattenChildren()
-      child.tameAssignDefersToAwait aw
-
-  tameExtractExpressions : (inBlock) ->
-    lst = []
-    for child in @flattenChildren()
-      v = child.tameExtractExpressions(false)
-      lst = lst.concat v
-    lst
-
   # tameWalkAst
   #   Walk the AST looking for taming. Mark a node as with tame flags
   #   if any of its children are tamed, but don't cross scope boundary
@@ -305,7 +292,6 @@ exports.Base = class Base
 exports.Block = class Block extends Base
   constructor: (nodes) ->
     @expressions = compact flatten nodes or []
-    @awaitExpressions = []
 
   children: ['expressions']
 
@@ -382,8 +368,6 @@ exports.Block = class Block extends Base
     @tab  = o.indent
     top   = o.level is LEVEL_TOP
     codes = []
-    for a in @awaitExpressions
-      a.allocateTemporary o
     for node in @expressions
       node = node.unwrapAll()
       node = (node.unfoldSoak(o) or node)
@@ -533,21 +517,14 @@ exports.Block = class Block extends Base
   tameAddRuntime : ->
     @expressions.unshift new TameRequire()
 
-  tameExtractExpressions : (inBlock) ->
-    return super if @parens
-    newExpressions = []
-    for e in @expressions
-      l = e.tameExtractExpressions(true)
-      newExpressions = newExpressions.concat l.concat [e]
-      @awaitExpressions = @awaitExpressions.concat l
-    @expressions = newExpressions
-    []
-
   # Perform all steps of the Tame transform
   tameTransform : ->
+<<<<<<< HEAD
     return this unless @tameGo()
     @tameExtractExpressions(true)
     @tameAssignDefersToAwait()
+=======
+>>>>>>> parent of c7fd6a2... First stab at getting await blocks to act as expressions, almost working, except for nested guys.
     @tameWalkAst()
     @tameAddRuntime() if @tameNeedsRuntime() and not @tameFindRequire()
     @tameWalkAstLoops(false)
@@ -1502,9 +1479,6 @@ exports.Code = class Code extends Base
     super()
     @tameCpsPivotFlag = false
 
-  tameAssignDefersToAwait : (aw) ->
-    super null
-
 #### Param
 
 # A parameter in a function definition. Beyond a typical Javascript parameter,
@@ -1865,7 +1839,6 @@ exports.Defer = class Defer extends Base
     @slots = (a.toSlot() for a in args)
     @params = []
     @vars = []
-    @finalVal = null
 
   children : ['slots' ]
 
@@ -1896,17 +1869,11 @@ exports.Defer = class Defer extends Base
   # Case 4 -- defer(rest...) -- rest is an array, assign it to all
   #   leftover arguments.
   #
-  makeAssignFn : () ->
-    return null if @slots.length is 0 and not @finalVal
+  makeAssignFn : (o) ->
+    return null if @slots.length is 0
     assignments = []
     args = []
     i = 0
-    if @finalVal
-      rhs = new Value new Literal "arguments"
-      rhs.add new Index new Value new Literal 0
-      lhs = new Value new Literal @finalVal
-      assign = new Assign lhs, rhs
-      assignments.push assign
     for s in @slots
       a = new Value new Literal "arguments"
       i_lit = new Value new Literal i
@@ -1934,7 +1901,6 @@ exports.Defer = class Defer extends Base
         assign = new Assign slot, a
       assignments.push assign
       i++
-
     block = new Block assignments
     inner_fn = new Code [], block, 'tamegen'
     outer_block = new Block [ new Return inner_fn ]
@@ -1962,7 +1928,6 @@ exports.Defer = class Defer extends Base
     new Call fn, [ new Value o ]
 
   compileNode : (o) ->
-    @finalVal = @myAwait?.getFinalVal()
     call = @transform()
     for v in @vars
       name = v.compile o, LEVEL_LIST
@@ -1972,26 +1937,11 @@ exports.Defer = class Defer extends Base
 
   tameNeedsRuntime : -> true
 
-  tameAssignDefersToAwait : (aw) ->
-    @myAwait = aw
-    super aw
-
 #### Await
 
 exports.Await = class Await extends Base
   constructor : (body) ->
     @body = body
-    @temporary = null
-    @used = false
-    @parent = null
-    @displaced = false
-
-  displace : () ->
-    ret = new Await @body
-    @body = null
-    @parent = ret
-    ret.displaced = true
-    ret
 
   transform : (o) ->
     body = @body
@@ -2011,41 +1961,20 @@ exports.Await = class Await extends Base
 
   children: ['body']
 
-  isStatement: -> not @parent
+  isStatement: YES
   makeReturn : THIS
 
-  allocateTemporary : (o) ->
-    if @displaced
-      @temporary = o.scope.freeVariable '_await'
-
   compileNode: (o) ->
-    if @parent
-      @parent.temporary
-    else
-      @transform(o)
-      @body.compile o
-
-  getFinalVal : () ->
-    if @temporary and not @used
-      @used = true
-      @temporary
-    else
-      null
+    @transform(o)
+    @body.compile o
 
   # We still need to walk our children to see if there are any embedded
   # function which might also be tamed.  But we're always going to report
   # to our parent that we are tamed, since we are!
   tameWalkAst : ->
     super()
-    @tameNodeFlag = not @parent
+    @tameNodeFlag = true
 
-  tameExtractExpressions : (inBlock) ->
-    children = super false
-    if inBlock and not children.length then []
-    else [ @displace() ].concat children
-
-  tameAssignDefersToAwait : (aw) ->
-    super this
 
 #### tameRequire
 #
@@ -2182,7 +2111,6 @@ exports.Existence = class Existence extends Base
 # Parentheses are a good way to force any statement to become an expression.
 exports.Parens = class Parens extends Base
   constructor: (@body) ->
-    @body.parens = true
 
   children: ['body']
 
