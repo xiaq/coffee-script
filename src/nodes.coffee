@@ -1985,7 +1985,6 @@ exports.Await = class Await extends Base
     @used = false
     @parent = null
     @displaced = false
-    body.parens = true
 
   displace : () ->
     ret = new Await @body
@@ -2043,7 +2042,7 @@ exports.Await = class Await extends Base
   tameExtractExpressions : (inBlock) ->
     children = super false
     if inBlock and not children.length then []
-    else children.concat [ @displace() ]
+    else [ @displace() ].concat children
 
   tameAssignDefersToAwait : (aw) ->
     super this
