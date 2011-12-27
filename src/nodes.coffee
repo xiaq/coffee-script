@@ -519,12 +519,7 @@ exports.Block = class Block extends Base
 
   # Perform all steps of the Tame transform
   tameTransform : ->
-<<<<<<< HEAD
     return this unless @tameGo()
-    @tameExtractExpressions(true)
-    @tameAssignDefersToAwait()
-=======
->>>>>>> parent of c7fd6a2... First stab at getting await blocks to act as expressions, almost working, except for nested guys.
     @tameWalkAst()
     @tameAddRuntime() if @tameNeedsRuntime() and not @tameFindRequire()
     @tameWalkAstLoops(false)

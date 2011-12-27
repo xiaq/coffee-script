@@ -2,7 +2,7 @@
 
 rm lib/coffee-script/*.js
 git checkout lib
-./bin/cake build
+#./bin/cake build
 ./bin/cake build:parser
 ./bin/cake build
 
