@@ -279,25 +279,42 @@ file `nodes.coffee`.
 
 ### Why Can't `await` Blocks Act Like Expressions?
 
-It might be possible, with an insane amount of hoop-jumping, to make
-something like this work:
-
+It's possible to get something simple like this working:
 ```coffeescript
-x = await myfunc defer _
+x = (await myfunc defer _)
 ```
 
 And have the value of the right hand side evaluate to whatever the
-value `_` gets when `myfunc` fulfills its deferral. That _might_ be
-possible, but something like this seems even uglier to implement:
+value `_` gets when `myfunc` fulfills its deferral.  The strategy is just
+to extract the `await` block and assign the value of `x` to `_` after the
+deferrals complete.  That technique applies to this, too:
 
 ```coffescript
 yourfunc (await myfunc defer _), (await otherfunc defer _)
 ```
 
-It would be a significant additional implementation challenge to get
-`await` statements working like expressions everywhere. 
-It's not worth, in our opinion, a lot of added complexity
-to get a half-baked solution.
+I got these translations working pretty well, including arbitrarily
+nested code.  Things got hairy here though:
+
+```coffeescript
+x = while foo
+  await bar defer _
+```
+
+There wasn't a very clean way to pull this off without significant changes to
+the Coffee internals, and I thought the feature was more of a confusion than
+anything else.  When I gave up having ACS pulled into the Coffee trunk, it made
+sense to eliminate complicated stuff such as this.  If you really want things
+like the above to work, you can get it with:
+
+```coffeescript
+x = []
+i = 0
+while foo
+  await bar defer x[i++]
+```
+Sorry for the two extra lines.  I think this is a lot clearer anyway in
+describing what happens when.
 
 ## Translation Technique
 
