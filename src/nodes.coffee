@@ -45,7 +45,9 @@ exports.Base = class Base
     @tameGotCpsSplitFlag = false
     @tameCpsPivotFlag    = false
     @tameHasAutocbFlag   = false
+
     @tameParentAwait     = null
+    @tameCallContinuationFlag = false
 
   # Common logic for determining whether to wrap this node in a closure before
   # compiling it, or to compile directly. We need to wrap if this node is a
@@ -73,33 +75,53 @@ exports.Base = class Base
     o.sharedScope = yes
     Closure.wrap(this).compileNode o
 
-  # Statements that need CPS translation will have to be split into two
+  # Statements that need CPS translation will have to be split into
   # pieces as so.  Note that the tamePrequelsBlock is a slight ugly thing
   # going on.  The problem is this: tameCpsRotate when working on an expression
   # will want to extract the tame part **first** and then write the vanilla
   # expression **second**.  But we're not allowed to change the 'this' node as
-  # we traverse the AST.  So therefore we introduct a Prequel, it's like the
+  # we traverse the AST.  So therefore we introduce a Prequel, it's like the
   # opposite of the continuation.  It's the part of the program that comes before
   # 'this'.
+  #
+  # In the case of regular, easy-to-understand statements, we'll be in a nice
+  # situation, in which every Block has code, and potentially a continuation.
+  #
+  # In the case of expressions with nested await'ing, things are sadly way
+  # more complicated.  We could have an arbitrarily deep chain here, hence
+  # the calls to CpsCascading in a loop.
+  #
   compileCps : (o) ->
     @tameGotCpsSplitFlag = true
 
     if (l = @tamePrequels.length)
-      me = if @tameWrapContinuation() then (new TameTailCall null, this) else this
-      if @tameContinuationBlock
-        k = @tameContinuationBlock
-        k.unshift me
+
+      k = if @tameContinuationBlock
+        # Optimization:  We smush the "this" expression and the continuation
+        # into a flat block.
+        [ this, @tameContinuationBlock ]
+
+      else if @tameWrapContinuation()
+        # For some types of objects, we wrap the value of the object in a
+        # tamed tail call here.  We might have done this earlier (in
+        # tameCallContinuation) but at that point we don't have the option
+        # to replace an AST node with TameTailCall(this).  So instead, we
+        # do that now.
+        new TameTailCall null, this
+
       else
-        k = me
-        
+        # The simple case is no continuation, and no added TameTailCall
+        # needed.
+        this
+
       while l--
         pb = @tamePrequels[l]
         k = CpsCascade.wrap pb.block, k, pb.retval, o
       code = k
-      
+
     else
       code = CpsCascade.wrap this, @tameContinuationBlock, null, o
-      
+
     code.compile o
 
   # If the code generation wishes to use the result of a complex expression
@@ -203,10 +225,8 @@ exports.Base = class Base
     new Op '!', this
 
   unwrapAll: ->
-    #console.log "pre #{@toString()}"
     node = this
     continue until node is node = node.unwrap()
-    #console.log "post #{node.toString()}"
     node
 
   # Don't try this at home with actual human kids.  Added for tame
@@ -218,25 +238,6 @@ exports.Base = class Base
         out.push (child)
     out
 
-  # tameNeedsRuntime, tameFindRequires and tameMarkAutocbs are
-  # various traversals of the AST for tame attributes
-  tameNeedsRuntime : ->
-    for child in @flattenChildren()
-      return true if child.tameNeedsRuntime()
-    return false
-
-  tameFindRequire : ->
-    for child in @flattenChildren()
-      return r if (r = child.tameFindRequire())
-    return null
-
-  # Mark all of the autocbs, and all of their descendants in the AST.
-  # The smart sub-class behavior here is in Code.
-  tameMarkAutocbs : (found) ->
-    @tameHasAutocbFlag = found
-    for child in @flattenChildren()
-      child.tameMarkAutocbs(found)
-
   #
   # AST Walking Routines for CPS Pivots, etc.
   #
@@ -247,7 +248,7 @@ exports.Base = class Base
   #
 
   # tameWalkAst
-  # 
+  #
   #   Walk the AST looking for taming. Mark a node as with tame flags
   #   if any of its children are tamed, but don't cross scope boundary
   #   when considering the children.
@@ -258,10 +259,20 @@ exports.Base = class Base
   #   they're really pulled out and run in sequence as the level of the
   #   topmost await.
   #
-  tameWalkAst : (p) ->
+  #   The parameter `o` is a global object, passed through all without
+  #   copies, to push information up and down the AST. This parameter is
+  #   used with subfields:
+  #
+  #      o.foundAutocb  -- on if the parent function has an autocb
+  #      o.foundRequire -- on if tameRequire() was found anywhere in the AST
+  #      o.foundDefer   -- on if defer() was found anywhere in the AST
+  #      o.foundAwait   -- on if await... was found anywhere in the AST
+  #
+  tameWalkAst : (p, o) ->
     @tameParentAwait = p
+    @tameHasAutocbFlag = o.foundAutocb
     for child in @flattenChildren()
-      @tameNodeFlag = true if child.tameWalkAst p
+      @tameNodeFlag = true if child.tameWalkAst p, o
     @tameNodeFlag
 
   # tameWalkAstLoops
@@ -283,15 +294,6 @@ exports.Base = class Base
     for child in @flattenChildren()
       @tameCpsPivotFlag = true if child.tameWalkCpsPivots()
     @tameCpsPivotFlag
-
-  # tameGo
-  #   See if there are any Await nodes, and if not, don't do
-  #   any of our passes.
-  tameGo : ->
-    for child in @flattenChildren()
-      return true if (child instanceof Await or child instanceof Defer) or 
-         child.tameGo()
-    return false
 
   # Default implementations of the common node properties and methods. Nodes
   # will override these with custom logic, if needed.
@@ -317,7 +319,7 @@ exports.Base = class Base
   tameIsCpsPivot            :     -> @tameCpsPivotFlag
   tameNestContinuationBlock : (b) -> @tameContinuationBlock = b
   tameHasContinuation       :     -> (!!@tameContinuationBlock or @tamePrequels?.length)
-  tameCallContinuation      :     ->
+  tameCallContinuation      :     -> @tameCallContinuationFlag = true
   tameWrapContinuation      :     NO
   tameIsJump                :     NO
   tameIsTamedExpr           :     -> (this not instanceof Code) and @tameNodeFlag
@@ -333,7 +335,7 @@ exports.Base = class Base
       this
     else
       if @tameHasContinuation()
-        e.tameContinuationBlock = @tameContinuationBlock 
+        e.tameContinuationBlock = @tameContinuationBlock
         e.tamePrequels = @tamePrequels
       e
 
@@ -404,7 +406,7 @@ exports.Block = class Block extends Base
     foundReturn = false
     while len--
       expr = @expressions[len]
-      
+
       # If the last expression in the block is either a bonafide statement
       # or if it's going to be pivoted, then don't thread the return value
       # through the TameTailCall, just bolt it onto the end.
@@ -417,7 +419,7 @@ exports.Block = class Block extends Base
         call.assignValue expr
         @expressions[len] = call
         return
-        
+
     # if nothing was found, just push the call on
     @expressions.push call
 
@@ -550,7 +552,7 @@ exports.Block = class Block extends Base
   #
   tameCpsRotate : ->
     pivot = null
-    
+
     # Go ahead an look for a pivot
     for e,i in @expressions
       if e.tameIsCpsPivot()
@@ -571,7 +573,7 @@ exports.Block = class Block extends Base
 
     # If there's no pivot, then the above should be as in the base
     # class, and it's safe to return out of here.
-    # 
+    #
     # We find a pivot if this node has taming, and it's not an Await
     # itself.
     return this unless pivot
@@ -626,13 +628,19 @@ exports.Block = class Block extends Base
 
   # Perform all steps of the Tame transform
   tameTransform : ->
-    return this unless @tameGo()
-    @tameWalkAst null
-    @tameAddRuntime() if @tameNeedsRuntime() and not @tameFindRequire()
-    @tameWalkAstLoops(false)
-    @tameWalkCpsPivots()
-    @tameMarkAutocbs()
-    @tameCpsRotate()
+
+    # we need to do at least 1 walk -- do the most important walk first
+    obj = {}
+    @tameWalkAst null, obj
+
+    # short-circuit here for optimization. If we didn't find await
+    # then no need to tame anything in this AST
+    if obj.foundAwait
+      @tameAddRuntime() if obj.foundDefer and not obj.foundRequire
+      @tameWalkAstLoops(false)
+      @tameWalkCpsPivots()
+      @tameCpsRotate()
+
     this
 
 #### Literal
@@ -1550,14 +1558,6 @@ exports.Code = class Code extends Base
 
   jumps: NO
 
-  tameMarkAutocbs: (found) ->
-    found = false
-    for p in @params
-      if p.name instanceof Literal and p.name.value is tame.const.autocb
-        found = true
-        break
-    super(found)
-
   # Compilation creates a new scope unless explicitly asked to share with the
   # outer scope. Handles splat parameters in the parameter list by peeking at
   # the JavaScript `arguments` object. If the function is bound with the `=>`
@@ -1630,9 +1630,17 @@ exports.Code = class Code extends Base
 
   # we are taming as a feature of all of our children.  However, if we
   # are tamed, it's not the case that our parent is tamed!
-  tameWalkAst : (p) ->
-    @tameParentAwait = p
-    @tameNodeFlag = true if super null
+  tameWalkAst : (parent, o) ->
+    @tameParentAwait = parent
+    fa_prev = o.foundAutocb
+    o.foundAutocb = false
+    for param in @params
+      if param.name instanceof Literal and param.name.value is tame.const.autocb
+        o.foundAutocb = true
+        break
+    @tameHasAutocbFlag = o.foundAutocb
+    super parent, o
+    o.foundAutocb = fa_prev
     false
 
   tameWalkAstLoops : (flood) ->
@@ -1755,7 +1763,7 @@ exports.While = class While extends Base
     body = d.body
     rvar = d.rvar
     outStatements = []
-    
+
     if rvar
       rvar_value = new Value new Literal rvar
 
@@ -1875,10 +1883,9 @@ exports.Op = class Op extends Base
     @first    = first
     @second   = second
     @flip     = !!flip
-    @tameCallContinuationFlag = false
     return this
 
-  tameWrapContinuation : YES
+  tameWrapContinuation : -> @tameCallContinuationFlag
 
   # The map of conversions from CoffeeScript to JavaScript symbols.
   CONVERSIONS =
@@ -2176,7 +2183,10 @@ exports.Defer = class Defer extends Base
       scope.add name, 'var'
     call.compile o
 
-  tameNeedsRuntime : -> true
+  tameWalkAst : (p, o) ->
+    @tameHasAutocbFlag = o.foundAutocb
+    o.foundDefer = true
+    super p, o
 
 #### Await
 
@@ -2214,11 +2224,12 @@ exports.Await = class Await extends Base
   # We still need to walk our children to see if there are any embedded
   # function which might also be tamed.  But we're always going to report
   # to our parent that we are tamed, since we are!
-  tameWalkAst : (p) ->
+  tameWalkAst : (p, o) ->
+    @tameHasAutocbFlag = o.foundAutocb
     p = p || this
     @tameParentAwait = p
-    super p
-    @tameNodeFlag = true
+    super p, o
+    @tameNodeFlag = o.foundAwait = true
 
 #### tameRequire
 #
@@ -2228,13 +2239,14 @@ exports.Await = class Await extends Base
 #   tame = require('coffee-script').tame
 #
 # With 'tameRequire(none)', you can supply a runtime of
-# your choosing.
+# your choosing. 'tameRequire(window)', will set `window.tame`
+# to have the tame runtime.
 #
 exports.TameRequire = class TameRequire extends Base
   constructor: (args) ->
     super()
     @typ = null
-    @usage =  "tameRequire takes either 'inline', 'node' or 'none'"
+    @usage =  "tameRequire takes either 'inline', 'node', 'window' or 'none'"
     if args and args.length > 2
        throw SyntaxError @usage
     if args and args.length is 1
@@ -2242,11 +2254,18 @@ exports.TameRequire = class TameRequire extends Base
 
   compileNode: (o) ->
     @tab = o.indent
-    v = if @typ then @typ.compile(o) else "inline"
+
+    v = if @typ
+      @typ.compile(o)
+    else if o.bare
+      'none'
+    else
+      "inline"
+
     inc = null
     inc = switch (v)
-      when "inline"
-        InlineDeferral.generate()
+      when "inline", "window"
+        InlineDeferral.generate(if v is "window" then v else null)
       when "node"
         file = new Literal "'coffee-script'"
         access = new Access new Literal tame.const.ns
@@ -2259,17 +2278,20 @@ exports.TameRequire = class TameRequire extends Base
       when "none" then null
       else throw SyntaxError @usage
 
-    out = if inc then "\n#{@tab}" + inc.compile o, LEVEL_TOP else ""
+    out = if inc then "#{@tab}#{inc.compile o, LEVEL_TOP}\n" else ""
 
     rhs = new Code [], new Block []
     lhs = new Value new Literal tame.const.k
     k = new Assign lhs, rhs
 
-    out + "\n#{@tab}" + k.compile(o, LEVEL_TOP)
+    out + "#{@tab}" + k.compile(o, LEVEL_TOP)
 
   children = [ 'typ']
 
-  tameFindRequire: -> this
+  tameWalkAst : (p,o) ->
+    @tameHasAutocbFlag = o.foundAutocb
+    o.foundRequire = true
+    super p, o
 
 #### Try
 
@@ -2768,7 +2790,7 @@ CpsCascade =
     if returnValue
       returnValue.bindName o
       args.push returnValue
-      
+
     block = Block.wrap [ rest ]
 
     # Optimization! If the block is just a tail call to another continuation
@@ -2777,7 +2799,7 @@ CpsCascade =
       cont = e.extractFunc()
     else
       cont = new Code args, block, 'tamegen'
-      
+
     call = new Call func, [ cont ]
     new Block [ call ]
 
@@ -2855,11 +2877,15 @@ InlineDeferral =
   #         defer_params?.assign_fn?.apply(null, inner_params)
   #         @_fulfill()
   #
-  generate : ->
+  generate : (ns_window) ->
     k = new Literal "continuation"
     cnt = new Literal "count"
     cn = new Value new Literal tame.const.Deferrals
     ns = new Value new Literal tame.const.ns
+    if ns_window # window.tame = ...
+      ns_window_val = new Value new Literal ns_window
+      ns_window_val.add new Access ns
+      ns = ns_window_val
 
     # make the constructor:
     #
