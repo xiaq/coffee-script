@@ -45,7 +45,7 @@ exports.Base = class Base
     @tameGotCpsSplitFlag = false
     @tameCpsPivotFlag    = false
     @tameHasAutocbFlag   = false
-    
+
     @tameParentAwait     = null
     @tameCallContinuationFlag = false
 
@@ -90,7 +90,7 @@ exports.Base = class Base
   # In the case of expressions with nested await'ing, things are sadly way
   # more complicated.  We could have an arbitrarily deep chain here, hence
   # the calls to CpsCascading in a loop.
-  # 
+  #
   compileCps : (o) ->
     @tameGotCpsSplitFlag = true
 
@@ -100,7 +100,7 @@ exports.Base = class Base
         # Optimization:  We smush the "this" expression and the continuation
         # into a flat block.
         [ this, @tameContinuationBlock ]
-        
+
       else if @tameWrapContinuation()
         # For some types of objects, we wrap the value of the object in a
         # tamed tail call here.  We might have done this earlier (in
@@ -108,17 +108,17 @@ exports.Base = class Base
         # to replace an AST node with TameTailCall(this).  So instead, we
         # do that now.
         new TameTailCall null, this
-        
+
       else
         # The simple case is no continuation, and no added TameTailCall
         # needed.
         this
-        
+
       while l--
         pb = @tamePrequels[l]
         k = CpsCascade.wrap pb.block, k, pb.retval, o
       code = k
-      
+
     else
       code = CpsCascade.wrap this, @tameContinuationBlock, null, o
 
@@ -248,7 +248,7 @@ exports.Base = class Base
   #
 
   # tameWalkAst
-  # 
+  #
   #   Walk the AST looking for taming. Mark a node as with tame flags
   #   if any of its children are tamed, but don't cross scope boundary
   #   when considering the children.
@@ -335,7 +335,7 @@ exports.Base = class Base
       this
     else
       if @tameHasContinuation()
-        e.tameContinuationBlock = @tameContinuationBlock 
+        e.tameContinuationBlock = @tameContinuationBlock
         e.tamePrequels = @tamePrequels
       e
 
@@ -406,7 +406,7 @@ exports.Block = class Block extends Base
     foundReturn = false
     while len--
       expr = @expressions[len]
-      
+
       # If the last expression in the block is either a bonafide statement
       # or if it's going to be pivoted, then don't thread the return value
       # through the TameTailCall, just bolt it onto the end.
@@ -419,7 +419,7 @@ exports.Block = class Block extends Base
         call.assignValue expr
         @expressions[len] = call
         return
-        
+
     # if nothing was found, just push the call on
     @expressions.push call
 
@@ -552,7 +552,7 @@ exports.Block = class Block extends Base
   #
   tameCpsRotate : ->
     pivot = null
-    
+
     # Go ahead an look for a pivot
     for e,i in @expressions
       if e.tameIsCpsPivot()
@@ -573,7 +573,7 @@ exports.Block = class Block extends Base
 
     # If there's no pivot, then the above should be as in the base
     # class, and it's safe to return out of here.
-    # 
+    #
     # We find a pivot if this node has taming, and it's not an Await
     # itself.
     return this unless pivot
@@ -635,12 +635,12 @@ exports.Block = class Block extends Base
 
     # short-circuit here for optimization. If we didn't find await
     # then no need to tame anything in this AST
-    if obj.foundAwait 
+    if obj.foundAwait
       @tameAddRuntime() if obj.foundDefer and not obj.foundRequire
       @tameWalkAstLoops(false)
       @tameWalkCpsPivots()
       @tameCpsRotate()
-      
+
     this
 
 #### Literal
@@ -1763,7 +1763,7 @@ exports.While = class While extends Base
     body = d.body
     rvar = d.rvar
     outStatements = []
-    
+
     if rvar
       rvar_value = new Value new Literal rvar
 
@@ -2239,13 +2239,14 @@ exports.Await = class Await extends Base
 #   tame = require('coffee-script').tame
 #
 # With 'tameRequire(none)', you can supply a runtime of
-# your choosing.
+# your choosing. 'tameRequire(window)', will set `window.tame`
+# to have the tame runtime.
 #
 exports.TameRequire = class TameRequire extends Base
   constructor: (args) ->
     super()
     @typ = null
-    @usage =  "tameRequire takes either 'inline', 'node' or 'none'"
+    @usage =  "tameRequire takes either 'inline', 'node', 'window' or 'none'"
     if args and args.length > 2
        throw SyntaxError @usage
     if args and args.length is 1
@@ -2253,11 +2254,18 @@ exports.TameRequire = class TameRequire extends Base
 
   compileNode: (o) ->
     @tab = o.indent
-    v = if @typ then @typ.compile(o) else "inline"
+
+    v = if @typ
+      @typ.compile(o)
+    else if o.bare
+      'none'
+    else
+      "inline"
+
     inc = null
     inc = switch (v)
-      when "inline"
-        InlineDeferral.generate()
+      when "inline", "window"
+        InlineDeferral.generate(if v is "window" then v else null)
       when "node"
         file = new Literal "'coffee-script'"
         access = new Access new Literal tame.const.ns
@@ -2270,13 +2278,13 @@ exports.TameRequire = class TameRequire extends Base
       when "none" then null
       else throw SyntaxError @usage
 
-    out = if inc then "\n#{@tab}" + inc.compile o, LEVEL_TOP else ""
+    out = if inc then "#{@tab}#{inc.compile o, LEVEL_TOP}\n" else ""
 
     rhs = new Code [], new Block []
     lhs = new Value new Literal tame.const.k
     k = new Assign lhs, rhs
 
-    out + "\n#{@tab}" + k.compile(o, LEVEL_TOP)
+    out + "#{@tab}" + k.compile(o, LEVEL_TOP)
 
   children = [ 'typ']
 
@@ -2782,7 +2790,7 @@ CpsCascade =
     if returnValue
       returnValue.bindName o
       args.push returnValue
-      
+
     block = Block.wrap [ rest ]
 
     # Optimization! If the block is just a tail call to another continuation
@@ -2791,7 +2799,7 @@ CpsCascade =
       cont = e.extractFunc()
     else
       cont = new Code args, block, 'tamegen'
-      
+
     call = new Call func, [ cont ]
     new Block [ call ]
 
@@ -2869,11 +2877,15 @@ InlineDeferral =
   #         defer_params?.assign_fn?.apply(null, inner_params)
   #         @_fulfill()
   #
-  generate : ->
+  generate : (ns_window) ->
     k = new Literal "continuation"
     cnt = new Literal "count"
     cn = new Value new Literal tame.const.Deferrals
     ns = new Value new Literal tame.const.ns
+    if ns_window # window.tame = ...
+      ns_window_val = new Value new Literal ns_window
+      ns_window_val.add new Access ns
+      ns = ns_window_val
 
     # make the constructor:
     #
