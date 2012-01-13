@@ -1,4 +1,4 @@
-var slowAlert, __tame_deferrals, __tame_k,
+var slowAlert, __tame_deferrals,
   _this = this;
 
 __tame_k = function() {};
@@ -22,7 +22,11 @@ slowAlert = function(w, s, cb) {
   slowAlert(1000, "friend", __tame_deferrals.defer({}));
   __tame_deferrals._fulfill();
 })(function() {
-  __tame_deferrals = new tame.Deferrals(__tame_k);
-  slowAlert(500, "back after a delay", __tame_deferrals.defer({}));
-  __tame_deferrals._fulfill();
+  (function(__tame_k) {
+    __tame_deferrals = new tame.Deferrals(__tame_k);
+    slowAlert(500, "back after a delay", __tame_deferrals.defer({}));
+    __tame_deferrals._fulfill();
+  })(function() {
+    return alert("Goodbye!");
+  });
 });

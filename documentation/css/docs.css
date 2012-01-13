@@ -187,6 +187,10 @@ div.code {
     .navigation.toc {
       border-left-width: 1px;
     }
+
+    .navigation.tame {
+      color: #800;
+    }
     .navigation:hover,
     .navigation.active {
       background: #eee;
