@@ -23,6 +23,10 @@ h1, h2, h3, h4, h5, h6, b.header {
   margin-bottom: 15px;
   text-shadow: #fff 0 1px 1px;
 }
+h1 {
+  font-size: 24px;
+  color: #800
+}
 br.clear {
   height: 0;
   clear: both;

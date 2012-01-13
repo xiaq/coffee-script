@@ -61,9 +61,6 @@ window.__tame_k = function() {};
         <a href="#installation">Installation</a>
         <a href="#usage">Usage</a>
         <a href="#language">Language Reference</a>
-        <a href="#tame">Tame Basic Features</a>
-        <a href="#tame_defer">Tame Defer Values</a>
-        <a href="#tame_expr">Tame Expressions</a>
         <a href="#literals">Literals: Functions, Objects and Arrays</a>
         <a href="#lexical_scope">Lexical Scoping and Variable Safety</a>
         <a href="#conditionals">If, Else, Unless, and Conditional Assignment</a>
@@ -127,14 +124,21 @@ window.__tame_k = function() {};
     </div>
     <div class="navigation tame">
      <div class="button">
-       Tame Features
+       ACS Features
      </div>
+      <div class="contents menu">
+        <a href="#tame">Tame Basic Features</a>
+        <a href="#tame_defer">Tame Defer Values</a>
+        <a href="#tame_expr">Tame Expressions</a>
+      </div>
     </div>
     <div id="error" style="display:none;"></div>
   </div>
 
   <div class="container">
     <span class="bookmark" id="top"></span>
+
+    <h1>ADVANCED COFFEE SUBSTITUTE</h1>
 
     <p>
       CoffeeScript is a little language that compiles into JavaScript.
@@ -587,7 +591,7 @@ __tame_k = function() {};
     </p>
 
     <p>
-    <div class='code'><pre class="idle">window.slowAlert = (w,s,cb) -&gt;
+    <div class='code'><pre class="idle">slowAlert = (w,s,cb) -&gt;
   await setTimeout defer(), w
   alert s
   cb()
@@ -595,12 +599,12 @@ await
   slowAlert 500, &quot;hello&quot;, defer()
   slowAlert 1000, &quot;friend&quot;, defer()
 await slowAlert 500, &quot;back after a delay&quot;, defer()
-</pre><pre class="idle"><span class="Storage">var</span> __tame_deferrals, __tame_k,
+</pre><pre class="idle"><span class="Storage">var</span> slowAlert, __tame_deferrals, __tame_k,
   _this <span class="Keyword">=</span> <span class="Variable">this</span>;
 
 <span class="FunctionName">__tame_k</span> = <span class="Storage">function</span>() {};
 
-<span class="LibraryClassType">window</span>.<span class="FunctionName">slowAlert</span> = <span class="Storage">function</span>(<span class="FunctionArgument">w, s, cb</span>) {
+<span class="FunctionName">slowAlert</span> = <span class="Storage">function</span>(<span class="FunctionArgument">w, s, cb</span>) {
   <span class="Storage">var</span> __tame_deferrals,
     _this <span class="Keyword">=</span> <span class="Variable">this</span>;
   (<span class="Storage">function</span>(__tame_k) {
@@ -623,12 +627,12 @@ await slowAlert 500, &quot;back after a delay&quot;, defer()
   slowAlert(<span class="Number">500</span>, <span class="String"><span class="String">&quot;</span>back after a delay<span class="String">&quot;</span></span>, __tame_deferrals.<span class="LibraryConstant">defer</span>({}));
   __tame_deferrals._fulfill();
 });
-</pre><script>window.example3 = "window.slowAlert = (w,s,cb) ->\n  await setTimeout defer(), w\n  alert s\n  cb()\nawait\n  slowAlert 500, \"hello\", defer()\n  slowAlert 1000, \"friend\", defer()\nawait slowAlert 500, \"back after a delay\", defer()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example3);'>load</div><div class='minibutton ok' onclick='javascript: var __tame_deferrals, __tame_k,
+</pre><script>window.example3 = "slowAlert = (w,s,cb) ->\n  await setTimeout defer(), w\n  alert s\n  cb()\nawait\n  slowAlert 500, \"hello\", defer()\n  slowAlert 1000, \"friend\", defer()\nawait slowAlert 500, \"back after a delay\", defer()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example3);'>load</div><div class='minibutton ok' onclick='javascript: var slowAlert, __tame_deferrals, __tame_k,
   _this = this;
 
 __tame_k = function() {};
 
-window.slowAlert = function(w, s, cb) {
+slowAlert = function(w, s, cb) {
   var __tame_deferrals,
     _this = this;
   (function(__tame_k) {
@@ -752,8 +756,8 @@ __tame_deferrals._fulfill();
     <p>
     <div class='code'><pre class="idle">for i in [0..2]
   await
-    slowAlert 100, &quot;fast alert #{i}&quot;, defer()
-    slowAlert 200, &quot;slow alert #{i}&quot;, defer()
+    slowAlert 100, &quot;alert A #{i}&quot;, defer()
+    slowAlert 200, &quot;alert B #{i}&quot;, defer()
 
 </pre><pre class="idle"><span class="Storage">var</span> i, __tame_deferrals, _i, _next, _while,
   _this <span class="Keyword">=</span> <span class="Variable">this</span>;
@@ -772,8 +776,8 @@ i <span class="Keyword">=</span> <span class="Number">0</span>;
   <span class="Keyword">if</span> (i <span class="Keyword">&lt;=</span> <span class="Number">2</span>) {
     (<span class="Storage">function</span>(__tame_k) {
       __tame_deferrals <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">tame.Deferrals</span>(__tame_k);
-      slowAlert(<span class="Number">100</span>, <span class="String"><span class="String">&quot;</span>fast alert <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __tame_deferrals.<span class="LibraryConstant">defer</span>({}));
-      slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>slow alert <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __tame_deferrals.<span class="LibraryConstant">defer</span>({}));
+      slowAlert(<span class="Number">100</span>, <span class="String"><span class="String">&quot;</span>alert A <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __tame_deferrals.<span class="LibraryConstant">defer</span>({}));
+      slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>alert B <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __tame_deferrals.<span class="LibraryConstant">defer</span>({}));
       __tame_deferrals._fulfill();
     })(_next);
   } <span class="Keyword">else</span> {
@@ -781,7 +785,7 @@ i <span class="Keyword">=</span> <span class="Number">0</span>;
   }
 };
 _while(__tame_k);
-</pre><script>window.example6 = "for i in [0..2]\n  await\n    slowAlert 100, \"fast alert #{i}\", defer()\n    slowAlert 200, \"slow alert #{i}\", defer()\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><div class='minibutton ok' onclick='javascript: var i, __tame_deferrals, _i, _next, _while,
+</pre><script>window.example6 = "for i in [0..2]\n  await\n    slowAlert 100, \"alert A #{i}\", defer()\n    slowAlert 200, \"alert B #{i}\", defer()\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><div class='minibutton ok' onclick='javascript: var i, __tame_deferrals, _i, _next, _while,
   _this = this;
 
 __tame_k = function() {};
@@ -798,8 +802,8 @@ _while = function(__tame_k) {
   if (i <= 2) {
     (function(__tame_k) {
       __tame_deferrals = new tame.Deferrals(__tame_k);
-      slowAlert(100, "fast alert " + i, __tame_deferrals.defer({}));
-      slowAlert(200, "slow alert " + i, __tame_deferrals.defer({}));
+      slowAlert(100, "alert A " + i, __tame_deferrals.defer({}));
+      slowAlert(200, "alert B " + i, __tame_deferrals.defer({}));
       __tame_deferrals._fulfill();
     })(_next);
   } else {
@@ -883,17 +887,17 @@ _while(__tame_k);
      the last writer wins.  In practice, there's usually only one. Thus:
     </p>
 
-    <p><div class='code'><pre class="idle">window.add = (a,b,cb) -&gt;
+    <p><div class='code'><pre class="idle">add = (a,b,cb) -&gt;
   await setTimeout defer(), 10
   cb(a+b)
 x = (await add 3, 4, defer _) + (await add 1, 2, defer _)
 alert &quot;#{x} is 10&quot;
-</pre><pre class="idle"><span class="Storage">var</span> x, __tame_deferrals,
+</pre><pre class="idle"><span class="Storage">var</span> add, x, __tame_deferrals,
   _this <span class="Keyword">=</span> <span class="Variable">this</span>;
 
 <span class="FunctionName">__tame_k</span> = <span class="Storage">function</span>() {};
 
-<span class="LibraryClassType">window</span>.<span class="FunctionName">add</span> = <span class="Storage">function</span>(<span class="FunctionArgument">a, b, cb</span>) {
+<span class="FunctionName">add</span> = <span class="Storage">function</span>(<span class="FunctionArgument">a, b, cb</span>) {
   <span class="Storage">var</span> __tame_deferrals,
     _this <span class="Keyword">=</span> <span class="Variable">this</span>;
   (<span class="Storage">function</span>(__tame_k) {
@@ -935,12 +939,12 @@ alert &quot;#{x} is 10&quot;
   x <span class="Keyword">=</span> ___tame_p__0;
   <span class="Keyword">return</span> <span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> x <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> is 10<span class="String">&quot;</span></span>);
 });;
-</pre><script>window.example8 = "window.add = (a,b,cb) ->\n  await setTimeout defer(), 10\n  cb(a+b)\nx = (await add 3, 4, defer _) + (await add 1, 2, defer _)\nalert \"#{x} is 10\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example8);'>load</div><div class='minibutton ok' onclick='javascript: var x, __tame_deferrals,
+</pre><script>window.example8 = "add = (a,b,cb) ->\n  await setTimeout defer(), 10\n  cb(a+b)\nx = (await add 3, 4, defer _) + (await add 1, 2, defer _)\nalert \"#{x} is 10\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example8);'>load</div><div class='minibutton ok' onclick='javascript: var add, x, __tame_deferrals,
   _this = this;
 
 __tame_k = function() {};
 
-window.add = function(a, b, cb) {
+add = function(a, b, cb) {
   var __tame_deferrals,
     _this = this;
   (function(__tame_k) {
@@ -3597,6 +3601,16 @@ task(<span class="String"><span class="String">'</span>build:parser<span class="
         loadConsole src
 
     compileSource()
+
+
+    window.slowAlert = (w,s,cb) ->
+      await setTimeout defer(), w
+      alert s
+      cb()
+
+    window.add = (a,b,cb) ->
+      await setTimeout defer(), 10
+      cb(a+b)
 
   </script>
 

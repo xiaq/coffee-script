@@ -1,4 +1,4 @@
-window.slowAlert = (w,s,cb) ->
+slowAlert = (w,s,cb) ->
   await setTimeout defer(), w
   alert s
   cb()

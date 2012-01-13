@@ -1,9 +1,9 @@
-var __tame_deferrals, __tame_k,
+var slowAlert, __tame_deferrals, __tame_k,
   _this = this;
 
 __tame_k = function() {};
 
-window.slowAlert = function(w, s, cb) {
+slowAlert = function(w, s, cb) {
   var __tame_deferrals,
     _this = this;
   (function(__tame_k) {

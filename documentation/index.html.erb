@@ -48,9 +48,6 @@
         <a href="#installation">Installation</a>
         <a href="#usage">Usage</a>
         <a href="#language">Language Reference</a>
-        <a href="#tame">Tame Basic Features</a>
-        <a href="#tame_defer">Tame Defer Values</a>
-        <a href="#tame_expr">Tame Expressions</a>
         <a href="#literals">Literals: Functions, Objects and Arrays</a>
         <a href="#lexical_scope">Lexical Scoping and Variable Safety</a>
         <a href="#conditionals">If, Else, Unless, and Conditional Assignment</a>
@@ -114,14 +111,21 @@
     </div>
     <div class="navigation tame">
      <div class="button">
-       Tame Features
+       ACS Features
      </div>
+      <div class="contents menu">
+        <a href="#tame">Tame Basic Features</a>
+        <a href="#tame_defer">Tame Defer Values</a>
+        <a href="#tame_expr">Tame Expressions</a>
+      </div>
     </div>
     <div id="error" style="display:none;"></div>
   </div>
 
   <div class="container">
     <span class="bookmark" id="top"></span>
+
+    <h1>ADVANCED COFFEE SUBSTITUTE</h1>
 
     <p>
       CoffeeScript is a little language that compiles into JavaScript.
@@ -1894,6 +1898,16 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
         loadConsole src
 
     compileSource()
+
+
+    window.slowAlert = (w,s,cb) ->
+      await setTimeout defer(), w
+      alert s
+      cb()
+
+    window.add = (a,b,cb) ->
+      await setTimeout defer(), 10
+      cb(a+b)
 
   </script>
 

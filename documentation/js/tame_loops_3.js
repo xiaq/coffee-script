@@ -15,8 +15,8 @@ _while = function(__tame_k) {
   if (i <= 2) {
     (function(__tame_k) {
       __tame_deferrals = new tame.Deferrals(__tame_k);
-      slowAlert(100, "fast alert " + i, __tame_deferrals.defer({}));
-      slowAlert(200, "slow alert " + i, __tame_deferrals.defer({}));
+      slowAlert(100, "alert A " + i, __tame_deferrals.defer({}));
+      slowAlert(200, "alert B " + i, __tame_deferrals.defer({}));
       __tame_deferrals._fulfill();
     })(_next);
   } else {

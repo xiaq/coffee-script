@@ -1,9 +1,9 @@
-var x, __tame_deferrals,
+var add, x, __tame_deferrals,
   _this = this;
 
 __tame_k = function() {};
 
-window.add = function(a, b, cb) {
+add = function(a, b, cb) {
   var __tame_deferrals,
     _this = this;
   (function(__tame_k) {
