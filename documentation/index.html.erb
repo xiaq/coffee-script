@@ -2,11 +2,12 @@
   require 'uv'
   require 'json'
   @counter = 0
-  def code_for(file, executable=false, show_load=true)
+  def code_for(file, executable=false, show_load=true, trunc=0)
     @counter += 1
     return '' unless File.exists?("documentation/js/#{file}.js")
     cs = File.read("documentation/coffee/#{file}.coffee")
     js = File.read("documentation/js/#{file}.js")
+    js.gsub!(/__tame_deferrals/, "__td");
     cshtml = Uv.parse(cs, 'xhtml', 'coffeescript', false, 'idle', false)
     jshtml = Uv.parse(js, 'xhtml', 'javascript', false, 'idle', false)
     append = executable  == true ? '' : "alert(#{executable});"
@@ -18,7 +19,8 @@
     script = "<script>window.#{name} = #{cs.to_json}</script>"
     import = show_load ? "<div class='minibutton load' onclick='javascript: loadConsole(#{name});'>load</div>" : ''
     button = executable ? "<div class='minibutton ok' onclick='javascript: #{js};#{append}'>#{run}</div>" : ''
-    "<div class='code'>#{cshtml}#{jshtml}#{script}#{import}#{button}<br class='clear' /></div>"
+   trunc_code = trunc > 0 ? "style=\"height: #{trunc}px; overflow-y: scroll;\"" : "";
+    "<div class='code' #{trunc_code}>#{cshtml}#{jshtml}#{script}#{import}#{button}<br class='clear' /></div>"
   end
 %>
 <!DOCTYPE html>
@@ -460,7 +462,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     </p>
 
     <p>
-    <%= code_for('tame_basics_2', true) %>
+    <%= code_for('tame_basics_2', true, true, 300) %>
     </p>
 
     <p>For comparison's sake, here is how this same code is implemented
@@ -470,7 +472,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     the code can look ugly means that you would have had to write that
     ugly code by hand!
     <p>
-    <%= code_for('tame_basics_2b', true) %>
+    <%= code_for('tame_basics_2b', true, true, 300) %>
     </p>
 
     <p>
@@ -480,7 +482,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     </p>
 
     <p>
-    <%= code_for('tame_loops_1', true) %>
+    <%= code_for('tame_loops_1', true, true, 300) %>
     </p>
     
     <p>
@@ -489,14 +491,14 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     </p>
 
     <p>
-    <%= code_for('tame_loops_2', true) %>
+    <%= code_for('tame_loops_2', true, true, 300) %>
     </p>
 
     Things start to get interesting when you combine parallel and
     serial control flow, but the syntax remains the same:
 
     <p>
-    <%= code_for('tame_loops_3', true) %>
+    <%= code_for('tame_loops_3', true, true, 300) %>
     </p>
 
     <p>
@@ -508,7 +510,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     which are filled in after a deferral is fulfilled. Note that the
     snippet below is <i>node.js</i> code that requires a DNS resolver:
     <p>
-    <%= code_for('tame_defer') %>
+    <%= code_for('tame_defer', true, false, 300) %>
     </p>
 
     <p>
@@ -527,14 +529,14 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
      the last writer wins.  In practice, there's usually only one. Thus:
     </p>
 
-    <p><%= code_for('tame_expr_1', true) %></p>
+    <p><%= code_for('tame_expr_1', true, true, 300) %></p>
 
     <p>
      Of course, things can get arbitrarily compicated and nested, so it
      gets hairy.  Consider this:
     </p>
 
-    <p><%= code_for('tame_expr_2', true) %></p>
+    <p><%= code_for('tame_expr_2', true, true, 300) %></p>
 
     <p>
      The rule is that all nested <tt>await</tt> blocks (barf!) are evaluated
@@ -550,7 +552,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
      and just write the above as this:
     </p>
     
-    <p><%= code_for('tame_expr_3', true) %></p>
+    <p><%= code_for('tame_expr_3', true, true, 300) %></p>
 
     <p>
      It's just so much clearer what happens in which order, and it's easier

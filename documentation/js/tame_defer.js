@@ -4,9 +4,9 @@ var dns, err, host, ip, __tame_deferrals, _i, _len, _next, _ref, _while,
 
 __tame_k = function() {};
 
-dns = require('dns');
+dns = require("dns");
 
-_ref = ['yahoo.com', 'google.com', 'nytimes.com'];
+_ref = ["yahoo.com", "google.com", "nytimes.com"];
 _len = _ref.length;
 _i = 0;
 _while = function(__tame_k) {
