@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>CoffeeScript</title>
+  <title>IcedCoffeeScript</title>
   <link rel="stylesheet" type="text/css" href="documentation/css/docs.css" />
   <link rel="stylesheet" type="text/css" href="documentation/css/idle.css" />
   <link rel="shortcut icon" href="documentation/images/favicon.ico" />
@@ -121,7 +121,7 @@ window.__tame_k = function() {};
         <a href="documentation/docs/helpers.html">Helpers &amp; Utility Functions &mdash; src/helpers</a>
         <a href="documentation/docs/coffee-script.html">The CoffeeScript Module &mdash; src/coffee-script</a>
         <a href="documentation/docs/cake.html">Cake &amp; Cakefiles &mdash; src/cake</a>
-        <a href="documentation/docs/command.html">"coffee" Command-Line Utility &mdash; src/command</a>
+        <a href="documentation/docs/command.html">"iced" Command-Line Utility &mdash; src/command</a>
         <a href="documentation/docs/optparse.html">Option Parsing &mdash; src/optparse</a>
         <a href="documentation/docs/repl.html">Interactive REPL &mdash; src/repl</a>
       </div>
@@ -312,7 +312,7 @@ cubes = (function() {
       The CoffeeScript compiler is itself
       <a href="documentation/docs/grammar.html">written in CoffeeScript</a>,
       using the <a href="http://jison.org">Jison parser generator</a>. The
-      command-line version of <tt>coffee</tt> is available as a
+      command-line version of <tt>iced</tt> is available as a
       <a href="http://nodejs.org/">Node.js</a> utility. The
       <a href="extras/coffee-script.js">core compiler</a> however, does not
       depend on Node, and can be run in any JavaScript environment, or in the
@@ -357,17 +357,18 @@ sudo bin/cake install</pre>
     </h2>
 
     <p>
-      Once installed, you should have access to the <tt>coffee</tt> command,
-      which can execute scripts, compile <tt>.coffee</tt> files into <tt>.js</tt>,
-      and provide an interactive REPL. The <tt>coffee</tt> command takes the
-      following options:
+      Once installed, you should have access to the <tt>iced</tt> command,
+      which can execute scripts, compile <tt>.iced</tt> files into <tt>.js</tt>,
+      and provide an interactive REPL. (Note that the <tt>iced</tt> command
+      will also accept the <tt>.coffee</tt> extension).
+      The <tt>iced</tt> command takes the following options:
     </p>
 
     <table>
       <tr>
         <td><code>-c, --compile</code></td>
         <td>
-          Compile a <tt>.coffee</tt> script into a <tt>.js</tt> JavaScript file
+          Compile a <tt>.iced</tt> script into a <tt>.js</tt> JavaScript file
           of the same name.
         </td>
       </tr>
@@ -375,7 +376,7 @@ sudo bin/cake install</pre>
         <td width="25%"><code>-i, --interactive</code></td>
         <td>
           Launch an interactive CoffeeScript session to try short snippets.
-          Identical to calling <tt>coffee</tt> with no arguments.
+          Identical to calling <tt>iced</tt> with no arguments.
         </td>
       </tr>
       <tr>
@@ -422,14 +423,14 @@ sudo bin/cake install</pre>
         <td>
           Pipe in CoffeeScript to STDIN and get back JavaScript over STDOUT.
           Good for use with processes written in other languages. An example:<br />
-          <tt>cat src/cake.coffee | coffee -sc</tt>
+          <tt>cat src/cake.coffee | iced -sc</tt>
         </td>
       </tr>
       <tr>
         <td><code>-e, --eval</code></td>
         <td>
           Compile and print a little snippet of CoffeeScript directly from the
-          command line. For example:<br /><tt>coffee -e "console.log num for num in [10..1]"</tt>
+          command line. For example:<br /><tt>iced -e "console.log num for num in [10..1]"</tt>
         </td>
       </tr>
       <tr>
@@ -484,29 +485,29 @@ Expressions
 
     <ul>
       <li>
-        Compile a directory tree of <tt>.coffee</tt> files in <tt>src</tt> into a parallel
+        Compile a directory tree of <tt>.iced</tt> files in <tt>src</tt> into a parallel
         tree of <tt>.js</tt> files in <tt>lib</tt>:<br />
-        <tt>coffee --compile --output lib/ src/</tt>
+        <tt>iced --compile --output lib/ src/</tt>
       </li>
       <li>
         Watch a file for changes, and recompile it every time the file is saved:<br />
-        <tt>coffee --watch --compile experimental.coffee</tt>
+        <tt>iced --watch --compile experimental.iced</tt>
       </li>
       <li>
         Concatenate a list of files into a single script:<br />
-        <tt>coffee --join project.js --compile src/*.coffee</tt>
+        <tt>iced --join project.js --compile src/*.iced</tt>
       </li>
       <li>
         Print out the compiled JS from a one-liner:<br />
-        <tt>coffee -bpe "alert i for i in [0..10]"</tt>
+        <tt>iced -bpe "alert i for i in [0..10]"</tt>
       </li>
       <li>
         All together now, watch and recompile an entire project as you work on it:<br />
-        <tt>coffee -o lib/ -cw src/</tt>
+        <tt>iced -o lib/ -cw src/</tt>
       </li>
       <li>
         Start the CoffeeScript REPL:<br />
-        <tt>coffee</tt>
+        <tt>iced</tt>
       </li>
     </ul>
 
@@ -601,7 +602,7 @@ __tame_k = function() {};
     continues past the `await` block, onto the alert.  The code looks
     and feels like threaded code, but is still in the asynchronous
     idiom (if you look at the rewritten code output by
-    the <tt>coffee</tt> compiler).
+    the <tt>iced</tt> compiler).
     </p>
    
 
