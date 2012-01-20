@@ -521,3 +521,18 @@ atest 'nested for .. of .. loops', (cb) ->
       await delay defer()
       tot++
   cb(tot is 74, {})
+
+atest 'for + return + autocb', (cb) ->
+  bar = (autocb) ->
+    await delay defer()
+    (i for i in [0..10])
+  await bar defer v 
+  cb(v[3] is 3, {})
+
+atest 'for + return + autocb (part 2)', (cb) ->
+  bar = (autocb) ->
+    await delay defer()
+    x = (i for i in [0..10])
+    [10..20]
+  await bar defer v
+  cb(v[3] is 13, {})

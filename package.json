@@ -1,9 +1,9 @@
 {
-  "name":         "taco-script",
-  "description":  "TAmed COffeeScript",
+  "name":         "iced-coffee-script",
+  "description":  "IcedCoffeeScript",
   "keywords":     ["javascript", "language", "coffeescript", "compiler"],
   "author":       "Maxwell Krohn",
-  "version":      "1.2.0a",
+  "version":      "1.2.0b",
   "licenses":     [{
     "type":       "MIT",
     "url":        "http://github.com/jashkenas/coffee-script/raw/master/LICENSE"
@@ -16,8 +16,8 @@
   },
   "main" : "./lib/coffee-script/coffee-script",
   "bin":          {
-    "taco":     "./bin/coffee",
-    "take":     "./bin/cake"
+    "iced":           "./bin/coffee",
+    "icake":           "./bin/cake"
   },
   "homepage":     "http://maxtaco.github.com/coffee-script",
   "repository":   {
