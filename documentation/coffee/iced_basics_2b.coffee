@@ -1,9 +1,3 @@
-slowAlert = (w, s, cb) ->
-  setTimeout ( () ->
-       alert s
-       cb()
-     ), 1000
-
 out = 2
 next = ->
   unless --out 
