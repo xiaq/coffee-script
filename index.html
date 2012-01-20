@@ -62,9 +62,9 @@ window.__tame_k = function() {};
         <a href="#installation">Installation</a>
         <a href="#usage">Usage</a>
         <a href="#language">Language Reference</a>
-        <a href="#tame">Tame Basic Features</a>
-        <a href="#tame_defer">Tame Defer Values</a>
-        <a href="#tame_expr">Tame Expressions</a>
+        <a href="#iced">Iced Basic Features</a>
+        <a href="#iced_defer">Iced Defer Values</a>
+        <a href="#iced_expr">Iced Expressions</a>
         <a href="#literals">Literals: Functions, Objects and Arrays</a>
         <a href="#lexical_scope">Lexical Scoping and Variable Safety</a>
         <a href="#conditionals">If, Else, Unless, and Conditional Assignment</a>
@@ -126,14 +126,14 @@ window.__tame_k = function() {};
         <a href="documentation/docs/repl.html">Interactive REPL &mdash; src/repl</a>
       </div>
     </div>
-    <div class="navigation tame">
+    <div class="navigation iced">
      <div class="button">
-       TacoScript Features
+       Iced Features
      </div>
       <div class="contents menu">
-        <a href="#tame">Tame Basic Features</a>
-        <a href="#tame_defer">Tame Defer Values</a>
-        <a href="#tame_expr">Tame Expressions</a>
+        <a href="#iced">Iced Basic Features</a>
+        <a href="#iced_defer">Iced Defer Values</a>
+        <a href="#iced_expr">Iced Expressions</a>
       </div>
     </div>
     <div id="error" style="display:none;"></div>
@@ -142,36 +142,36 @@ window.__tame_k = function() {};
   <div class="container">
     <span class="bookmark" id="top"></span>
 
-    <h1>TacoScript</h1>
+    <h1>IcedCoffeeScript</h1>
 
     <p>
-      TacoScript is <b>Ta</b>med <b>Co</b>ffee<b>Script</b>. 
+      Welcome to <b>Iced</b>CoffeeScript!
     </p>
     <p>
-      TacoScript is a fork of CoffeeScript. It is 
+      IcedCoffeeScript is a fork of CoffeeScript. It is 
       <b>superset</b> of the CoffeeScript language. The
-      <tt>taco</tt> interpreter is a drop-in replacement
+      <tt>iced</tt> interpreter is a drop-in replacement
       for the standard <tt>coffee</tt> interpreter since 
       it will interpret all existing CoffeeScript programs.
     </p>
  
-    <p>TacoScript adds two new keywords: <tt>await</tt>
+    <p>IcedCoffeeScript (ICS) adds two new keywords: <tt>await</tt>
       and <tt>defer</tt>.  These additions simply and powerfully
       streamline asynchronous control flow, both on the server and on
       the browser. Say goodbye to callback pyramids; say adios to
       massive code rewrites when synchronization requirements change
       slightly.  Say hello to clean, readable, maintainable control
       flow for network and asynchronous operations!  See
-      the<a href="#" onclick="showAcsTab(); return false;">TacoScript
-      Features</a> tab for more details.
+      the<a href="#" onclick="showAcsTab(); return false;">Iced Features</a> 
+      tab for more details.
     </p>
 
     <p>
       The golden rule of CoffeeScript was: <i>"It's just
-      JavaScript"</i>.  TacoScript is doing something deeper.  It's
+      JavaScript"</i>.  ICS is doing something deeper.  It's
       selectively running code through a
       <i>continuation-passing style conversion</i>.  Original-style
-      CoffeeScript will compile as before, but code using the new TacoScript
+      CoffeeScript will compile as before, but code using the new ICS
       features will be less recognizable.  Still, the compiled output
       is readable and pretty-printed, passes through
       <a href="http://www.javascriptlint.com/">JavaScript Lint</a>
@@ -181,7 +181,7 @@ window.__tame_k = function() {};
 
     <p>
       <b>Latest Version:</b>
-      <a href="http://github.com/maxtaco/coffee-script/tarball/tame">1.2.1-pre1</a>
+      <a href="http://github.com/maxtaco/coffee-script/tarball/tame">1.2.0b</a>
     </p>
 
     <h2>
@@ -326,7 +326,7 @@ cubes = (function() {
     </p>
 
     <pre>
-npm install -g taco-script</pre>
+npm install -g iced-coffee-script</pre>
 
     <p>
       (Leave off the <tt>-g</tt> if you don't wish to install globally.)
@@ -518,7 +518,7 @@ Expressions
     <p>
       <i>
         This reference is structured so that it can be read from top to bottom,
-        if you like. <b>Early sections focus on new/forked TacoScript features</b>.
+        if you like. <b>Early sections focus on new/forked ICS features</b>.
         Later sections use ideas and syntax previously introduced.
         Familiarity with JavaScript is assumed.
         In all of the following examples, the source CoffeeScript is provided on
@@ -550,10 +550,10 @@ Expressions
       <tt>console.log sys.inspect object</tt> &rarr; <tt>console.log(sys.inspect(object));</tt>
     </p>
 
-    <h1>TacoScript New Features: Clean, Powerful Async Control Flow</h1>
+    <h1>New Iced Features: Clean, Powerful Async Control Flow</h1>
     <p>
-     <span id ="tame" class = "bookmark"></span>
-     <b class="header">Tame Basics</b>
+     <span id ="iced" class = "bookmark"></span>
+     <b class="header">Iced Basics</b>
 Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     </p>
     <p>
@@ -606,7 +606,7 @@ __tame_k = function() {};
    
 
     <p>
-    The next example shows some of the power of the tame primitives.
+    The next example shows some of the power of the Iced primitives.
     In the following examples, there are two operations that fire in
     parallel, and a third that fires after the first two complete:
     </p>
@@ -691,7 +691,7 @@ slowAlert = function(w, s, cb) {
     </p>
 
     <p>For comparison's sake, here is how this same code is implemented
-    without tame.  Note that the generate JavaScript is pretty similar. 
+    without Iced.  Note that the generate JavaScript is pretty similar. 
     In general, ACS outputs code you would ordinarily have to write by
     hand, especially as we cover more complicated control flow. That
     the code can look ugly means that you would have had to write that
@@ -761,7 +761,7 @@ slowAlert(1000, "friend", next);
     </p>
 
     <p>
-    As one might expect, the tame constructs interoperate with standard
+    As one might expect, the Iced constructs interoperate with standard
     coffee control structures.  The following program will call
     <tt>slowAlert</tt> three times sequentially:
     </p>
@@ -833,27 +833,7 @@ _while(__tame_k);
     <div class='code' style="height: 300px; overflow-y: scroll;"><pre class="idle">await
   for i in [0..3]
     slowAlert 200, &quot;loop iteration #{i}&quot;, defer()
-</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by CoffeeScript 1.2.1-pre</span>
-<span class="Storage">var</span> i, __td, __tame_k, _i;
-
-<span class="FunctionName">__tame_k</span> = <span class="Storage">function</span>() {};
-
-__td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">tame.Deferrals</span>(__tame_k);
-<span class="Keyword">for</span> (i <span class="Keyword">=</span> _i <span class="Keyword">=</span> <span class="Number">0</span>; _i <span class="Keyword">&lt;=</span> <span class="Number">3</span>; i <span class="Keyword">=</span> <span class="Keyword">++</span>_i) {
-  slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>loop iteration <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
-}
-__td._fulfill();
-</pre><script>window.example6 = "await\n  for i in [0..3]\n    slowAlert 200, \"loop iteration #{i}\", defer()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by CoffeeScript 1.2.1-pre
-var i, __td, __tame_k, _i;
-
-__tame_k = function() {};
-
-__td = new tame.Deferrals(__tame_k);
-for (i = _i = 0; _i <= 3; i = ++_i) {
-  slowAlert(200, "loop iteration " + i, __td.defer({}));
-}
-__td._fulfill();
-;'>run</div><br class='clear' /></div>
+</pre><pre class="idle"></pre><script>window.example6 = "await\n  for i in [0..3]\n    slowAlert 200, \"loop iteration #{i}\", defer()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><div class='minibutton ok' onclick='javascript: ;'>run</div><br class='clear' /></div>
     </p>
 
     Things start to get interesting when you combine parallel and
@@ -923,8 +903,8 @@ _while(__tame_k);
     </p>
 
     <p>
-     <span id ="tame_defer" class = "bookmark"></span>
-     <b class="header">Tame Defer Values</b>
+     <span id ="iced_defer" class = "bookmark"></span>
+     <b class="header">Iced Defer Values</b>
     Many JS and coffee libraries use callbacks passed as parameters
     to signify when the given operation has completed, and which values
     were produced.  As such, <tt>defer</tt> can take one or more arguments
@@ -1021,8 +1001,8 @@ _while(__tame_k);
     </p>
 
     <p>
-     <span id="tame_expr" class = "bookmark"></span>
-     <b class="header">Tame in an Expression Context</b> 
+     <span id="iced_expr" class = "bookmark"></span>
+     <b class="header">Iced in an Expression Context</b> 
      It's possible
      to use <tt>await</tt> blocks as expressions. And recursively
      speaking, it's possible to use statements that contain `await`
@@ -3789,7 +3769,7 @@ task(<span class="String"><span class="String">'</span>build:parser<span class="
     window.showAcsTab = -> 
       closeMenus()
       await setTimeout defer(), 10
-      $('.navigation.tame').addClass 'active'
+      $('.navigation.iced').addClass 'active'
 
     # Bind navigation buttons to open the menus.
     $('.navigation').click (e) ->

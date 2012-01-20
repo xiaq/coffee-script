@@ -32,7 +32,7 @@
   <link rel="stylesheet" type="text/css" href="documentation/css/idle.css" />
   <link rel="shortcut icon" href="documentation/images/favicon.ico" />
   <script>
-  <%= File.read("documentation/js/tame_inc.js") %>
+  <%= File.read("documentation/js/iced_inc.js") %>
   </script>
 </head>
 <body>
@@ -50,9 +50,9 @@
         <a href="#installation">Installation</a>
         <a href="#usage">Usage</a>
         <a href="#language">Language Reference</a>
-        <a href="#tame">Tame Basic Features</a>
-        <a href="#tame_defer">Tame Defer Values</a>
-        <a href="#tame_expr">Tame Expressions</a>
+        <a href="#iced">Iced Basic Features</a>
+        <a href="#iced_defer">Iced Defer Values</a>
+        <a href="#iced_expr">Iced Expressions</a>
         <a href="#literals">Literals: Functions, Objects and Arrays</a>
         <a href="#lexical_scope">Lexical Scoping and Variable Safety</a>
         <a href="#conditionals">If, Else, Unless, and Conditional Assignment</a>
@@ -114,14 +114,14 @@
         <a href="documentation/docs/repl.html">Interactive REPL &mdash; src/repl</a>
       </div>
     </div>
-    <div class="navigation tame">
+    <div class="navigation iced">
      <div class="button">
-       TacoScript Features
+       Iced Features
      </div>
       <div class="contents menu">
-        <a href="#tame">Tame Basic Features</a>
-        <a href="#tame_defer">Tame Defer Values</a>
-        <a href="#tame_expr">Tame Expressions</a>
+        <a href="#iced">Iced Basic Features</a>
+        <a href="#iced_defer">Iced Defer Values</a>
+        <a href="#iced_expr">Iced Expressions</a>
       </div>
     </div>
     <div id="error" style="display:none;"></div>
@@ -130,36 +130,36 @@
   <div class="container">
     <span class="bookmark" id="top"></span>
 
-    <h1>TacoScript</h1>
+    <h1>IcedCoffeeScript</h1>
 
     <p>
-      TacoScript is <b>Ta</b>med <b>Co</b>ffee<b>Script</b>. 
+      Welcome to <b>Iced</b>CoffeeScript!
     </p>
     <p>
-      TacoScript is a fork of CoffeeScript. It is 
+      IcedCoffeeScript is a fork of CoffeeScript. It is 
       <b>superset</b> of the CoffeeScript language. The
-      <tt>taco</tt> interpreter is a drop-in replacement
+      <tt>iced</tt> interpreter is a drop-in replacement
       for the standard <tt>coffee</tt> interpreter since 
       it will interpret all existing CoffeeScript programs.
     </p>
  
-    <p>TacoScript adds two new keywords: <tt>await</tt>
+    <p>IcedCoffeeScript (ICS) adds two new keywords: <tt>await</tt>
       and <tt>defer</tt>.  These additions simply and powerfully
       streamline asynchronous control flow, both on the server and on
       the browser. Say goodbye to callback pyramids; say adios to
       massive code rewrites when synchronization requirements change
       slightly.  Say hello to clean, readable, maintainable control
       flow for network and asynchronous operations!  See
-      the<a href="#" onclick="showAcsTab(); return false;">TacoScript
-      Features</a> tab for more details.
+      the<a href="#" onclick="showAcsTab(); return false;">Iced Features</a> 
+      tab for more details.
     </p>
 
     <p>
       The golden rule of CoffeeScript was: <i>"It's just
-      JavaScript"</i>.  TacoScript is doing something deeper.  It's
+      JavaScript"</i>.  ICS is doing something deeper.  It's
       selectively running code through a
       <i>continuation-passing style conversion</i>.  Original-style
-      CoffeeScript will compile as before, but code using the new TacoScript
+      CoffeeScript will compile as before, but code using the new ICS
       features will be less recognizable.  Still, the compiled output
       is readable and pretty-printed, passes through
       <a href="http://www.javascriptlint.com/">JavaScript Lint</a>
@@ -169,7 +169,7 @@
 
     <p>
       <b>Latest Version:</b>
-      <a href="http://github.com/maxtaco/coffee-script/tarball/tame">1.2.1-pre1</a>
+      <a href="http://github.com/maxtaco/coffee-script/tarball/tame">1.2.0b</a>
     </p>
 
     <h2>
@@ -204,7 +204,7 @@
     </p>
 
     <pre>
-npm install -g taco-script</pre>
+npm install -g iced-coffee-script</pre>
 
     <p>
       (Leave off the <tt>-g</tt> if you don't wish to install globally.)
@@ -396,7 +396,7 @@ Expressions
     <p>
       <i>
         This reference is structured so that it can be read from top to bottom,
-        if you like. <b>Early sections focus on new/forked TacoScript features</b>.
+        if you like. <b>Early sections focus on new/forked ICS features</b>.
         Later sections use ideas and syntax previously introduced.
         Familiarity with JavaScript is assumed.
         In all of the following examples, the source CoffeeScript is provided on
@@ -428,14 +428,14 @@ Expressions
       <tt>console.log sys.inspect object</tt> &rarr; <tt>console.log(sys.inspect(object));</tt>
     </p>
 
-    <h1>TacoScript New Features: Clean, Powerful Async Control Flow</h1>
+    <h1>New Iced Features: Clean, Powerful Async Control Flow</h1>
     <p>
-     <span id ="tame" class = "bookmark"></span>
-     <b class="header">Tame Basics</b>
+     <span id ="iced" class = "bookmark"></span>
+     <b class="header">Iced Basics</b>
 Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     </p>
     <p>
-    <%= code_for('tame_basics_1', true) %>
+    <%= code_for('iced_basics_1', true) %>
     </p>
 
     <p>
@@ -456,33 +456,33 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
    
 
     <p>
-    The next example shows some of the power of the tame primitives.
+    The next example shows some of the power of the Iced primitives.
     In the following examples, there are two operations that fire in
     parallel, and a third that fires after the first two complete:
     </p>
 
     <p>
-    <%= code_for('tame_basics_2', true, true, 300) %>
+    <%= code_for('iced_basics_2', true, true, 300) %>
     </p>
 
     <p>For comparison's sake, here is how this same code is implemented
-    without tame.  Note that the generate JavaScript is pretty similar. 
+    without Iced.  Note that the generate JavaScript is pretty similar. 
     In general, ACS outputs code you would ordinarily have to write by
     hand, especially as we cover more complicated control flow. That
     the code can look ugly means that you would have had to write that
     ugly code by hand!
     <p>
-    <%= code_for('tame_basics_2b', true, true, 300) %>
+    <%= code_for('iced_basics_2b', true, true, 300) %>
     </p>
 
     <p>
-    As one might expect, the tame constructs interoperate with standard
+    As one might expect, the Iced constructs interoperate with standard
     coffee control structures.  The following program will call
     <tt>slowAlert</tt> three times sequentially:
     </p>
 
     <p>
-    <%= code_for('tame_loops_1', true, true, 300) %>
+    <%= code_for('iced_loops_1', true, true, 300) %>
     </p>
     
     <p>
@@ -491,31 +491,31 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     </p>
 
     <p>
-    <%= code_for('tame_loops_2', true, true, 300) %>
+    <%= code_for('iced_loops_2', true, true, 300) %>
     </p>
 
     Things start to get interesting when you combine parallel and
     serial control flow, but the syntax remains the same:
 
     <p>
-    <%= code_for('tame_loops_3', true, true, 300) %>
+    <%= code_for('iced_loops_3', true, true, 300) %>
     </p>
 
     <p>
-     <span id ="tame_defer" class = "bookmark"></span>
-     <b class="header">Tame Defer Values</b>
+     <span id ="iced_defer" class = "bookmark"></span>
+     <b class="header">Iced Defer Values</b>
     Many JS and coffee libraries use callbacks passed as parameters
     to signify when the given operation has completed, and which values
     were produced.  As such, <tt>defer</tt> can take one or more arguments
     which are filled in after a deferral is fulfilled. Note that the
     snippet below is <i>node.js</i> code that requires a DNS resolver:
     <p>
-    <%= code_for('tame_defer', true, false, 300) %>
+    <%= code_for('iced_defer', true, false, 300) %>
     </p>
 
     <p>
-     <span id="tame_expr" class = "bookmark"></span>
-     <b class="header">Tame in an Expression Context</b> 
+     <span id="iced_expr" class = "bookmark"></span>
+     <b class="header">Iced in an Expression Context</b> 
      It's possible
      to use <tt>await</tt> blocks as expressions. And recursively
      speaking, it's possible to use statements that contain `await`
@@ -529,14 +529,14 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
      the last writer wins.  In practice, there's usually only one. Thus:
     </p>
 
-    <p><%= code_for('tame_expr_1', true, true, 300) %></p>
+    <p><%= code_for('iced_expr_1', true, true, 300) %></p>
 
     <p>
      Of course, things can get arbitrarily compicated and nested, so it
      gets hairy.  Consider this:
     </p>
 
-    <p><%= code_for('tame_expr_2', true, true, 300) %></p>
+    <p><%= code_for('iced_expr_2', true, true, 300) %></p>
 
     <p>
      The rule is that all nested <tt>await</tt> blocks (barf!) are evaluated
@@ -552,7 +552,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
      and just write the above as this:
     </p>
     
-    <p><%= code_for('tame_expr_3', true, true, 300) %></p>
+    <p><%= code_for('iced_expr_3', true, true, 300) %></p>
 
     <p>
      It's just so much clearer what happens in which order, and it's easier
@@ -1895,7 +1895,7 @@ Here is simple example that waits for 1 second, and then calls <tt>alert</tt>:
     window.showAcsTab = -> 
       closeMenus()
       await setTimeout defer(), 10
-      $('.navigation.tame').addClass 'active'
+      $('.navigation.iced').addClass 'active'
 
     # Bind navigation buttons to open the menus.
     $('.navigation').click (e) ->
