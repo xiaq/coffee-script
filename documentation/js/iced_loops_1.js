@@ -13,14 +13,14 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (i <= 3) {
+  if (!(i <= 3)) {
+    return _break();
+  } else {
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k);
       slowAlert(200, "loop iteration " + i, __iced_deferrals.defer({}));
       __iced_deferrals._fulfill();
     })(_next);
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);

@@ -845,15 +845,15 @@ i <span class="Keyword">=</span> <span class="Number">0</span>;
     <span class="Keyword">return</span> _while(__iced_k);
   };
   _next <span class="Keyword">=</span> _continue;
-  <span class="Keyword">if</span> (i <span class="Keyword">&lt;=</span> <span class="Number">2</span>) {
+  <span class="Keyword">if</span> (<span class="Keyword">!</span>(i <span class="Keyword">&lt;=</span> <span class="Number">2</span>)) {
+    <span class="Keyword">return</span> _break();
+  } <span class="Keyword">else</span> {
     (<span class="Storage">function</span>(__iced_k) {
       __td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
       slowAlert(<span class="Number">100</span>, <span class="String"><span class="String">&quot;</span>alert A <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
       slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>alert B <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
       __td._fulfill();
     })(_next);
-  } <span class="Keyword">else</span> {
-    <span class="Keyword">return</span> _break();
   }
 };
 _while(__iced_k);
@@ -872,15 +872,15 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (i <= 2) {
+  if (!(i <= 2)) {
+    return _break();
+  } else {
     (function(__iced_k) {
       __td = new iced.Deferrals(__iced_k);
       slowAlert(100, "alert A " + i, __td.defer({}));
       slowAlert(200, "alert B " + i, __td.defer({}));
       __td._fulfill();
     })(_next);
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);
@@ -921,7 +921,9 @@ _i <span class="Keyword">=</span> <span class="Number">0</span>;
     <span class="Keyword">return</span> _while(__iced_k);
   };
   _next <span class="Keyword">=</span> _continue;
-  <span class="Keyword">if</span> (_i <span class="Keyword">&lt;</span> _len) {
+  <span class="Keyword">if</span> (<span class="Keyword">!</span>(_i <span class="Keyword">&lt;</span> _len)) {
+    <span class="Keyword">return</span> _break();
+  } <span class="Keyword">else</span> {
     host <span class="Keyword">=</span> _ref[_i];
     (<span class="Storage">function</span>(__iced_k) {
       __td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
@@ -937,8 +939,6 @@ _i <span class="Keyword">=</span> <span class="Number">0</span>;
     })(<span class="Storage">function</span>() {
       <span class="Keyword">return</span> _next(err ? <span class="TypeName">console</span><span class="LibraryFunction">.log</span>(<span class="String"><span class="String">&quot;</span>Error for <span class="String">&quot;</span></span> <span class="Keyword">+</span> host <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>: <span class="String">&quot;</span></span> <span class="Keyword">+</span> err) : <span class="TypeName">console</span><span class="LibraryFunction">.log</span>(<span class="String"><span class="String">&quot;</span>Resolved  <span class="String">&quot;</span></span> <span class="Keyword">+</span> host <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> -&gt; <span class="String">&quot;</span></span> <span class="Keyword">+</span> ip));
     });
-  } <span class="Keyword">else</span> {
-    <span class="Keyword">return</span> _break();
   }
 };
 _while(__iced_k);
@@ -961,7 +961,9 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (_i < _len) {
+  if (!(_i < _len)) {
+    return _break();
+  } else {
     host = _ref[_i];
     (function(__iced_k) {
       __td = new iced.Deferrals(__iced_k);
@@ -977,8 +979,6 @@ _while = function(__iced_k) {
     })(function() {
       return _next(err ? console.log("Error for " + host + ": " + err) : console.log("Resolved  " + host + " -> " + ip));
     });
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);
@@ -1430,14 +1430,14 @@ i <span class="Keyword">=</span> <span class="Number">0</span>;
     <span class="Keyword">return</span> _while(__iced_k);
   };
   _next <span class="Keyword">=</span> _continue;
-  <span class="Keyword">if</span> (i <span class="Keyword">&lt;=</span> <span class="Number">3</span>) {
+  <span class="Keyword">if</span> (<span class="Keyword">!</span>(i <span class="Keyword">&lt;=</span> <span class="Number">3</span>)) {
+    <span class="Keyword">return</span> _break();
+  } <span class="Keyword">else</span> {
     (<span class="Storage">function</span>(__iced_k) {
       __td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
       slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>loop iteration <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
       __td._fulfill();
     })(_next);
-  } <span class="Keyword">else</span> {
-    <span class="Keyword">return</span> _break();
   }
 };
 _while(__iced_k);
@@ -1456,14 +1456,14 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (i <= 3) {
+  if (!(i <= 3)) {
+    return _break();
+  } else {
     (function(__iced_k) {
       __td = new iced.Deferrals(__iced_k);
       slowAlert(200, "loop iteration " + i, __td.defer({}));
       __td._fulfill();
     })(_next);
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);
@@ -1526,15 +1526,15 @@ i <span class="Keyword">=</span> <span class="Number">0</span>;
     <span class="Keyword">return</span> _while(__iced_k);
   };
   _next <span class="Keyword">=</span> _continue;
-  <span class="Keyword">if</span> (i <span class="Keyword">&lt;=</span> <span class="Number">2</span>) {
+  <span class="Keyword">if</span> (<span class="Keyword">!</span>(i <span class="Keyword">&lt;=</span> <span class="Number">2</span>)) {
+    <span class="Keyword">return</span> _break();
+  } <span class="Keyword">else</span> {
     (<span class="Storage">function</span>(__iced_k) {
       __td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
       slowAlert(<span class="Number">100</span>, <span class="String"><span class="String">&quot;</span>alert A <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
       slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>alert B <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
       __td._fulfill();
     })(_next);
-  } <span class="Keyword">else</span> {
-    <span class="Keyword">return</span> _break();
   }
 };
 _while(__iced_k);
@@ -1553,15 +1553,15 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (i <= 2) {
+  if (!(i <= 2)) {
+    return _break();
+  } else {
     (function(__iced_k) {
       __td = new iced.Deferrals(__iced_k);
       slowAlert(100, "alert A " + i, __td.defer({}));
       slowAlert(200, "alert B " + i, __td.defer({}));
       __td._fulfill();
     })(_next);
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);
@@ -1602,7 +1602,9 @@ _i <span class="Keyword">=</span> <span class="Number">0</span>;
     <span class="Keyword">return</span> _while(__iced_k);
   };
   _next <span class="Keyword">=</span> _continue;
-  <span class="Keyword">if</span> (_i <span class="Keyword">&lt;</span> _len) {
+  <span class="Keyword">if</span> (<span class="Keyword">!</span>(_i <span class="Keyword">&lt;</span> _len)) {
+    <span class="Keyword">return</span> _break();
+  } <span class="Keyword">else</span> {
     host <span class="Keyword">=</span> _ref[_i];
     (<span class="Storage">function</span>(__iced_k) {
       __td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
@@ -1618,8 +1620,6 @@ _i <span class="Keyword">=</span> <span class="Number">0</span>;
     })(<span class="Storage">function</span>() {
       <span class="Keyword">return</span> _next(err ? <span class="TypeName">console</span><span class="LibraryFunction">.log</span>(<span class="String"><span class="String">&quot;</span>Error for <span class="String">&quot;</span></span> <span class="Keyword">+</span> host <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>: <span class="String">&quot;</span></span> <span class="Keyword">+</span> err) : <span class="TypeName">console</span><span class="LibraryFunction">.log</span>(<span class="String"><span class="String">&quot;</span>Resolved  <span class="String">&quot;</span></span> <span class="Keyword">+</span> host <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> -&gt; <span class="String">&quot;</span></span> <span class="Keyword">+</span> ip));
     });
-  } <span class="Keyword">else</span> {
-    <span class="Keyword">return</span> _break();
   }
 };
 _while(__iced_k);

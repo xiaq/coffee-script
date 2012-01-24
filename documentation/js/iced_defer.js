@@ -17,7 +17,9 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (_i < _len) {
+  if (!(_i < _len)) {
+    return _break();
+  } else {
     host = _ref[_i];
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k);
@@ -33,8 +35,6 @@ _while = function(__iced_k) {
     })(function() {
       return _next(err ? console.log("Error for " + host + ": " + err) : console.log("Resolved  " + host + " -> " + ip));
     });
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);

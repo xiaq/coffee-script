@@ -13,15 +13,15 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (i <= 2) {
+  if (!(i <= 2)) {
+    return _break();
+  } else {
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k);
       slowAlert(100, "alert A " + i, __iced_deferrals.defer({}));
       slowAlert(200, "alert B " + i, __iced_deferrals.defer({}));
       __iced_deferrals._fulfill();
     })(_next);
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);
