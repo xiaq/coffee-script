@@ -7,7 +7,7 @@
     return '' unless File.exists?("documentation/js/#{file}.js")
     cs = File.read("documentation/coffee/#{file}.coffee")
     js = File.read("documentation/js/#{file}.js")
-    js.gsub!(/__iced_deferrals/, "__td");
+    js.gsub!(/__iced_deferrals/, "__id");
     cshtml = Uv.parse(cs, 'xhtml', 'coffeescript', false, 'idle', false)
     jshtml = Uv.parse(js, 'xhtml', 'javascript', false, 'idle', false)
     append = executable  == true ? '' : "alert(#{executable});"
