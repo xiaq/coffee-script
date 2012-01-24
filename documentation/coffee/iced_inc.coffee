@@ -1,1 +1,1 @@
-tameRequire(window)
+icedRequire(window)
