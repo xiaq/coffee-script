@@ -112,7 +112,6 @@ tameRequire(window);
     <h1>IcedCoffeeScript</h1>
 
     <p>
-<<<<<<< HEAD
       Welcome to <b>Iced</b>CoffeeScript!
     </p>
     <p>
@@ -749,14 +748,14 @@ i <span class="Keyword">=</span> <span class="Number">0</span>;
     <span class="Keyword">return</span> _while(__iced_k);
   };
   _next <span class="Keyword">=</span> _continue;
-  <span class="Keyword">if</span> (i <span class="Keyword">&lt;=</span> <span class="Number">3</span>) {
+  <span class="Keyword">if</span> (<span class="Keyword">!</span>(i <span class="Keyword">&lt;=</span> <span class="Number">3</span>)) {
+    <span class="Keyword">return</span> _break();
+  } <span class="Keyword">else</span> {
     (<span class="Storage">function</span>(__iced_k) {
       __td <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
       slowAlert(<span class="Number">200</span>, <span class="String"><span class="String">&quot;</span>loop iteration <span class="String">&quot;</span></span> <span class="Keyword">+</span> i, __td.<span class="LibraryConstant">defer</span>({}));
       __td._fulfill();
     })(_next);
-  } <span class="Keyword">else</span> {
-    <span class="Keyword">return</span> _break();
   }
 };
 _while(__iced_k);
@@ -775,14 +774,14 @@ _while = function(__iced_k) {
     return _while(__iced_k);
   };
   _next = _continue;
-  if (i <= 3) {
+  if (!(i <= 3)) {
+    return _break();
+  } else {
     (function(__iced_k) {
       __td = new iced.Deferrals(__iced_k);
       slowAlert(200, "loop iteration " + i, __td.defer({}));
       __td._fulfill();
     })(_next);
-  } else {
-    return _break();
   }
 };
 _while(__iced_k);
