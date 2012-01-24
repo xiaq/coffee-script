@@ -1,8 +1,9 @@
-out = 2
+out = 0
 next = ->
-  unless --out 
+  out++
+  () -> if --out is 0
     slowAlert 500, "back after a delay", () ->
        alert "Goodbye!"
 
-slowAlert 500,  "hello",  next
-slowAlert 1000, "friend", next
+slowAlert 500,  "hello",  next()
+slowAlert 1000, "friend", next()
