@@ -231,11 +231,10 @@ npm install -g iced-coffee-script</pre>
 sudo bin/cake install</pre>
 
 
-    <h1>ICS: Clean, Powerful Async Control Flow</h1>
+    <h1>ICS: Clean, Powerful Async Control Flow for CoffeeScript</h1>
 
     <p>
      <span id ="iced" class = "bookmark"></span>
-     <b class="header">ICS By Example</b>
      We're going to introduce ICS by a working browser-based example.
      We want to write a little program that uses the 
      <a href="http://twitter.com">Twitter</a> API to search for what
@@ -450,7 +449,8 @@ rankPopularity <span class="Keyword">=</span> <span class="FunctionArgument">(ke
      <div class='code'><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for the most popular food and the most</span>
 <span class="Comment"><span class="Comment">#</span> popular weather pattern in parallel.</span>
 w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
-f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritors<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+
 <span class="Keyword">await</span>
   rankPopularity w_list, <span class="Keyword">defer</span> weather
   rankPopularity f_list, <span class="Keyword">defer</span> food
@@ -465,7 +465,7 @@ alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span cl
 </pre><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for the most popular food and the most</span>
 <span class="Comment"><span class="Comment">#</span> popular weather pattern in parallel.</span>
 w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
-f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritors<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
 
 o <span class="Keyword">=</span> {}
 n_out <span class="Keyword">=</span> <span class="Number">0</span>
@@ -487,7 +487,7 @@ cb_generator <span class="Keyword">=</span> <span class="FunctionArgument">(fiel
 
 rankPopularity w_list, cb_generator <span class="String"><span class="String">&quot;</span>weather<span class="String">&quot;</span></span>
 rankPopularity f_list, cb_generator <span class="String"><span class="String">&quot;</span>food<span class="String">&quot;</span></span>
-</pre><script>window.example5 = "# Search for the most popular food and the most\n# popular weather pattern in parallel.\nw_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritors\", \"pizza\", \"shrooms\" ]\nawait\n  rankPopularity w_list, defer weather\n  rankPopularity f_list, defer food\n\n# If we got results for both, do a final search\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\n\n# Alert the results to the browser\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example5);'>load</div><br class='clear' /></div>
+</pre><script>window.example5 = "# Search for the most popular food and the most\n# popular weather pattern in parallel.\nw_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritos\", \"pizza\", \"shrooms\" ]\n\nawait\n  rankPopularity w_list, defer weather\n  rankPopularity f_list, defer food\n\n# If we got results for both, do a final search\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\n\n# Alert the results to the browser\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example5);'>load</div><br class='clear' /></div>
     </p>
 
     <p>Again, let's ask the question, what happens if the synchronization
@@ -501,7 +501,7 @@ rankPopularity f_list, cb_generator <span class="String"><span class="String">&q
 
     <p>
      <div class='code'><pre class="idle">w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
-f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritors<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
 <span class="Keyword">await</span> rankPopularity w_list, <span class="Keyword">defer</span> weather
 <span class="Keyword">if</span> weather.length
   <span class="Keyword">await</span> rankPopularity f_list, <span class="Keyword">defer</span> food
@@ -510,10 +510,8 @@ f_list <span class="Keyword">=</span> [ <span class="String"><span class="String
   msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
 alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
 </pre><pre class="idle">w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
-f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritors<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
-
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
 nothing <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
-
 rankPopularity w_list, <span class="FunctionArgument">(weather)</span> <span class="Storage">-&gt;</span>
   <span class="Keyword">if</span> weather.length
     rankPopularity f_list, <span class="FunctionArgument">(food)</span> <span class="Storage">-&gt;</span>
@@ -526,7 +524,7 @@ rankPopularity w_list, <span class="FunctionArgument">(weather)</span> <span cla
   <span class="Keyword">else</span>
     alert nothing
 
-</pre><script>window.example6 = "w_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritors\", \"pizza\", \"shrooms\" ]\nawait rankPopularity w_list, defer weather\nif weather.length\n  await rankPopularity f_list, defer food\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><br class='clear' /></div>
+</pre><script>window.example6 = "w_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritos\", \"pizza\", \"shrooms\" ]\nawait rankPopularity w_list, defer weather\nif weather.length\n  await rankPopularity f_list, defer food\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><br class='clear' /></div>
     </p>
     
     <p>
