@@ -22,6 +22,19 @@
    trunc_code = trunc > 0 ? "style=\"height: #{trunc}px; overflow-y: scroll;\"" : "";
     "<div class='code' #{trunc_code}>#{cshtml}#{jshtml}#{script}#{import}#{button}<br class='clear' /></div>"
   end
+  def hand_iced(file)
+    @counter += 1
+    return '' unless File.exists?("documentation/coffee/#{file}_hi.coffee")
+    ics = File.read("documentation/coffee/#{file}.coffee")
+    hcs = File.read("documentation/coffee/#{file}_hi.coffee")
+    icshtml = Uv.parse(ics, 'xhtml', 'coffeescript', false, 'idle', false)
+    hcshtml = Uv.parse(hcs, 'xhtml', 'javascript', false, 'idle', false)
+    run    = executable  == true ? 'run' : "run: #{executable}"
+    name   = "example#{@counter}"
+    script = "<script>window.#{name} = #{ics.to_json}</script>"
+    import = show_load ? "<div class='minibutton load' onclick='javascript: loadConsole(#{name});'>load</div>" : ''
+    "<div class='code'>#{icshtml}#{hcshtml}#{script}#{import}<br class='clear' /></div>"
+  end
 %>
 <!DOCTYPE html>
 <html>
@@ -50,7 +63,8 @@
         <a href="#installation">Installation</a>
         <a href="#usage">Usage</a>
         <a href="#language">Language Reference</a>
-        <a href="#iced">Iced Basic Features</a>
+        <a href="#iced">ICS By Example</a>
+        <a href="#iced_basics">ICS Basics</a>
         <a href="#iced_defer">Iced Defer Values</a>
         <a href="#iced_expr">Iced Expressions</a>
         <a href="#literals">Literals: Functions, Objects and Arrays</a>
@@ -119,9 +133,7 @@
        Iced Features
      </div>
       <div class="contents menu">
-        <a href="#iced">Iced Basic Features</a>
-        <a href="#iced_defer">Iced Defer Values</a>
-        <a href="#iced_expr">Iced Expressions</a>
+        <a href="#iced">ICS by Example</a>
       </div>
     </div>
     <div id="error" style="display:none;"></div>
@@ -429,142 +441,34 @@ Expressions
       <tt>console.log sys.inspect object</tt> &rarr; <tt>console.log(sys.inspect(object));</tt>
     </p>
 
-    <h1>New Iced Features: Clean, Powerful Async Control Flow</h1>
+    <h1>ICS: Clean, Powerful Async Control Flow</h1>
+
     <p>
      <span id ="iced" class = "bookmark"></span>
-     <b class="header">Iced Basics</b>
-     Here is a simple example that waits for 1 second, and then calls <tt>alert</tt>:
-    </p>
-    <p>
-    <%= code_for('iced_basics_1', true) %>
-    </p>
-
-    <p>
-    There is one new language addition here, the <tt>await { ... }</tt> block, 
-    and also one new primitive
-    function, <tt>defer</tt>.  The two work in concert.  A
-    function must "wait" at the close of an await block until all
-    deferrals made in that await block are fulfilled.  The
-    function <tt>defer</tt> returns a callback, and a callee in an
-    await block can fulfill a deferral by simply calling the callback
-    it was given.  In the code above, there is only one deferral
-    produced, so after it's fulfilled by `setTimer` in 1000ms, control
-    continues past the `await` block, onto the alert.  The code looks
-    and feels like threaded code, but is still in the asynchronous
-    idiom (if you look at the rewritten code output by
-    the <tt>iced</tt> compiler).
+     <b class="header">ICS By Example</b>
+     We're going to introduce ICS by a working browser-based example.
+     We want to write a little program that uses the 
+     <a href="http://twitter.com">Twitter</a> API to search for what
+     to eat given today's weather.  The strategy is as follows: search
+     for four different foods, and see which has the most recent activity;
+     search for four different weather patterns, and see which has the
+     most recent activity; then search for both in one joint search.
+     Do as much as possible in parallel.
     </p>
 
     <p>
-    The above snippet ("wait, then alert") is our stand-in for much
-    more interesting network programming, like Ajax calls, DNS requests,
-    RPC calls, database calls, etc.  Wrap it up in a neat function as so:
-    </p>
-   
-    <p>
-    <%= code_for('iced_basics_1b', true, true, 300) %>
+     <span id="iced_basics" class="bookmark"></span>
+     <b class="header">ICS Basics</b>
+     The first basic primitive is used to do a Twitter search for a 
+     single keyword.  On the left is the ICS version, on the right
+     is hand-rolled legacy CoffeeScript.
     </p>
 
     <p>
-    The next example shows some of the power of the Iced primitives.
-    Here are two operations that fire in parallel, and a third that
-    fires after the first two complete:
+     <%= hand_iced('iced_tw_1') %>
     </p>
 
-    <p>
-    <%= code_for('iced_basics_2', true, true, 300) %>
-    </p>
-
-    <p>For comparison's sake, here is how this same code is
-    implemented without Iced.  In general, ICS outputs code you would
-    ordinarily have to write by hand, especially as we cover more
-    complicated control flow. That the code can look ugly means that
-    you would have had to write that ugly code by hand!
-    <p>
-    <%= code_for('iced_basics_2b', true, true, 300) %>
-    </p>
-
-    <p>
-    As one might expect, the Iced constructs interoperate with standard
-    coffee control structures.  The following program will call
-    <tt>slowAlert</tt> three times sequentially:
-    </p>
-
-    <p>
-    <%= code_for('iced_loops_1', true, true, 300) %>
-    </p>
-    
-    <p>
-    To fire those asynchronous calls in parallel, simply exchange 
-    the <tt>for</tt> and <tt>await</tt> blocks:
-    </p>
-
-    <p>
-    <%= code_for('iced_loops_2', true, true, 300) %>
-    </p>
-
-    Things start to get interesting when you combine parallel and
-    serial control flow, but the syntax remains the same:
-
-    <p>
-    <%= code_for('iced_loops_3', true, true, 300) %>
-    </p>
-
-    <p>
-     <span id ="iced_defer" class = "bookmark"></span>
-     <b class="header">Iced Defer Values</b>
-    Many JS and coffee libraries use callbacks passed as parameters
-    to signify when the given operation has completed, and which values
-    were produced.  Therefore, <tt>defer</tt> can take one or more arguments
-    which are filled in after a deferral is fulfilled. Note that the
-    snippet below is <i>node.js</i> code that requires a DNS resolver:
-    <p>
-    <%= code_for('iced_defer', true, false, 300) %>
-    </p>
-
-    <p>
-     <span id="iced_expr" class = "bookmark"></span>
-     <b class="header">Iced in an Expression Context</b> 
-     It's possible
-     to use <tt>await</tt> blocks as expressions. And recursively
-     speaking, it's possible to use statements that contain `await`
-     blocks as expressions.
-    </p>
-
-    <p>
-     The simple rule is that an <tt>await</tt> block takes on the value of the
-     <tt>defer</tt> slot named <tt>_</tt> after its been fulfilled.  If there
-     are multiple defer slots named <tt>_</tt> within the await block, then
-     the last writer wins.  In practice, there's usually only one. Thus:
-    </p>
-
-    <p><%= code_for('iced_expr_1', true, true, 300) %></p>
-
-    <p>
-     Of course, things can get arbitrarily compicated and nested, so it
-     gets hairy.  Consider this:
-    </p>
-
-    <p><%= code_for('iced_expr_2', true, true, 300) %></p>
-
-    <p>
-     The rule is that all nested <tt>await</tt> blocks are evaluated
-     sequentially in DFS order. You will get <tt>10</tt> in the above example
-     after three sequential calls to <tt>add</tt>.
-    </p>
-
-    <p>
-     But it's suggested that you avoid the subtleties implied in making
-     the above code work, and just explicitly encode the execution
-     order of the code:
-    </p>
-    
-    <p><%= code_for('iced_expr_3', true, true, 300) %></p>
-
-    We have more detailed documentation, including implementation details
-    and API reference, available on <a href="https://github.com/maxtaco/coffee-script/blob/iced/iced.md">github</a>.
-
-    <h1>Legacy CoffeeScript Reference</h1>
+   <h1>Legacy CoffeeScript Reference</h1>
 
     <p>
      <span id ="iced" class = "bookmark"></span>
