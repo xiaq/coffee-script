@@ -62,6 +62,8 @@
         <a href="#iced">ICS By Example</a>
         <a href="#iced_basics">ICS Basics</a>
         <a href="#iced_control">ICS Control Flow</a>
+        <a href="#iced_finish">ICS: Tutorial Conclusion</a>
+        <a href="#iced_more">ICS: Read More</a>
         <a href="#usage">Usage</a>
         <a href="#overview">Overview</a>
         <a href="#language">Language Reference</a>
@@ -134,6 +136,8 @@
         <a href="#iced">ICS by Example</a>
         <a href="#iced_basics">ICS Basics</a>
         <a href="#iced_control">ICS Control Flow</a>
+        <a href="#iced_finish">ICS: Tutorial Conclusion</a>
+        <a href="#iced_more">ICS: Read More</a>
       </div>
     </div>
     <div id="error" style="display:none;"></div>
@@ -332,6 +336,75 @@ sudo bin/cake install</pre>
      a major rewrite.  Moreover it's difficult to look at this code
      and recognize as a sequential loop.
     </p>
+
+    <p>
+     <span id="iced_finish" class="bookmark"></span>
+     <b class="header">Closing out the Tutorial</b>
+     There's really not much more to it.  The ICS constructs
+     also work with <tt>while</tt>, <tt>until</tt>
+     <tt>if</tt>, <tt>else</tt>, <tt>unless</tt>, and 
+     <tt>switch</tt> constructs. The only exception is <tt>try</tt>,
+     which doesn't catch exceptions when called from event handlers
+     the main loop, for the same reason hand-rolled asynchronous code
+     and <tt>try</tt> do not work well together.
+    </p>
+
+    <p>Finishing up our little example, here is code to
+     rank the results we fetched from Twitter:
+    </p>
+    
+    <p>
+     <%= hand_iced('iced_tw_4') %>
+    </p>
+
+    <p>And a main block of code:</p>
+
+    <p>
+     <%= hand_iced('iced_tw_5') %>
+    </p>
+
+    <p>Again, let's ask the question, what happens if the synchronization
+     requirements change slightly?  As written, the two calls to
+     <tt>rankPopularity</tt> fire in parallel, to minimize the latency
+     the end-user experiences.  But what happens if the requirements
+     change, and we want to reduce server load?  Then, we only want to
+     issue the second call if the first succeeded.  The code would be
+     updated as follows:
+    </p>
+
+    <p>
+     <%= hand_iced('iced_tw_6') %>
+    </p>
+    
+    <p>
+     The code on the right changed a lot more than the code on the right.
+     Keep in mind, the more code you have to change, the more likely
+     you are to introduce a (subtle) bug.  The ICS compiler is 
+     automatically managing the synchronization subtleties for you,
+     even as requirements change.
+    </p>
+
+   <p>
+     Putting it all together, we have code that works in
+     your browser!
+    </p>
+
+   <%= code_for('iced_tw_full', true, true, 630) %>
+
+   <p>When thinking about hand-rolled asynchronous code, like the
+     code on the right in these examples, we suggest asking two
+     important questions: (1) is it sensible to read top-to-bottom;
+     and (2) how much work is it to change if the synchronization
+     requirements change. 
+
+   <p>
+    <span id="iced_more" class="bookmark"></span>
+     <b class="header">ICS: Read More</b> 
+     To learn more about the ICS implementation strategy, and extra
+     features of the API, see the detailed documentation
+     on <a href="https://github.com/maxtaco/coffee-script/blob/iced/iced.md">github</a>.
+   </p>
+
 
    <h1>Legacy CoffeeScript Reference</h1>
 
