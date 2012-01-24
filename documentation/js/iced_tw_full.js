@@ -88,7 +88,7 @@ rankPopularity = function(keywords, cb) {
 
 w_list = ["sun", "rain", "snow", "sleet"];
 
-f_list = ["tacos", "burritors", "pizza", "shrooms"];
+f_list = ["tacos", "burritos", "pizza", "shrooms"];
 
 (function(__iced_k) {
   __iced_deferrals = new iced.Deferrals(__iced_k);

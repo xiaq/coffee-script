@@ -20,7 +20,7 @@ rankPopularity = (keywords, cb) ->
   cb (keywords[tuple[1]] for tuple in times)
 
 w_list = [ "sun", "rain", "snow", "sleet" ]
-f_list = [ "tacos", "burritors", "pizza", "shrooms" ]
+f_list = [ "tacos", "burritos", "pizza", "shrooms" ]
 await
   rankPopularity w_list, defer weather
   rankPopularity f_list, defer food
