@@ -297,15 +297,17 @@ search <span class="Keyword">=</span> <span class="FunctionArgument">(keyword, c
     </p>
 
     <p>The right hand side shows the same code in standard
-     CoffeeScript, and as we can see, there's not much difference.
-     But things will get more complicated really quickly.
+     CoffeeScript, and as we can see, there's not much difference...yet.
+     Read on, dear reader!
     </p>
 
     <p>
      <span id="iced_control" class="bookmark"></span>
      <b class="header">ICS and Standard Control Flow</b>
      What's so great about <tt>await</tt> and <tt>defer</tt> is that
-     <i>they integrate seamlessly with existing CoffeeScript control structures</i>.
+     <i>they integrate seamlessly with existing CoffeeScript control structures</i>,
+     the tried-and-true favorites like <tt>for</tt>, <tt>if</tt> and
+     <tt>else</tt>.
     </p>
   
     <p>The next step in our working example is to make multiple
@@ -662,7 +664,7 @@ alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span cl
 
 w_list <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span>];
 
-f_list <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritors<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span>];
+f_list <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span>];
 
 (<span class="Storage">function</span>(__iced_k) {
   __id <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k);
@@ -795,7 +797,7 @@ rankPopularity = function(keywords, cb) {
 
 w_list = ["sun", "rain", "snow", "sleet"];
 
-f_list = ["tacos", "burritors", "pizza", "shrooms"];
+f_list = ["tacos", "burritos", "pizza", "shrooms"];
 
 (function(__iced_k) {
   __id = new iced.Deferrals(__iced_k);
