@@ -534,6 +534,23 @@ Expressions
         </td>
       </tr>
       <tr>
+       <td><code>-I, --runtime [MODE]</code></td>
+       <td>
+         An <b>IcedCoffeeScript</b> addition, specify how the Iced
+         runtime is included in the output JavaScript file.
+         <i>mode</i> can be one of
+         <tt>node</tt>, <tt>inline</tt>, <tt>none</tt>, or <tt>window</tt>,
+         and the default is <tt>node</tt>.  In <tt>node</tt> mode,
+         emit a Node.js <tt>iced = require('iced-coffee-script').iced</tt>
+         fragment.  If <tt>inline</tt> is specified, then paste a simplified
+         version of the runtime directly into the file (but only if there's
+         Iced code in the input file).  If <tt>none</tt> is specified, do 
+         nothing.  If <tt>window</tt> is specified, make inline a runtime
+         and assigned it to <tt>window.iced</tt>, so that other fragments
+         later in the file don't need it.
+       </td>
+      </tr>
+      <tr>
         <td><code>--nodejs</code></td>
         <td>
           The <tt>node</tt> executable has some useful options you can set,
