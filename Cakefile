@@ -95,38 +95,58 @@ task 'build:ultraviolet', 'build and install the Ultraviolet syntax highlighter'
     exec 'sudo mv coffeescript.yaml /usr/local/lib/ruby/gems/1.8/gems/ultraviolet-0.10.2/syntax/coffeescript.syntax'
 
 
-task 'build:browser', 'rebuild the merged script for inclusion in the browser', ->
-  code = ''
-  for name in ['helpers', 'rewriter', 'lexer', 'parser', 'scope', 'iced', 'nodes', 'coffee-script', 'browser', 'icedlib' ]
-    code += """
+jsGenLib = (name) ->
+  """
       require['./#{name}'] = new function() {
         var exports = this;
         #{fs.readFileSync "lib/coffee-script/#{name}.js"}
       };
-    """
-  code = """
+  """
+    
+jsMinify = (code) ->
+  unless process.env.MINIFY is 'false'
+    {code} = require('uglify-js').minify code, fromString: true
+  code
+
+jsWrapCode = (code, assigns) ->
+  p = []
+  p.push """
     (function(root) {
       var CoffeeScript = function() {
         function require(path){ return require[path]; }
         #{code}
         return require['./coffee-script'];
       }();
+      if (typeof define === 'function' && define.amd) {"""
+        
+  for x in assigns
+    p.push "      define(function() { return #{x[1]}; });"
+  
+  p.push """    } else {    """
 
-      if (typeof define === 'function' && define.amd) {
-        define(function() { return CoffeeScript; });
-        define(function() { return CoffeeScript.iced; });
-      } else {
-        root.CoffeeScript = CoffeeScript;
-        root.iced = CoffeeScript.iced;
-      }
-    }(this));
-  """
-  unless process.env.MINIFY is 'false'
-    {code} = require('uglify-js').minify code, fromString: true
+  for x in assigns
+    p.push "      root.#{x[0]} = #{x[1]};"
+  
+  p.push "    }"
+  p.push " }(this));"
+  
+  p.join '\n'
+  
+ 
+task 'build:browser', 'rebuild the merged script for inclusion in the browser', ->
+  code = ''
+  for name in ['helpers', 'rewriter', 'lexer', 'parser', 'scope', 'iced', 'nodes', 'coffee-script', 'browser', 'icedlib' ]
+    code += jsGenLib name
+
+  code = jsWrapCode code, [
+    [ 'CoffeeScript' , 'CoffeeScript' ],
+    [ 'iced', 'CoffeeScript.iced' ]
+  ]
+  code = jsMinify code
+>>>>>>> more progress on this consolidation stuff
   fs.writeFileSync 'extras/coffee-script.js', header + '\n' + code
   console.log "built ... running browser tests:"
   invoke 'test:browser'
-
 
 task 'doc:site', 'watch and continually rebuild the documentation for the website', ->
   exec 'rake doc', (err) ->
