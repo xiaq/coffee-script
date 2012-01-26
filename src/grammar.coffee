@@ -79,12 +79,6 @@ grammar =
     o 'Return'
     o 'Comment'
     o 'STATEMENT',                              -> new Literal $1
-    o 'Require'
-  ]
-
-  Require : [
-    o 'ICEDREQUIRE Arguments',                  -> new TameRequire $2
-
   ]
 
   Await: [
@@ -313,7 +307,7 @@ grammar =
   ]
 
   Defer : [
-    o 'DEFER Arguments',                        -> new Defer $2
+    o 'DEFER Arguments',                        -> new Defer $2, yylineno
   ]
 
   # An optional existence check on a function.

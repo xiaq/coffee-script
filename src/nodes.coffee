@@ -117,12 +117,12 @@ exports.Base = class Base
         # For some types of objects, we wrap the value of the object in a
         # iced tail call here.  We might have done this earlier (in
         # icedCallContinuation) but at that point we don't have the option
-        # to replace an AST node with TameTailCall(this).  So instead, we
+        # to replace an AST node with IcedTailCall(this).  So instead, we
         # do that now.
-        new TameTailCall null, this
+        new IcedTailCall null, this
 
       else
-        # The simple case is no continuation, and no added TameTailCall
+        # The simple case is no continuation, and no added IcedTailCall
         # needed.
         this
 
@@ -191,7 +191,7 @@ exports.Base = class Base
   # `toString` representation of the node, for inspecting the parse tree.
   # This is what `coffee --nodes` prints out.
   #
-  # Add some Tame-specific additions --- the 'A' flag if this node
+  # Add some Iced-specific additions --- the 'A' flag if this node
   # is an await or its ancestor; the 'L' flag, if this node is a iced
   # loop or its descendant; a 'P' flag if this node is going to be
   # a 'pivot' in the CPS tree rotation; a 'C' flag if this node is inside
@@ -276,9 +276,9 @@ exports.Base = class Base
   #   used with subfields:
   #
   #      o.foundAutocb  -- on if the parent function has an autocb
-  #      o.foundRequire -- on if icedRequire() was found anywhere in the AST
   #      o.foundDefer   -- on if defer() was found anywhere in the AST
   #      o.foundAwait   -- on if await... was found anywhere in the AST
+  #      o.currFunc     -- the current func we're in
   #
   icedWalkAst : (p, o) ->
     @icedParentAwait = p
@@ -292,7 +292,8 @@ exports.Base = class Base
   #   as being children in a iced loop. They'll need more translations
   #   than other nodes. Eventually, "switch" statements might also be "loops"
   icedWalkAstLoops : (flood) ->
-    flood = true if @isLoop() and @icedNodeFlag
+    flood = true if  @isLoop() and @icedNodeFlag
+    flood = false if @isLoop() and not @icedNodeFlag
     @icedLoopFlag = flood
     for child in @flattenChildren()
       @icedLoopFlag = true if child.icedWalkAstLoops flood
@@ -325,7 +326,7 @@ exports.Base = class Base
 
   # A CPS Rotation routine for expressions
   icedCpsExprRotate : (v) ->
-    doRotate = v.icedIsTamedExpr()
+    doRotate = v.icedIsIcedExpr()
     if doRotate
       v.icedCallContinuation()
     v.icedCpsRotate() # do our children first, regardless...
@@ -340,10 +341,10 @@ exports.Base = class Base
   icedCallContinuation      :     -> @icedCallContinuationFlag = true
   icedWrapContinuation      :     NO
   icedIsJump                :     NO
-  icedIsTamedExpr           :     -> (this not instanceof Code) and @icedNodeFlag
+  icedIsIcedExpr           :     -> (this not instanceof Code) and @icedNodeFlag
 
   icedNestPrequelBlock: (bb) ->
-    rv = new TameReturnValue()
+    rv = new IcedReturnValue()
     obj = @icedParentAwait || this
     obj.icedPrequels.push { block : bb, retval : rv }
     rv
@@ -419,7 +420,7 @@ exports.Block = class Block extends Base
       return exp if exp.jumps o
 
   icedThreadReturn: (call)  ->
-    call = call || new TameTailCall
+    call = call || new IcedTailCall
     len = @expressions.length
     foundReturn = false
     while len--
@@ -427,12 +428,12 @@ exports.Block = class Block extends Base
 
       # If the last expression in the block is either a bonafide statement
       # or if it's going to be pivoted, then don't thread the return value
-      # through the TameTailCall, just bolt it onto the end.
+      # through the IcedTailCall, just bolt it onto the end.
       if expr.isStatement()
         break
 
       # In this case, we have a value that we're going to return out
-      # of the block, so apply the TameTamilCall onto the value
+      # of the block, so apply the IcedTamilCall onto the value
       if expr not instanceof Comment and expr not instanceof Return
         call.assignValue expr
         @expressions[len] = call
@@ -641,10 +642,10 @@ exports.Block = class Block extends Base
   endsInAwait : ->
     return @expressions?.length and @expressions[@expressions.length-1] instanceof Await
 
-  icedAddRuntime : ->
-    @expressions.unshift new TameRequire()
+  icedAddRuntime : (foundDefer) ->
+    @expressions.unshift new IcedRequire foundDefer
 
-  # Perform all steps of the Tame transform
+  # Perform all steps of the Iced transform
   icedTransform : ->
 
     # we need to do at least 1 walk -- do the most important walk first
@@ -654,8 +655,8 @@ exports.Block = class Block extends Base
     # short-circuit here for optimization. If we didn't find await
     # then no need to iced anything in this AST
     if obj.foundAwait
-      @icedAddRuntime() if obj.foundDefer and not obj.foundRequire
-      @icedWalkAstLoops(false)
+      @icedAddRuntime obj.foundDefer
+      @icedWalkAstLoops false
       @icedWalkCpsPivots()
       @icedCpsRotate()
 
@@ -1596,10 +1597,17 @@ exports.Code = class Code extends Base
     @icedgen = tag is 'icedgen'
     @bound   = tag is 'boundfunc' or @icedgen
     @context = '_this' if @bound or @icedgen
+    @icedPassedDeferral = null
 
   children: ['params', 'body']
 
   isStatement: -> !!@ctor
+
+  traceName : ->
+    parts = []
+    parts.push @klass if @klass
+    parts.push @name if @name
+    parts.join '.'
 
   jumps: NO
 
@@ -1654,6 +1662,17 @@ exports.Code = class Code extends Base
     code  = 'function'
     code  += ' ' + @name if @ctor
     code  += '(' + params.join(', ') + ') {'
+
+    if @icedNodeFlag and not @icedgen
+      # Find the tamecb if possible, and do this before we update the
+      # scope, below...
+      @icedPassedDeferral = o.scope.freeVariable iced.const.passed_deferral
+      lhs = new Value new Literal @icedPassedDeferral
+      f = new Value new Literal iced.const.ns
+      f.add new Access new Value new Literal iced.const.findDeferral
+      rhs = new Call f, [ new Value new Literal 'arguments' ]
+      @body.unshift(new Assign lhs, rhs)
+    
     if @icedNodeFlag
       o.iced_scope = o.scope
 
@@ -1692,7 +1711,9 @@ exports.Code = class Code extends Base
   icedWalkAst : (parent, o) ->
     @icedParentAwait = parent
     fa_prev = o.foundAutocb
+    cf_prev = o.currFunc
     o.foundAutocb = false
+    o.currFunc = @
     for param in @params
       if param.name instanceof Literal and param.name.value is iced.const.autocb
         o.foundAutocb = true
@@ -1700,6 +1721,7 @@ exports.Code = class Code extends Base
     @icedHasAutocbFlag = o.foundAutocb
     super parent, o
     o.foundAutocb = fa_prev
+    o.currFunc = cf_prev
     false
 
   icedWalkAstLoops : (flood) ->
@@ -1924,7 +1946,7 @@ exports.While = class While extends Base
     top_block = new Block top_statements
 
   icedCallContinuation : ->
-    @body.icedThreadReturn new TameTailCall iced.const.n_while
+    @body.icedThreadReturn new IcedTailCall iced.const.n_while
 
   compileIced: (o) ->
     return null unless @icedNodeFlag
@@ -2170,7 +2192,7 @@ exports.Slot = class Slot extends Base
 #### Defer
 
 exports.Defer = class Defer extends Base
-  constructor : (args) ->
+  constructor : (args, @lineno) ->
     super()
     @slots = (a.toSlot() for a in args)
     @params = []
@@ -2272,6 +2294,10 @@ exports.Defer = class Defer extends Base
     if (assign_fn = @makeAssignFn o)
       assignments.push new Assign(new Value(new Literal(iced.const.assign_fn)),
                                   assign_fn, "object")
+    ln_lhs = new Value new Literal iced.const.lineno
+    ln_rhs = new Value new Literal @lineno
+    ln_assign = new Assign ln_lhs, ln_rhs, "object"
+    assignments.push ln_assign
     o = new Obj assignments
 
     # Return the final call
@@ -2288,6 +2314,7 @@ exports.Defer = class Defer extends Base
   icedWalkAst : (p, o) ->
     @icedHasAutocbFlag = o.foundAutocb
     o.foundDefer = true
+    @parentFunc = o.currFunc
     super p, o
 
 #### Await
@@ -2303,7 +2330,28 @@ exports.Await = class Await extends Base
     lhs = new Value new Literal name
     cls = new Value new Literal iced.const.ns
     cls.add(new Access(new Value new Literal iced.const.Deferrals))
-    call = new Call cls, [ new Value new Literal iced.const.k ]
+
+    assignments = []
+    if n = @parentFunc?.icedPassedDeferral
+      cb_lhs = new Value new Literal iced.const.parent
+      cb_rhs = new Value new Literal n
+      cb_assignment = new Assign cb_lhs, cb_rhs, "object"
+      assignments.push cb_assignment
+
+    if o.filename?
+      fn_lhs = new Value new Literal iced.const.filename
+      fn_rhs = new Value new Literal "'#{o.filename}'"
+      fn_assignment = new Assign fn_lhs, fn_rhs, "object"
+      assignments.push fn_assignment
+
+    if n = @parentFunc?.traceName()
+      func_lhs = new Value new Literal iced.const.funcname
+      func_rhs = new Value new Literal "'#{n}'"
+      func_assignment = new Assign func_lhs, func_rhs, "object"
+      assignments.push func_assignment
+    
+    trace = new Obj assignments, true
+    call = new Call cls, [ (new Value new Literal iced.const.k), trace ]
     rhs = new Op "new", call
     assign = new Assign lhs, rhs
     body.unshift assign
@@ -2328,41 +2376,32 @@ exports.Await = class Await extends Base
   # to our parent that we are iced, since we are!
   icedWalkAst : (p, o) ->
     @icedHasAutocbFlag = o.foundAutocb
+    @parentFunc = o.currFunc
     p = p || this
     @icedParentAwait = p
     super p, o
     @icedNodeFlag = o.foundAwait = true
 
-#### icedRequire
+#### IcedRequire
 #
-# By default, the iced libraries are inlined.  But if you preface your file
-# with 'icedRequire(node)', it will assume a node runtime, emitting:
+# By default, the iced libraries are require'd via nodejs' require.
+# You can change this behavior on the command line:
 #
-#   iced = require('coffee-script').iced
+#    -I inline --- inlines a simplified runtime to the output file
+#    -I node   --- force node.js inclusion
+#    -I window --- attach the inlined runtime to the window.* object
+#    -I none   --- no inclusion, do it yourself...
 #
-# With 'icedRequire(none)', you can supply a runtime of
-# your choosing. 'icedRequire(window)', will set `window.iced`
-# to have the iced runtime.
-#
-exports.TameRequire = class TameRequire extends Base
-  constructor: (args) ->
+exports.IcedRequire = class IcedRequire extends Base
+  constructor: (@foundDefer) ->
     super()
-    @typ = null
-    @usage =  "icedRequire takes either 'inline', 'node', 'window' or 'none'"
-    if args and args.length > 2
-       throw SyntaxError @usage
-    if args and args.length is 1
-       @typ = args[0]
 
   compileNode: (o) ->
     @tab = o.indent
 
-    v = if @typ
-      @typ.compile(o)
-    else if o.bare
-      'none'
-    else
-      "inline"
+    v = if o.runtime then o.runtime
+    else if o.bare   then "none"
+    else                  "node"
 
     window_mode = false
     window_val = null
@@ -2373,16 +2412,16 @@ exports.TameRequire = class TameRequire extends Base
         window_mode = true if v is "window"
         if window_mode
           window_val = new Value new Literal v
-        InlineDeferral.generate(if window_val then window_val.copy() else null)
+        InlineRuntime.generate(if window_val then window_val.copy() else null)
       when "node"
-        file = new Literal "'coffee-script'"
+        file = new Literal "'iced-coffee-script'"
         access = new Access new Literal iced.const.ns
         req = new Value new Literal "require"
         call = new Call req, [ file ]
         callv = new Value call
         callv.add access
         ns = new Value new Literal iced.const.ns
-        new Assign ns, callv
+        new Block [ new Assign ns, callv ]
       when "none" then null
       else throw SyntaxError @usage
 
@@ -2394,16 +2433,10 @@ exports.TameRequire = class TameRequire extends Base
       window_val.add new Access lhs
       lhs = window_val
     k = new Assign lhs, rhs
-
-
-
     out + "#{@tab}" + k.compile(o, LEVEL_TOP)
-
-  children = [ 'typ']
 
   icedWalkAst : (p,o) ->
     @icedHasAutocbFlag = o.foundAutocb
-    o.foundRequire = true
     super p, o
 
 #### Try
@@ -2799,7 +2832,7 @@ exports.If = class If extends Base
       @elseBody.icedThreadReturn()
       @isChain = false
     else
-      @addElse new TameTailCall
+      @addElse new IcedTailCall
     @body.icedThreadReturn()
 
   # The **If** only compiles into a statement if either of its bodies needs
@@ -2915,7 +2948,7 @@ CpsCascade =
 
     # Optimization! If the block is just a tail call to another continuation
     # that can be inlined, then we just call that call directly.
-    if (e = block.getSingle()) and e instanceof TameTailCall and e.canInline()
+    if (e = block.getSingle()) and e instanceof IcedTailCall and e.canInline()
       cont = e.extractFunc()
     else
       cont = new Code args, block, 'icedgen'
@@ -2928,7 +2961,7 @@ CpsCascade =
 # At the end of a iced if, loop, or switch statement, we tail call off
 # to the next continuation
 
-class TameTailCall extends Base
+class IcedTailCall extends Base
   constructor : (@func, val = null) ->
     super()
     @func = iced.const.k unless @func
@@ -2940,7 +2973,7 @@ class TameTailCall extends Base
     @value = v
 
   canInline : ->
-    return not @value or @value instanceof TameReturnValue
+    return not @value or @value instanceof IcedReturnValue
 
   literalFunc: -> new Literal @func
   extractFunc: -> new Value @literalFunc()
@@ -2961,26 +2994,26 @@ class TameTailCall extends Base
       new Call f, args
     out.compileNode o
 
-#### TameReturnValue
+#### IcedReturnValue
 #
 # A variable reference to a deferred computation
 
-class TameReturnValue extends Param
+class IcedReturnValue extends Param
   @counter : 0
   constructor : () ->
     super null, null, no
 
   bindName : (o) ->
-    l = "#{o.scope.freeVariable iced.const.param, no}_#{TameReturnValue.counter++}"
+    l = "#{o.scope.freeVariable iced.const.param, no}_#{IcedReturnValue.counter++}"
     @name = new Literal l
 
   compile : (o) ->
     @bindName o if not @name
     super o
 
-#### Deferral class, the most basic one...
+#### Runtime class and funcs, the most basic one...
 
-InlineDeferral =
+InlineRuntime =
 
   # Generate this code, inline. Is there a better way?
   #
@@ -2996,6 +3029,7 @@ InlineDeferral =
   #       (inner_params...) =>
   #         defer_params?.assign_fn?.apply(null, inner_params)
   #         @_fulfill()
+  #   findDeferral : (args) -> null
   #
   generate : (ns_window) ->
     k = new Literal "continuation"
@@ -3045,13 +3079,14 @@ InlineDeferral =
     # Make the defer member:
     #   defer : (defer_params) ->
     #     @count++
-    #     (inner_params...) =>
+    #     (inner_params...) ->
     #       defer_params?.assign_fn?.apply(null, inner_params)
     #       @_fulfill()
     #
     inc = new Op "++", cnt_member
     ip = new Literal "inner_params"
     dp = new Literal "defer_params"
+    dp_value = new Value dp
     call_meth = new Value dp
     af = new Literal iced.const.assign_fn
     call_meth.add new Access af, "soak"
@@ -3076,12 +3111,20 @@ InlineDeferral =
     obj = new Obj assignments, true
     body = new Block [ new Value obj ]
     klass = new Class null, null, body
-
+    klass_assign = new Assign cn, klass, "object"
+    
+    # A stub so that the function still works
+    #      findDeferral : (args) -> null
+    outer_block = new Block [ NULL() ]
+    fn_code = new Code [ ], outer_block
+    fn_name = new Value new Literal iced.const.findDeferral
+    fn_assign = new Assign fn_name, fn_code, "object"
+      
     # iced =
     #   Deferrals : <class>
+    #   findDeferral : <code>
     #
-    klass_assign = new Assign cn, klass, "object"
-    ns_obj = new Obj [ klass_assign ], true
+    ns_obj = new Obj [ klass_assign, fn_assign ], true
     ns_val = new Value ns_obj
     new Assign ns, ns_val
 

@@ -70,7 +70,7 @@ task 'install', 'install CoffeeScript into /usr/local (or --prefix)', (options) 
 task 'build', 'build the CoffeeScript language from source', build = (cb) ->
   files = fs.readdirSync 'src'
   files = ('src/' + file for file in files when file.match(/\.coffee$/))
-  run ['-c', '-o', 'lib/coffee-script'].concat(files), cb
+  run ['-c', '-o', 'lib/coffee-script', '-I', 'none'].concat(files), cb
 
 
 task 'build:full', 'rebuild the source twice, and run the tests', ->
@@ -95,42 +95,79 @@ task 'build:ultraviolet', 'build and install the Ultraviolet syntax highlighter'
     exec 'sudo mv coffeescript.yaml /usr/local/lib/ruby/gems/1.8/gems/ultraviolet-0.10.2/syntax/coffeescript.syntax'
 
 
-task 'build:browser', 'rebuild the merged script for inclusion in the browser', ->
-  code = ''
-  for name in ['helpers', 'rewriter', 'lexer', 'parser', 'scope', 'iced', 'nodes', 'coffee-script', 'browser', 'icedlib' ]
-    code += """
+jsGenLib = (name) ->
+  """
       require['./#{name}'] = new function() {
         var exports = this;
         #{fs.readFileSync "lib/coffee-script/#{name}.js"}
       };
-    """
-  code = """
-    (function(root) {
-      var CoffeeScript = function() {
-        function require(path){ return require[path]; }
-        #{code}
-        return require['./coffee-script'];
-      }();
-
-      if (typeof define === 'function' && define.amd) {
-        define(function() { return CoffeeScript; });
-      } else { 
-        root.CoffeeScript = CoffeeScript; 
-      }
-    }(this));
   """
+    
+jsMinify = (code) ->
   unless process.env.MINIFY is 'false'
     {parser, uglify} = require 'uglify-js'
     code = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
+  code
+
+jsWrapCode = (code, klass, req, assigns) -> 
+  p = []
+  p.push """
+    (function(root) {
+      var #{klass} = function() {
+        function require(path){ return require[path]; }
+        #{code}
+        return require['./#{req}'];
+      }();
+
+      if (typeof define === 'function' && define.amd) {"""
+        
+  for x in assigns
+    p.push "      define(function() { return #{x[1]}; });"
+  
+  p.push """    } else {    """
+
+  for x in assigns
+    p.push "      root.#{x[0]} = #{x[1]};"
+  
+  p.push "    }"
+  p.push " }(this));"
+  
+  p.join '\n'
+  
+ 
+task 'build:browser', 'rebuild the merged script for inclusion in the browser', ->
+  code = ''
+  for name in ['helpers', 'rewriter', 'lexer', 'parser', 'scope', 'iced', 'nodes', 'coffee-script', 'browser', 'icedlib' ]
+    code += jsGenLib name
+
+  code = jsWrapCode code, "CoffeeScript", "coffee-script", [
+    [ 'CoffeeScript' , 'CoffeeScript' ],
+    [ 'iced', 'CoffeeScript.iced' ]
+  ]
+  code = jsMinify code
   fs.writeFileSync 'extras/coffee-script.js', header + '\n' + code
+
+  code = jsGenLib 'iced'
+  code = jsWrapCode code, 'Iced', 'iced', [
+    [ 'iced', 'Iced.runtime' ]
+  ]
+  code = jsMinify code
+  fs.writeFileSync 'extras/coffee-script-iced.js', header + '\n' + code
+
+  code = (jsGenLib 'iced') + (jsGenLib 'icedlib')
+  code = jsWrapCode code, 'Icedlib', 'icedlib', [
+    [ 'icedlib', 'Icedlib' ],
+    [ 'iced', 'Icedlib.iced' ]
+  ]
+  code = jsMinify code
+  fs.writeFileSync 'extras/coffee-script-iced-large.js', header + '\n' + code
+
   console.log "built ... running browser tests:"
   invoke 'test:browser'
-
 
 task 'doc:site', 'watch and continually rebuild the documentation for the website', ->
   exec 'rake doc', (err) ->
     throw err if err
-
 
 task 'doc:source', 'rebuild the internal documentation', ->
   exec 'docco src/*.coffee && cp -rf docs documentation && rm -r docs', (err) ->
@@ -244,8 +281,9 @@ runTests = (CoffeeScript) ->
   for file in files when file.match /\.coffee$/i
     currentFile = filename = path.join 'test', file
     code = fs.readFileSync filename
+    runtime = if file is 'iced.coffee' then 'inline' else 'none'
     try
-      CoffeeScript.run code.toString(), {filename}
+      CoffeeScript.run code.toString(), { filename, runtime}
     catch error
       failures.push {filename, error}
   return !failures.length
@@ -260,6 +298,5 @@ task 'test:browser', 'run the test suite against the merged browser script', ->
   result = {}
   global.testingBrowser = yes
   (-> eval source).call result
-  global.iced = result.CoffeeScript.iced
   runTests result.CoffeeScript
 
