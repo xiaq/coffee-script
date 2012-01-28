@@ -1,0 +1,19 @@
+I wanted to file an update on this PR, which appears moribund.  First of all, I'd like to thank everyone on the list for their comments, scrutiny, and contributions.  I think they've helped to make these proposed additions to Coffee better, and more in line with the philosophy of the CoffeeScript project. So thanks!
+
+Our next move is to start promoting our fork of CoffeeScript with tamed features.  We've changed names to IcedCoffeeScript.  So basically `s/tame/iced/g` everywhere.  Here's where you find out more about it:
+
+  * Github: https://github.com/maxtaco/coffee-script (as before, but now the branch is called "iced")
+    * Glossy page: http://maxtaco.github.com/coffee-script (work-in-progress, but shaping up)
+      * API, detailed doc, and internals: https://github.com/maxtaco/coffee-script/blob/iced/iced.md
+        * `npm install iced-coffee-script` will get you up and running and `iced` in your path.   This way you can have both `coffee` and `iced` installed and you won't see conflicts.  But `iced` can be used over 99.99% of existing `.coffee` files, so you really shouldn't need both.  The only problems are with programs that use `await` or `defer` to mean something else.
+
+        New features are:
+           * "Iced"-aware stack traces, for really figuring out what went wrong
+              * Full expression support
+                 * Nuked `tameRequire`, in favor of reasonable default behavior and compile-time flags
+                    * Works and tested in the browser.
+                       * Interesting glossy page example
+                        
+                        Let me make a quick appeal in favor of this software.  The most damning complaint I've heard about this change to CoffeeScript is that is "too complicated."  But I think that attitude is counter-productive.  Compilers are supposed to do complicated things to save humans from having to do them.  And anyone who's written server-side Node code knows that hand-rolled event-based code is complicated.  Whenever you make a slight change to your logic (e.g. add an `if` clause, change from parallel to serial, etc), you need to rip everything up, likely introducing subtle bugs.  The compiler should save the human this effort, and that's exactly what IcedCoffeeScript is doing.  It's about much more than preventing "callback pyramids." It is that in the toy examples, but for real cases, it's much more.   It's about keeping code readable, clean, and maintainable.
+
+                        Comments welcome, and thanks!
