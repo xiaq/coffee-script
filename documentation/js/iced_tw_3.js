@@ -34,8 +34,8 @@ serialSearch = function(keywords, cb) {
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: 'documentation/coffee/iced_tw_3.coffee',
-            funcname: 'serialSearch'
+            filename: "documentation/coffee/iced_tw_3.coffee",
+            funcname: "serialSearch"
           });
           search(k, __iced_deferrals.defer({
             assign_fn: (function(__slot_1, __slot_2) {

@@ -12,8 +12,8 @@ search = function(keyword, cb) {
   (function(__iced_k) {
     __iced_deferrals = new iced.Deferrals(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: 'documentation/coffee/iced_tw_1.coffee',
-      funcname: 'search'
+      filename: "documentation/coffee/iced_tw_1.coffee",
+      funcname: "search"
     });
     $.getJSON(url, __iced_deferrals.defer({
       assign_fn: (function() {

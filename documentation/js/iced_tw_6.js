@@ -10,7 +10,7 @@ f_list = ["tacos", "burritos", "pizza", "shrooms"];
 
 (function(__iced_k) {
   __iced_deferrals = new iced.Deferrals(__iced_k, {
-    filename: 'documentation/coffee/iced_tw_6.coffee'
+    filename: "documentation/coffee/iced_tw_6.coffee"
   });
   rankPopularity(w_list, __iced_deferrals.defer({
     assign_fn: (function() {
@@ -26,7 +26,7 @@ f_list = ["tacos", "burritos", "pizza", "shrooms"];
     if (weather.length) {
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
-          filename: 'documentation/coffee/iced_tw_6.coffee'
+          filename: "documentation/coffee/iced_tw_6.coffee"
         });
         rankPopularity(f_list, __iced_deferrals.defer({
           assign_fn: (function() {
@@ -46,7 +46,7 @@ f_list = ["tacos", "burritos", "pizza", "shrooms"];
       if (weather.length && food.length) {
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
-            filename: 'documentation/coffee/iced_tw_6.coffee'
+            filename: "documentation/coffee/iced_tw_6.coffee"
           });
           search("" + weather[0] + "+" + food[0], __iced_deferrals.defer({
             assign_fn: (function() {

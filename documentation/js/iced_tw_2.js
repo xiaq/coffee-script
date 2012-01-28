@@ -12,8 +12,8 @@ parallelSearch = function(keywords, cb) {
     var _i, _len;
     __iced_deferrals = new iced.Deferrals(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: 'documentation/coffee/iced_tw_2.coffee',
-      funcname: 'parallelSearch'
+      filename: "documentation/coffee/iced_tw_2.coffee",
+      funcname: "parallelSearch"
     });
     for (i = _i = 0, _len = keywords.length; _i < _len; i = ++_i) {
       k = keywords[i];

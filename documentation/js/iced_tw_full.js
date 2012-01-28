@@ -13,8 +13,8 @@ search = function(keyword, cb) {
   (function(__iced_k) {
     __iced_deferrals = new iced.Deferrals(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: 'documentation/coffee/iced_tw_full.coffee',
-      funcname: 'search'
+      filename: "documentation/coffee/iced_tw_full.coffee",
+      funcname: "search"
     });
     $.getJSON(url, __iced_deferrals.defer({
       assign_fn: (function() {
@@ -39,8 +39,8 @@ parallelSearch = function(keywords, cb) {
     var _i, _len;
     __iced_deferrals = new iced.Deferrals(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: 'documentation/coffee/iced_tw_full.coffee',
-      funcname: 'parallelSearch'
+      filename: "documentation/coffee/iced_tw_full.coffee",
+      funcname: "parallelSearch"
     });
     for (i = _i = 0, _len = keywords.length; _i < _len; i = ++_i) {
       k = keywords[i];
@@ -66,8 +66,8 @@ rankPopularity = function(keywords, cb) {
   (function(__iced_k) {
     __iced_deferrals = new iced.Deferrals(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: 'documentation/coffee/iced_tw_full.coffee',
-      funcname: 'rankPopularity'
+      filename: "documentation/coffee/iced_tw_full.coffee",
+      funcname: "rankPopularity"
     });
     parallelSearch(keywords, __iced_deferrals.defer({
       assign_fn: (function() {
@@ -110,7 +110,7 @@ f_list = ["tacos", "burritos", "pizza", "shrooms"];
 
 (function(__iced_k) {
   __iced_deferrals = new iced.Deferrals(__iced_k, {
-    filename: 'documentation/coffee/iced_tw_full.coffee'
+    filename: "documentation/coffee/iced_tw_full.coffee"
   });
   rankPopularity(w_list, __iced_deferrals.defer({
     assign_fn: (function() {
@@ -134,7 +134,7 @@ f_list = ["tacos", "burritos", "pizza", "shrooms"];
     if (weather.length && food.length) {
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
-          filename: 'documentation/coffee/iced_tw_full.coffee'
+          filename: "documentation/coffee/iced_tw_full.coffee"
         });
         search("" + weather[0] + "+" + food[0], __iced_deferrals.defer({
           assign_fn: (function() {
