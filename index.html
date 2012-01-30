@@ -212,7 +212,7 @@ sudo bin/cake install</pre>
      <b class="header">ICS Basics</b>
      The first basic primitive is used to do a Twitter search for a 
      single keyword.  On the left is the ICS version, on the right
-     is hand-rolled vanilla CoffeeScript.
+     is hand-rolled vanilla (hot) CoffeeScript.
     </p>
 
     <p>
@@ -351,6 +351,7 @@ serialSearch <span class="Keyword">=</span> <span class="FunctionArgument">(keyw
     <span class="FunctionArgument">(json)</span> <span class="Storage">-&gt;</span>
       results[i] <span class="Keyword">=</span> json
       launch()
+  launch()
 </pre><script>window.example3 = "# Search for 'keywords' in serial, then callback 'cb' with\n# an array of the parallel results\nserialSearch = (keywords, cb) ->\n  out = []\n  for k,i in keywords\n    await search k, defer out[i]\n  cb out\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example3);'>load</div><br class='clear' /></div>
     </p>
 

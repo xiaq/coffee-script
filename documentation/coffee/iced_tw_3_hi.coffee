@@ -13,3 +13,4 @@ serialSearch = (keywords, cb) ->
     (json) ->
       results[i] = json
       launch()
+  launch()

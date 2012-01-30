@@ -14,10 +14,11 @@ serialSearch = function(keywords, cb) {
       return cb(results);
     }
   };
-  return cb_generator = function(i) {
+  cb_generator = function(i) {
     return function(json) {
       results[i] = json;
       return launch();
     };
   };
+  return launch();
 };
