@@ -1,5 +1,5 @@
-# Search for 'keywords' in parallel, then callback 'cb' with
-# an array of the parallel results
+# Search for 'keywords' in parallel, then callback
+# 'cb' with an array of the parallel results
 parallelSearch = (keywords, cb) ->
   out = []
   await 

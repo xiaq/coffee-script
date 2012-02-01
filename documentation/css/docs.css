@@ -1,9 +1,10 @@
 body {
-  font-size: 14px;
-  line-height: 21px;
-  color: #333;
-  background: #f6f6f6 url(../images/background.png);
-  font-family: "Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #363636;
+  font-weight: 300;
+  background: #fbfaf5;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 .container {
   width: 950px;
@@ -12,6 +13,9 @@ body {
 }
 p, li {
   width: 625px;
+}
+b {
+	font-weight: 600;
 }
 a {
   color: #191933;
@@ -24,8 +28,12 @@ h1, h2, h3, h4, h5, h6, b.header {
   text-shadow: #fff 0 1px 1px;
 }
 h1 {
-  font-size: 24px;
-  color: #800
+  font-size: 30px;
+  font-weight: 800;
+  color: #00bff3;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e9e6d7;
+  width: 625px;
 }
 br.clear {
   height: 0;
@@ -36,6 +44,9 @@ ul {
 }
 b.header {
   display: block;
+  font-weight: 600;
+  font-size: 22px;
+  color: #363636;
 }
 li {
   margin-bottom: 10px;
@@ -86,7 +97,7 @@ code, pre, tt, textarea {
     }
 .timestamp {
   font-size: 12px;
-  font-weight: normal;
+  font-weight: 300;
   color: black;
 }
   .timestamp small {
@@ -95,13 +106,24 @@ code, pre, tt, textarea {
   }
 div.code {
   position: relative;
-  background: #fff;
-  border: 1px solid #d8d8d8;
-  -webkit-box-shadow: 0px 0px 4px rgba(0,0,0,0.23);
-  -moz-box-shadow: 0px 0px 4px rgba(0,0,0,0.23);
-  box-shadow: 0px 0px 4px rgba(0,0,0,0.23);
+  background: #5b4e3a;
+  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
   zoom: 1;
 }
+
+div.code:before {
+	position: absolute;
+	content: "";
+	top: -2px;
+	left: 430px;
+	width: 31px;
+	height: 44px;
+	background: url('../images/iced-ribbon.png') 0 0 no-repeat;;
+}
+.navigation .contents.repl_wrapper div.code:before {
+	background: none;
+}
+
   div.code .minibutton {
     text-transform: none;
     position: absolute;
@@ -112,49 +134,39 @@ div.code {
   }
   div.code pre, div.code textarea {
     float: left;
-    width: 450px;
-    background: #fff;
-    border-left: 1px dotted #d0d0d0;
+    width: 400px;
+    background: #5b4e3a;
+    border-left: 2px solid #6d5d45;
     margin: 10px 0 15px 3px;
-    padding: 0 0 0 12px;
+    padding: 0 50px 0 12px;
   }
     div.code pre:first-child {
       border-left: 0;
     }
 
-#fadeout {
-  z-index: 50;
-  position: fixed;
-  left: 0; top: 0; right: 0;
-  height: 100px;
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 255)), to(rgba(255, 255, 255, 0)));
-  background: -moz-linear-gradient(top, rgba(255, 255, 255, 255), rgba(255, 255, 255, 0));
-}
-
 #flybar {
   position: fixed;
   z-index: 100;
-  height: 50px;
+  height: 70px;
   min-width: 490px;
-  left: 40px; right: 40px; top: 25px;
-  padding-left: 252px;
-  background: #eee;
-  background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#dadada));
-  background: -moz-linear-gradient(top, #f8f8f8, #dadada);
-  border: 1px solid #aaa;
-  border-top: 1px solid #bbb;
-  border-bottom: 1px solid #888;
-  -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;
-  -webkit-box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-  -moz-box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-  box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+  left: 0;
+  right: 0;
+  top: 0;
+  padding-left: 290px;
+  background: #00bff3;
+  border-bottom: 1px solid #aaa;
+  -webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.15);
 }
   #logo {
     display: block;
-    width: 225px; height: 50px;
-    background: url('../images/logo.png');
+    width: 240px; height: 49px;
+    background: url('../images/iced-logo.png') 0 0 no-repeat;
     position: absolute;
-    top: 0px; left: 10px;
+    text-indent: -9999px;
+    font-size: 1px;
+    top: 10px; left: 25px;
   }
   #error {
     position: absolute;
@@ -173,38 +185,36 @@ div.code {
     text-transform: uppercase;
   }
   .navigation {
-    height: 50px;
-    font-size: 11px;
-    line-height: 50px;
-    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 14px;
+    color: #fff;
+    background: #0091b9;
+    padding: 15px 20px;
+    font-weight: 300;
+    border-radius: 10px;
+    margin: 15px 15px 0 0;
     position: relative;
     float: left;
-    padding: 0 20px;
-    border: 1px solid #aaa;
-    border-top: 0; border-bottom: 0; border-left-width: 0;
     cursor: pointer;
   }
     .navigation.toc {
       border-left-width: 1px;
     }
 
-    .navigation.iced {
-      color: #800;
-    }
     .navigation:hover,
     .navigation.active {
-      background: #eee;
-      background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f8f8f8));
-      background: -moz-linear-gradient(top, #eee, #f8f8f8);
+      background: #007ea1;
     }
       .navigation.active {
         height: 51px;
-        color: #000;
-        background: -webkit-gradient(linear, left top, left bottom, from(#e5e5e5), to(#fff));
-        background: -moz-linear-gradient(top, #e5e5e5, #fff);
+        color: #64d4f3;
       }
+      .navigation.active.try {
+		 -webkit-border-bottom-left-radius: 0; -moz-border-radius-bottomleft: 0; border-bottom-left-radius: 0;
+		 -webkit-border-bottom-right-radius: 0; -moz-border-radius-bottomright: 0; border-bottom-right-radius: 0;
+	}
     .navigation .button {
-      font-weight: bold;
+      font-weight: 600;
     }
       .navigation .button::selection {
         background: transparent;
@@ -212,8 +222,7 @@ div.code {
     .navigation .contents {
       display: none;
       position: absolute;
-      background: #fff;
-      opacity: 0.97;
+      background: #007ea1;
       top: 51px; left: 0;
       padding: 5px 0;
       margin-left: -1px;
@@ -225,18 +234,19 @@ div.code {
     }
       .navigation .contents a {
         display: block;
-        width: 290px;
+        width: 340px;
         text-transform: none;
         text-decoration: none;
+        color: #fff;
         height: 12px;
+        font-size: 12px;
         line-height: 12px;
         padding: 4px 10px;
         border: 1px solid transparent;
         border-left: 0; border-right: 0;
       }
         .navigation .contents a:hover {
-          border-color: #ddd;
-          background: #eee;
+          background: #0091b9;
         }
       .navigation.active .contents {
         display: block;
@@ -244,28 +254,17 @@ div.code {
       .navigation .contents.menu {
         border-top: 0;
         -webkit-border-top-left-radius: 0; -moz-border-radius-topleft: 0; border-top-left-radius: 0;
-        -webkit-border-top-right-radius: 0; -moz-border-radius-topright: 0; border-top-right-radius: 0;
       }
       .navigation .contents.repl_wrapper {
         padding: 0;
         position: fixed;
         width: auto; height: auto;
+        border: 0;
         left: 40px; top: 90px; right: 40px; bottom: 30px;
-        background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#eaeaea));
+        background: ##007EA1;
       }
-        .navigation .repl_bridge {
-          position: absolute;
-          height: 12px;
-          left: -1px; right: -1px;
-          bottom: -14px;
-          border: 1px solid #aaa;
-          z-index: 5;
-          background: #fff;
-          display: none;
-          border-top-color: #fff; border-bottom-color: #fff;
-        }
-          .navigation.active .repl_bridge {
-            display: block;
+          .repl_bridge {
+            display: none;
           }
         .navigation .code .minibutton {
           top: 10px; right: 10px;
@@ -287,7 +286,7 @@ div.code {
 .navigation .contents.repl_wrapper .code {
   cursor: text;
   -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;
-  background: #181a3a url(../images/banding.png);
+  background: #176980;
   border: 2px solid #555;
   padding: 0;
   position: absolute;
@@ -296,7 +295,6 @@ div.code {
   .repl_wrapper .screenshadow {
     position: absolute;
     width: 200px; height: 150px;
-    background: url(../images/screenshadow.png?2);
   }
     .repl_wrapper .screenshadow.tl {
       top: 0; left: 0;
@@ -353,9 +351,8 @@ div.code {
 /*----------------------------- Mini Buttons ---------------------------------*/
 .minibutton {
   cursor: pointer;
-  color: #333;
-  text-shadow: #eee 0 1px 1px;
-  font-weight: bold;
+  color: #fff;
+  font-weight: 600;
   font-size: 11px;
   line-height: 11px;
   padding: 5px 10px 6px;
@@ -363,8 +360,7 @@ div.code {
   text-align: center;
   -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.2); -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2); -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  border: 1px solid #b2b2b2; border-top-color: #c9c9c9; border-bottom-color: #9a9a9a;
-  background: url(../images/button_bg.png) repeat-x left top;
+  background: #00bff3;
 }
   .minibutton:active {
     border-color: #aaa;
@@ -378,14 +374,14 @@ div.code {
   }
   .minibutton.ok {
     color: #fff;
-    background-image: url(../images/button_bg_green.gif);
-    border-color: #4ba47c; border-top-color: #53b388; border-bottom-color: #459671;
-    text-shadow: #aaa 0 -1px 0;
+    background: #30d27c;
   }
   .minibutton.dark {
     border: 0;
     color: #fff;
-    box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none;
-    background-image: url(../images/button_bg_dark.gif);
+    background: #30d27c;
     text-shadow: none;
   }
+  .minibutton.ok:hover, .minibutton.dark:hover {
+	background: #2bbd70;
+}

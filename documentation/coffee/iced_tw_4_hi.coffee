@@ -1,7 +1,7 @@
-# Do a parallel search on 'keywords', and call 'cb' with the
-# keywords sorted in decreasing popular order.  Determine
-# popularity based on the time of the least recent tweet
-# (since we always get 15 back from Twitter).
+# Do a parallel search on 'keywords', and call 'cb' with
+# the keywords sorted in decreasing popular order.
+# Determine popularity based on the time of the least
+# recent tweet (since we always get 15 from Twitter).
 rankPopularity = (keywords, cb) ->
   parallelSearch keywords, (results) ->
     times = for r,i in results
