@@ -93,6 +93,8 @@
         <a href="documentation/docs/command.html">"iced" Command-Line Utility &mdash; src/command</a>
         <a href="documentation/docs/optparse.html">Option Parsing &mdash; src/optparse</a>
         <a href="documentation/docs/repl.html">Interactive REPL &mdash; src/repl</a>
+        <a href="documentation/docs/iced.html">The Iced Runtime &mdash; src/iced</a>
+        <a href="documentation/docs/icedlib.html">The Iced Advanced Library&mdash; src/icedlib</a>
       </div>
     </div>
     <div class="navigation iced">
@@ -113,18 +115,12 @@
   <div class="container">
     <span class="bookmark" id="top"></span>
 
-    <h1>IcedCoffeeScript</h1>
-
     <p>
-      Welcome to <b>Iced</b>CoffeeScript!
-    </p>
-    <p>
-      IcedCoffeeScript is a fork of <a href="http://coffeescript.org">CoffeeScript</a>. 
-      It is 
-      <b>superset</b> of the CoffeeScript language. The
-      <tt>iced</tt> interpreter is a drop-in replacement
-      for the standard <tt>coffee</tt> interpreter since 
-      it will interpret all existing CoffeeScript programs.
+      <b>Iced</b>CoffeeScript is a superset of
+      <a href="http://coffeescript.org">CoffeeScript</a>.
+      The <tt>iced</tt> interpreter is a drop-in replacement
+      for the standard <tt>coffee</tt> interpreter;
+      it will interpret almost all existing CoffeeScript programs.
     </p>
  
     <p>IcedCoffeeScript (ICS) adds two new keywords: <tt>await</tt>
@@ -133,27 +129,24 @@
       the browser. Say goodbye to callback pyramids; say adios to
       massive code rewrites when synchronization requirements change
       slightly.  Say hello to clean, readable, maintainable control
-      flow for network and asynchronous operations!  See
-      the <a href="#" onclick="showAcsTab(); return false;">Iced Features</a> 
-      tab for more details.
+      flow for network and asynchronous operations!
     </p>
 
     <p>
       The golden rule of CoffeeScript was: <i>"It's just
       JavaScript"</i>.  ICS is doing something deeper.  It's
       selectively running code through a
-      <i>continuation-passing style conversion</i>.  Original-style
+      continuation-passing style conversion.  Original-style
       CoffeeScript will compile as before, but code using the new ICS
       features will be less recognizable.  Still, the compiled output
       is readable and pretty-printed, passes through
       <a href="http://www.javascriptlint.com/">JavaScript Lint</a>
-      without warnings, will work in every JavaScript implementation, and tends
-      to run as fast or faster than the equivalent handwritten JavaScript.
+      without warnings.
     </p>
 
     <p>
       <b>Latest Version:</b>
-      <a href="http://github.com/maxtaco/coffee-script/tarball/iced">1.2.0j</a>
+      <a href="http://github.com/maxtaco/coffee-script/tarball/iced">1.2.0k</a>
     </p>
 
     <h2>
@@ -169,7 +162,7 @@
       <a href="http://nodejs.org/">Node.js</a> utility. The
       <a href="extras/coffee-script.js">core compiler</a> however, does not
       depend on Node, and can be run in any JavaScript environment, or in the
-      browser (see "Try ICS", above).
+      browser (see "Try It", above).
     </p>
 
     <p>
@@ -1193,7 +1186,7 @@ Expressions
     <p>
       <i>
         Many of the examples can be run (where it makes sense) by pressing the <b>run</b>
-        button on the right, and can be loaded into the "Try ICS"
+        button on the right, and can be loaded into the "Try It"
         console by pressing the <b>load</b> button on the left.
       </i>
     <p>
@@ -2869,7 +2862,7 @@ task(<span class="String"><span class="String">'</span>build:parser<span class="
     </p>
 
     <p>
-      In fact, the little bit of glue script that runs "Try ICS" above,
+      In fact, the little bit of glue script that runs "Try It" above,
       as well as the jQuery for the menu, is implemented in just this way.
       View source and look at the bottom of the page to see the example.
       Including the script also gives you access to <tt>CoffeeScript.compile()</tt>
