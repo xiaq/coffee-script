@@ -5,7 +5,7 @@ rankPopularity w_list, (weather) ->
   if weather.length
     rankPopularity f_list, (food) ->
       if weather.length and food.length
-        search "#{weather[0]}+#{food[0]}", (tweets) ->
+        search "#{weather[0]}+#{food[0]}", (tweets)->
           msg = tweets[0]?.text
           alert if msg? then msg else nothing
       else

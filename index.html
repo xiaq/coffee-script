@@ -480,7 +480,7 @@ rankPopularity w_list, <span class="FunctionArgument">(weather)</span> <span cla
   <span class="Keyword">if</span> weather.length
     rankPopularity f_list, <span class="FunctionArgument">(food)</span> <span class="Storage">-&gt;</span>
       <span class="Keyword">if</span> weather.length <span class="Keyword">and</span> food.length
-        search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="FunctionArgument">(tweets)</span> <span class="Storage">-&gt;</span>
+        search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="FunctionArgument">(tweets)</span><span class="Storage">-&gt;</span>
           msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
           alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> nothing
       <span class="Keyword">else</span>
