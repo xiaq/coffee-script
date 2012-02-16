@@ -24,9 +24,9 @@ printWarn = (line) -> process.stderr.write line + '\n'
 
 # The help banner that is printed when `coffee` is called without arguments.
 BANNER = '''
-  Usage: coffee [options] path/to/script.coffee
+  Usage: iced [options] path/to/script.coffee
 
-  If called without options, `coffee` will run your script.
+  If called without options, `iced` will run your script.
          '''
 
 # The list of all the valid option flags that `coffee` knows how to handle.
@@ -48,6 +48,7 @@ SWITCHES = [
   ['-v', '--version',         'display the version number']
   ['-w', '--watch',           'watch scripts for changes and rerun commands']
   ['-I', '--runtime [WHICH]', "how to include the iced runtime, one of #{runtime_modes_str}; default is 'node'" ]
+  ['-F', '--runforce',        'output an Iced runtime even if not needed' ]
 ]
 
 # Top-level objects shared by all the functions.
@@ -58,7 +59,7 @@ notSources   = {}
 watchers     = {}
 optionParser = null
 
-# Run `coffee` by parsing passed options and determining what action to take.
+# Run `iced` by parsing passed options and determining what action to take.
 # Many flags cause us to divert before compiling anything. Flags passed after
 # `--` will be passed verbatim to your script as arguments in `process.argv`
 exports.run = ->
@@ -76,7 +77,7 @@ exports.run = ->
   if opts.run
     opts.literals = sources.splice(1).concat opts.literals
   process.argv = process.argv[0..1].concat opts.literals
-  process.argv[0] = 'coffee'
+  process.argv[0] = 'iced'
   process.execPath = require.main.filename
   for source in sources
     compilePath source, yes, path.normalize source
@@ -88,7 +89,7 @@ compilePath = (source, topLevel, base) ->
   fs.stat source, (err, stats) ->
     throw err if err and err.code isnt 'ENOENT'
     if err?.code is 'ENOENT'
-      if topLevel and source[-7..] isnt '.coffee'
+      if topLevel and source[-7..] isnt '.coffee' and source[-5..] isnt '.iced'
         source = sources[sources.indexOf(source)] = "#{source}.coffee"
         return compilePath source, topLevel, base
       if topLevel
@@ -325,7 +326,7 @@ parseOptions = ->
 
 # The compile-time options to pass to the CoffeeScript compiler.
 compileOptions = (filename) ->
-  {filename, bare: opts.bare, header: opts.compile, runtime: opts.runtime}
+  {filename, bare: opts.bare, header: opts.compile, runtime: opts.runtime, runforce : opts.runforce }
 
 # Start up a new Node.js instance with the arguments in `--nodejs` passed to
 # the `node` binary, preserving the other options.
