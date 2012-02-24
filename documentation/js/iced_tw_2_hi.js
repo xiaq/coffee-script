@@ -2,8 +2,8 @@
 var parallelSearch;
 
 parallelSearch = function(keywords, cb) {
-  var cb_generator, i, k, n_out, result, _i, _len, _results;
-  result = [];
+  var cb_generator, i, k, n_out, results, _i, _len, _results;
+  results = [];
   n_out = 0;
   cb_generator = function(i) {
     n_out++;

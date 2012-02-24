@@ -1,7 +1,7 @@
 # Search for 'keywords' in parallel, then callback
 # 'cb' with an array of the parallel results
 parallelSearch = (keywords, cb) ->
-  result = []
+  results = []
   n_out = 0
   cb_generator = (i) ->
     n_out++
