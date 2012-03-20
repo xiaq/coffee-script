@@ -646,7 +646,11 @@ exports.Block = class Block extends Base
     new Block nodes
 
   icedAddRuntime : (foundDefer, foundAwait) ->
-    @expressions.unshift new IcedRuntime foundDefer, foundAwait
+    index = 0
+    while (node = @expressions[index]) and node instanceof Comment or
+        node instanceof Value and node.isString()
+      index++
+    @expressions.splice index, 0, (new IcedRuntime foundDefer, foundAwait)
 
   # Perform all steps of the Iced transform
   icedTransform : ->
@@ -1389,7 +1393,8 @@ exports.Class = class Class extends Base
     index = 0
     {expressions} = @body
     ++index while (node = expressions[index]) and node instanceof Comment or
-      node instanceof Value and node.isString()
+      node instanceof Value and node.isString() or
+      node instanceof IcedRuntime
     @directives = expressions.splice 0, index
 
   # Make sure that a constructor is defined for the class, and properly
@@ -2473,12 +2478,26 @@ class IcedRuntime extends Block
     @push inc if inc
 
     if @foundAwait
+      
+      # Emit __iced_k = __iced_k_noop = function(){} 
       rhs = new Code [], new Block []
-      lhs = new Value new Literal iced.const.k_noop
-      if window_val
-        window_val.add new Access lhs
-        lhs = window_val
-      @push new Assign lhs, rhs
+
+      lhs_vec = []
+      for k in [ iced.const.k_noop, iced.const.k ]
+        val = new Value new Literal k
+        
+        # Add window. if necessary
+        if window_val
+          klass = window_val.copy()
+          klass.add new Access val
+          val = klass
+          
+        lhs_vec.push val
+          
+      assign = rhs
+      for v in lhs_vec
+        assign = new Assign v, assign
+      @push assign
 
     if @isEmpty() then null
     else               super o
