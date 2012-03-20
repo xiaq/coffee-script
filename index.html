@@ -457,8 +457,8 @@ rankPopularity f_list, cb_generator <span class="String"><span class="String">&q
     <p>Again, let's ask the question, what happens if the synchronization
      requirements change slightly?  As written, the two calls to
      <tt>rankPopularity</tt> fire in parallel, to minimize the latency
-     the end-user experiences.  But what happens if the requirements
-     change, and we want to reduce server load?  Then, we only want to
+     the end-user experiences.  Imagine the goal becomes
+     to reduce server load?  Then, we only want to
      issue the second call if the first succeeded.  The code would be
      updated as follows:
     </p>
@@ -494,9 +494,8 @@ rankPopularity w_list, <span class="FunctionArgument">(weather)</span> <span cla
     <p>
      The code on the right changed a lot more than the code on the right.
      Keep in mind, the more code you have to change, the more likely
-     you are to introduce a (subtle) bug.  The ICS compiler is 
-     automatically managing the synchronization subtleties for you,
-     even as requirements change.
+     you are to introduce a (subtle) bug.  The ICS compiler 
+     automatically manages the synchronization subtleties for you.
     </p>
 
    <p>
