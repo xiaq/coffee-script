@@ -601,3 +601,32 @@ atest 'autocb + wait + scoping problems', (cb) ->
     fun1 defer x
     fun2 defer y
   cb(x[0] is 1 and y[0] is 2, {})
+
+
+atest 'for in by + await', (cb) ->
+  res = []
+  for i in [0..10] by 3
+    await delay defer()
+    res.push i
+  cb(res.length is 4 and res[3] is 9, {})
+
+
+atest 'super after await', (cb) ->
+  class A
+    constructor : ->
+      @_i = 0
+    foo : (cb) ->
+      await delay defer()
+      @_i += 1
+      cb()
+  class B extends A
+    constructor : ->
+      super
+    foo : (cb) ->
+      await delay defer()
+      await delay defer()
+      @_i += 2
+      super cb
+  b = new B()
+  await b.foo defer()
+  cb(b._i is 3, {})
