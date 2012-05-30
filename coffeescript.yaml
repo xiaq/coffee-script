@@ -34,6 +34,7 @@ patterns:
     "0": 
       name: punctuation.definition.string.end.coffee
   name: string.quoted.heredoc.coffee
+
 - begin: "\"\"\""
   beginCaptures: 
     "0": 
@@ -44,14 +45,15 @@ patterns:
       name: punctuation.definition.string.end.coffee
   name: string.quoted.double.heredoc.coffee
   patterns: 
-  - match: \\.
+  - match: "\\."
     name: constant.character.escape.coffee
   - include: "#interpolated_coffee"
-- begin: `
+
+- begin: "`"
   beginCaptures: 
     "0": 
       name: punctuation.definition.string.begin.coffee
-  end: `
+  end: "`"
   endCaptures: 
     "0": 
       name: punctuation.definition.string.end.coffee
@@ -136,7 +138,7 @@ patterns:
   name: constant.language.coffee
 - match: \;
   name: punctuation.terminator.statement.coffee
-- match: ,[ |\t]*
+- match: ",[ |\t]*"
   name: meta.delimiter.object.comma.coffee
 - match: \.
   name: meta.delimiter.method.period.coffee
