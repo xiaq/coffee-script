@@ -748,6 +748,7 @@ class exports.Bool extends Base
   isComplex: NO
   compileNode: -> @val
   constructor: (@val) ->
+    super()
 
 #### Return
 
