@@ -867,7 +867,7 @@ exports.Value = class Value extends Base
       return
     @base = nv if (nv = @icedCpsExprRotate @base)
     for p in @properties
-      if (p.index? and @icedCpsExprRotate p.index)
+      if (p.index? and (v = @icedCpsExprRotate p.index))
         p.index = v
 
   # We compile a value to JavaScript by compiling and joining each property.
