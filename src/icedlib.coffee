@@ -35,7 +35,9 @@ _iand = (cb, res, tmp) ->
     tmp[0] = defer ok
   res[0] = false unless ok
   cb()
- 
+
+# this function takes as input two values: a callback, and a place
+# to store a result. It returns a new callback. 
 exports.iand = (cb, res) ->
   tmp = []
   _iand cb, res, tmp
