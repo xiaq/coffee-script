@@ -2728,7 +2728,8 @@ exports.For = class For extends While
 
     # Handle the case of 'for i in [0..10]'
     else if @range and @name
-      condition = new Op '<=', @name, @source.base.to
+      rop = if @range.exclusive then '<' else '<='
+      condition = new Op rop, @name, @source.base.to
       init = [ new Assign @name, @source.base.from ]
       if @step?
         step = new Op "+=", @name, @step
