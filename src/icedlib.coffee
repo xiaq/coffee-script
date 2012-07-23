@@ -85,7 +85,7 @@ exports.Pipeliner = class Pipeliner
   waitInQueue : (cb) ->
   
     # Wait until there is room in the window.
-    while @n_out > @window
+    while @n_out >= @window
       await (@cb = defer())
 
     # Lanuch a computation, so mark that there's one more
