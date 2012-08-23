@@ -630,3 +630,12 @@ atest 'super after await', (cb) ->
   b = new B()
   await b.foo defer()
   cb(b._i is 3, {})
+
+atest 'more for + when (Issue #38 via @boris-petrov)', (cb) ->
+  x = 'x'
+  bar = { b : 1 }
+  for o in [ { p : 'a' }, { p : 'b' } ] when bar[o.p]?
+    await delay defer()
+    x = o.p
+  cb(x is 'b', {})
+    

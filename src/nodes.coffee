@@ -1989,10 +1989,12 @@ exports.While = class While extends Base
     # being the break out of the loop
     cond = new If condition.invert(), new Block [ new Call break_id, [] ]
     if d.guard
-      cond.addElse new If d.guard, body
-      cond.addElse new Block [ new Call continue_id, [] ]
+      continue_block = new Block [ new Call continue_id, [] ]
+      guard_if = new If d.guard, body
+      guard_if.addElse continue_block
+      cond.addElse new Block [ d.pre_body, guard_if ]
     else
-      cond.addElse body
+      cond.addElse new Block [ d.pre_body, body ]
 
     # The top of the loop construct.
     top_body = new Block [ break_assign, continue_assign, next_assign, cond ]
@@ -2682,6 +2684,7 @@ exports.For = class For extends While
     init = []
     step = null
     scope = o.scope
+    pre_body = new Block []
 
     # Handle 'for k,v of obj'
     if @object
@@ -2723,13 +2726,13 @@ exports.For = class For extends While
         source_access = ref_val.copy()
         source_access.add new Index @index
         a5 = new Assign @name, source_access
-        body.unshift a5
+        pre_body.unshift a5
 
       # key = keys[_i]
       keys_access = keys_val.copy()
       keys_access.add new Index ival
       a4 = new Assign @index, keys_access
-      body.unshift a4
+      pre_body.unshift a4
 
     # Handle the case of 'for i in [0..10]'
     else if @range and @name
@@ -2758,11 +2761,11 @@ exports.For = class For extends While
       ref_val_copy = ref_val.copy()
       ref_val_copy.add new Index kval
       a4 = new Assign @name, ref_val_copy
-      body.unshift a4
+      pre_body.unshift a4
 
     rvar = d.rvar
     guard = d.guard
-    b = @icedWrap { condition, body, init, step, rvar, guard }
+    b = @icedWrap { condition, body, init, step, rvar, guard, pre_body }
     b.compile o
 
   # Welcome to the hairiest method in all of CoffeeScript. Handles the inner
