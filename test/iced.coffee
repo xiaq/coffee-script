@@ -638,4 +638,13 @@ atest 'more for + when (Issue #38 via @boris-petrov)', (cb) ->
     await delay defer()
     x = o.p
   cb(x is 'b', {})
+
+atest 'for + ...', (cb) ->
+  x = 0
+  inc = () ->
+    x++
+  for i in [0...10]
+    await delay defer(), 0
+    inc()
+  cb(x is 10, {})
     
