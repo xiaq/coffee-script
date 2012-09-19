@@ -14,8 +14,6 @@ CoffeeScript   = require './coffee-script'
 {EventEmitter} = require 'events'
 iced           = require './iced'
 
-my_exists = fs.exists or path.exists
-
 runtime_modes_str = "{" + (iced.const.runtime_modes.join ", ") + "}"
 
 exists         = fs.exists or path.exists
