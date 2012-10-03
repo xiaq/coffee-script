@@ -1,4 +1,4 @@
-# The `coffee` utility. Handles command-line compilation of CoffeeScript
+# The `iced` utility. Handles command-line compilation of CoffeeScript
 # into various forms: saved into `.js` files or printed to stdout, piped to
 # [JavaScript Lint](http://javascriptlint.com/) or recompiled every time the source is
 # saved, printed as a token stream or as the syntax tree, or launch an
@@ -26,14 +26,14 @@ printWarn = (line) -> process.stderr.write line + '\n'
 
 hidden = (file) -> /^\.|~$/.test file
 
-# The help banner that is printed when `coffee` is called without arguments.
+# The help banner that is printed when `iced` is called without arguments.
 BANNER = '''
   Usage: iced [options] path/to/script.coffee -- [args]
 
-  If called without options, `coffee` will run your script.
+  If called without options, `iced` will run your script.
          '''
 
-# The list of all the valid option flags that `coffee` knows how to handle.
+# The list of all the valid option flags that `iced` knows how to handle.
 SWITCHES = [
   ['-b', '--bare',            'compile without a top-level function wrapper']
   ['-c', '--compile',         'compile to JavaScript and save as .js files']
