@@ -203,6 +203,7 @@ exports.Lexer = class Lexer
   jsToken: ->
     return 0 unless @chunk.charAt(0) is '`' and match = JSTOKEN.exec @chunk
     @token 'JS', (script = match[0])[1...-1]
+    @line += count script, '\n'
     script.length
 
   # Matches regular expression literals. Lexing regular expressions is difficult
@@ -265,7 +266,6 @@ exports.Lexer = class Lexer
     indent = match[0]
     @line += count indent, '\n'
     @seenFor = no
-    prev = last @tokens, 1
     size = indent.length - 1 - indent.lastIndexOf '\n'
     noNewlines = @unfinished()
     if size - @indebt is @indent
@@ -583,11 +583,10 @@ COFFEE_KEYWORDS = COFFEE_KEYWORDS.concat COFFEE_ALIASES
 # used by CoffeeScript internally. We throw an error when these are encountered,
 # to avoid having a JavaScript error at runtime.
 RESERVED = [
-  'case', 'default', 'function', 'var', 'void', 'with'
-  'const', 'let', 'enum', 'export', 'import', 'native'
-  '__hasProp', '__extends', '__slice', '__bind', '__indexOf'
-  'implements', 'interface', 'let', 'package',
-  'private', 'protected', 'public', 'static', 'yield'
+  'case', 'default', 'function', 'var', 'void', 'with', 'const', 'let', 'enum'
+  'export', 'import', 'native', '__hasProp', '__extends', '__slice', '__bind'
+  '__indexOf', 'implements', 'interface', 'package', 'private', 'protected'
+  'public', 'static', 'yield'
 ]
 
 STRICT_PROSCRIBED = ['arguments', 'eval']
@@ -707,7 +706,7 @@ NOT_SPACED_REGEX = NOT_REGEX.concat ')', '}', 'THIS', 'IDENTIFIER', 'STRING'
 # Tokens which could legitimately be invoked or indexed. An opening
 # parentheses or bracket following these tokens will be recorded as the start
 # of a function invocation or indexing operation.
-CALLABLE  = ['IDENTIFIER', 'STRING', 'REGEX', ')', ']', '}', '?', '::', '@', 'THIS', 'SUPER', 'DEFER']
+CALLABLE  = ['IDENTIFIER', 'STRING', 'REGEX', ')', ']', '}', '?', '::', '@', 'THIS', 'SUPER', 'DEFER', 'TAMEREQUIRE']
 INDEXABLE = CALLABLE.concat 'NUMBER', 'BOOL', 'NULL', 'UNDEFINED'
 
 # Tokens that, when immediately preceding a `WHEN`, indicate that the `WHEN`

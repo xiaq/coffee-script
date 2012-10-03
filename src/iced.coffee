@@ -219,12 +219,13 @@ exports.generator = generator = (intern, compiletime, runtime) ->
   # An exception handler that triggers the above iced stack walk
   # 
 
-  runtime.exceptionHandler = exceptionHandler = (err) ->
-    console.log err.stack
+  runtime.exceptionHandler = exceptionHandler = (err, logger) ->
+    logger = console.log unless logger
+    logger err.stack
     stack = stackWalk()
     if stack.length
-      console.log "Iced 'stack' trace (w/ real line numbers):"
-      console.log stack.join "\n"
+      logger "Iced 'stack' trace (w/ real line numbers):"
+      logger stack.join "\n"
  
 
   #### catchExceptions
@@ -237,9 +238,9 @@ exports.generator = generator = (intern, compiletime, runtime) ->
   # It's good idea to kill the service at this point, since state
   # is probably horked. See his examples for more explanations.
   # 
-  runtime.catchExceptions = () ->
+  runtime.catchExceptions = (logger) ->
     process?.on 'uncaughtException', (err) ->
-      exceptionHandler err
+      exceptionHandler err, logger
       process.exit 1
 
 #### Exported items

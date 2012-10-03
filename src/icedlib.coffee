@@ -35,7 +35,9 @@ _iand = (cb, res, tmp) ->
     tmp[0] = defer ok
   res[0] = false unless ok
   cb()
- 
+
+# this function takes as input two values: a callback, and a place
+# to store a result. It returns a new callback. 
 exports.iand = (cb, res) ->
   tmp = []
   _iand cb, res, tmp
@@ -83,7 +85,7 @@ exports.Pipeliner = class Pipeliner
   waitInQueue : (cb) ->
   
     # Wait until there is room in the window.
-    while @n_out > @window
+    while @n_out >= @window
       await (@cb = defer())
 
     # Lanuch a computation, so mark that there's one more

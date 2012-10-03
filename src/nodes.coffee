@@ -749,6 +749,7 @@ class exports.Bool extends Base
   isComplex: NO
   compileNode: -> @val
   constructor: (@val) ->
+    super()
 
 #### Return
 
@@ -868,7 +869,7 @@ exports.Value = class Value extends Base
       return
     @base = nv if (nv = @icedCpsExprRotate @base)
     for p in @properties
-      if (p.index? and @icedCpsExprRotate p.index)
+      if (p.index? and (v = @icedCpsExprRotate p.index))
         p.index = v
 
   # We compile a value to JavaScript by compiling and joining each property.
@@ -1989,10 +1990,12 @@ exports.While = class While extends Base
     # being the break out of the loop
     cond = new If condition.invert(), new Block [ new Call break_id, [] ]
     if d.guard
-      cond.addElse new If d.guard, body
-      cond.addElse new Block [ new Call continue_id, [] ]
+      continue_block = new Block [ new Call continue_id, [] ]
+      guard_if = new If d.guard, body
+      guard_if.addElse continue_block
+      cond.addElse new Block [ d.pre_body, guard_if ]
     else
-      cond.addElse body
+      cond.addElse new Block [ d.pre_body, body ]
 
     # The top of the loop construct.
     top_body = new Block [ break_assign, continue_assign, next_assign, cond ]
@@ -2676,6 +2679,7 @@ exports.For = class For extends While
     init = []
     step = null
     scope = o.scope
+    pre_body = new Block []
 
     # Handle 'for k,v of obj'
     if @object
@@ -2717,17 +2721,18 @@ exports.For = class For extends While
         source_access = ref_val.copy()
         source_access.add new Index @index
         a5 = new Assign @name, source_access
-        body.unshift a5
+        pre_body.unshift a5
 
       # key = keys[_i]
       keys_access = keys_val.copy()
       keys_access.add new Index ival
       a4 = new Assign @index, keys_access
-      body.unshift a4
+      pre_body.unshift a4
 
     # Handle the case of 'for i in [0..10]'
     else if @range and @name
-      condition = new Op '<=', @name, @source.base.to
+      rop = if @source.base.exclusive then '<' else '<='
+      condition = new Op rop, @name, @source.base.to
       init = [ new Assign @name, @source.base.from ]
       if @step?
         step = new Op "+=", @name, @step
@@ -2751,11 +2756,11 @@ exports.For = class For extends While
       ref_val_copy = ref_val.copy()
       ref_val_copy.add new Index kval
       a4 = new Assign @name, ref_val_copy
-      body.unshift a4
+      pre_body.unshift a4
 
     rvar = d.rvar
     guard = d.guard
-    b = @icedWrap { condition, body, init, step, rvar, guard }
+    b = @icedWrap { condition, body, init, step, rvar, guard, pre_body }
     b.compile o
 
   # Welcome to the hairiest method in all of CoffeeScript. Handles the inner
@@ -3026,202 +3031,6 @@ Closure =
     (node instanceof Literal and node.value is 'this' and not node.asKey) or
       (node instanceof Code and node.bound) or
       (node instanceof Call and node.isSuper)
-
-#### CpsCascade
-
-CpsCascade =
-
-  wrap: (statement, rest, returnValue, o) ->
-    func = new Code [ new Param new Literal iced.const.k ],
-      (Block.wrap [ statement ]), 'icedgen'
-    args = []
-    if returnValue
-      returnValue.bindName o
-      args.push returnValue
-
-    block = Block.wrap [ rest ]
-
-    # Optimization! If the block is just a tail call to another continuation
-    # that can be inlined, then we just call that call directly.
-    if (e = block.getSingle()) and e instanceof IcedTailCall and e.canInline()
-      cont = e.extractFunc()
-    else
-      cont = new Code args, block, 'icedgen'
-
-    call = new Call func, [ cont ]
-    new Block [ call ]
-
-#### TailCall
-#
-# At the end of a iced if, loop, or switch statement, we tail call off
-# to the next continuation
-
-class IcedTailCall extends Base
-  constructor : (@func, val = null) ->
-    super()
-    @func = iced.const.k unless @func
-    @value = val
-
-  children : [ 'value' ]
-
-  assignValue : (v) ->
-    @value = v
-
-  canInline : ->
-    return not @value or @value instanceof IcedReturnValue
-
-  literalFunc: -> new Literal @func
-  extractFunc: -> new Value @literalFunc()
-
-  icedCpsRotate : ->
-    if @value
-      @value = nv if (nv = @icedCpsExprRotate @value)
-
-  compileNode : (o) ->
-    f = @literalFunc()
-    out = if o.level is LEVEL_TOP
-      if @value
-        new Block [ @value, new Call f ]
-      else
-        new Call f
-    else
-      args = if @value then [ @value ] else []
-      new Call f, args
-    out.compileNode o
-
-#### IcedReturnValue
-#
-# A variable reference to a deferred computation
-
-class IcedReturnValue extends Param
-  @counter : 0
-  constructor : () ->
-    super null, null, no
-
-  bindName : (o) ->
-    l = "#{o.scope.freeVariable iced.const.param, no}_#{IcedReturnValue.counter++}"
-    @name = new Literal l
-
-  compile : (o) ->
-    @bindName o if not @name
-    super o
-
-#### Runtime class and funcs, the most basic one...
-
-InlineRuntime =
-
-  # Generate this code, inline. Is there a better way?
-  #
-  # iced =
-  #   Deferrals : class
-  #     constructor: (@continuation) ->
-  #       @count = 1
-  #       @ret = null
-  #     _fulfill : ->
-  #       @continuation @ret if not --@count
-  #     defer : (defer_params) ->
-  #       @count++
-  #       (inner_params...) =>
-  #         defer_params?.assign_fn?.apply(null, inner_params)
-  #         @_fulfill()
-  #   findDeferral : (args) -> null
-  #
-  generate : (ns_window) ->
-    k = new Literal "continuation"
-    cnt = new Literal "count"
-    cn = new Value new Literal iced.const.Deferrals
-    ns = new Value new Literal iced.const.ns
-    if ns_window # window.iced = ...
-      ns_window.add new Access ns
-      ns = ns_window
-
-    # make the constructor:
-    #
-    #   constructor: (@continuation) ->
-    #     @count = 1
-    #     @ret = null
-    #
-    k_member = new Value new Literal "this"
-    k_member.add new Access k
-    p1 = new Param k_member
-    cnt_member = new Value new Literal "this"
-    cnt_member.add new Access cnt
-    ret_member = new Value new Literal "this"
-    ret_member.add new Access new Value new Literal iced.const.retslot
-    a1 = new Assign cnt_member, new Value new Literal 1
-    a2 = new Assign ret_member, NULL()
-    constructor_params = [ p1 ]
-    constructor_body = new Block [ a1, a2 ]
-    constructor_code = new Code constructor_params, constructor_body
-    constructor_name = new Value new Literal "constructor"
-    constructor_assign = new Assign constructor_name, constructor_code
-
-    # make the _fulfill member:
-    #
-    #   _fulfill : ->
-    #     @continuation @ret if not --@count
-    #
-    if_expr = new Call k_member, [ ret_member ]
-    if_body = new Block [ if_expr ]
-    decr = new Op '--', cnt_member
-    if_cond = new Op '!', decr
-    my_if = new If if_cond, if_body
-    _fulfill_body = new Block [ my_if ]
-    _fulfill_code = new Code [], _fulfill_body
-    _fulfill_name = new Value new Literal iced.const.fulfill
-    _fulfill_assign = new Assign _fulfill_name, _fulfill_code
-
-    # Make the defer member:
-    #   defer : (defer_params) ->
-    #     @count++
-    #     (inner_params...) ->
-    #       defer_params?.assign_fn?.apply(null, inner_params)
-    #       @_fulfill()
-    #
-    inc = new Op "++", cnt_member
-    ip = new Literal "inner_params"
-    dp = new Literal "defer_params"
-    dp_value = new Value dp
-    call_meth = new Value dp
-    af = new Literal iced.const.assign_fn
-    call_meth.add new Access af, "soak"
-    my_apply = new Literal "apply"
-    call_meth.add new Access my_apply, "soak"
-    my_null = NULL()
-    apply_call = new Call call_meth, [ my_null, new Value ip ]
-    _fulfill_method = new Value new Literal "this"
-    _fulfill_method.add new Access new Literal iced.const.fulfill
-    _fulfill_call = new Call _fulfill_method, []
-    inner_body = new Block [ apply_call, _fulfill_call ]
-    inner_params = [ new Param ip, null, on ]
-    inner_code = new Code inner_params, inner_body, "boundfunc"
-    defer_body = new Block [ inc, inner_code ]
-    defer_params = [ new Param dp ]
-    defer_code = new Code defer_params, defer_body
-    defer_name = new Value new Literal iced.const.defer_method
-    defer_assign = new Assign defer_name, defer_code
-
-    # Piece the class together
-    assignments = [ constructor_assign, _fulfill_assign, defer_assign ]
-    obj = new Obj assignments, true
-    body = new Block [ new Value obj ]
-    klass = new Class null, null, body
-    klass_assign = new Assign cn, klass, "object"
-
-    # A stub so that the function still works
-    #      findDeferral : (args) -> null
-    outer_block = new Block [ NULL() ]
-    fn_code = new Code [ ], outer_block
-    fn_name = new Value new Literal iced.const.findDeferral
-    fn_assign = new Assign fn_name, fn_code, "object"
-
-    # iced =
-    #   Deferrals : <class>
-    #   findDeferral : <code>
-    #
-    ns_obj = new Obj [ klass_assign, fn_assign ], true
-    ns_val = new Value ns_obj
-    new Assign ns, ns_val
 
 #### CpsCascade
 

@@ -16,6 +16,8 @@ iced           = require './iced'
 
 runtime_modes_str = "{" + (iced.const.runtime_modes.join ", ") + "}"
 
+exists         = fs.exists or path.exists
+
 # Allow CoffeeScript to emit Node.js events.
 helpers.extend CoffeeScript, new EventEmitter
 
@@ -28,7 +30,7 @@ hidden = (file) -> /^\.|~$/.test file
 BANNER = '''
   Usage: iced [options] path/to/script.coffee -- [args]
 
-  If called without options, `iced` will run your script.
+  If called without options, `coffee` will run your script.
          '''
 
 # The list of all the valid option flags that `coffee` knows how to handle.
@@ -76,9 +78,8 @@ exports.run = ->
   return compileStdio()                  if opts.stdio
   return compileScript null, sources[0]  if opts.eval
   return require './repl'                unless sources.length
-  if opts.run
-    opts.literals = sources.splice(1).concat opts.literals
-  process.argv = process.argv[0..1].concat opts.literals
+  literals = if opts.run then sources.splice 1 else []
+  process.argv = process.argv[0..1].concat literals
   process.argv[0] = 'iced'
   process.execPath = require.main.filename
   for source in sources
@@ -253,8 +254,8 @@ removeSource = (source, base, removeJs) ->
   sourceCode.splice index, 1
   if removeJs and not opts.join
     jsPath = outputPath source, base
-    path.exists jsPath, (exists) ->
-      if exists
+    exists jsPath, (itExists) ->
+      if itExists
         fs.unlink jsPath, (err) ->
           throw err if err and err.code isnt 'ENOENT'
           timeLog "removed #{source}"
@@ -280,8 +281,8 @@ writeJs = (source, js, base) ->
         printLine err.message
       else if opts.compile and opts.watch
         timeLog "compiled #{source}"
-  path.exists jsDir, (exists) ->
-    if exists then compile() else exec "mkdir -p #{jsDir}", compile
+  exists jsDir, (itExists) ->
+    if itExists then compile() else exec "mkdir -p #{jsDir}", compile
 
 # Convenience for cleaner setTimeouts.
 wait = (milliseconds, func) -> setTimeout func, milliseconds
