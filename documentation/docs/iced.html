@@ -164,12 +164,13 @@ up as far as we can. Output a vector of stack frames.</p>             </td>     
       <span class="nv">tr = </span><span class="nx">tr</span><span class="o">?</span><span class="p">[</span><span class="nx">C</span><span class="p">.</span><span class="nx">parent</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">C</span><span class="p">.</span><span class="nx">trace</span><span class="p">]</span>
     <span class="nx">ret</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <h3>exceptionHandler</h3>
 
-<p>An exception handler that triggers the above iced stack walk</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">runtime.exceptionHandler = exceptionHandler = </span><span class="nf">(err) -&gt;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span>
+<p>An exception handler that triggers the above iced stack walk</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">runtime.exceptionHandler = exceptionHandler = </span><span class="nf">(err, logger) -&gt;</span>
+    <span class="nv">logger = </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">unless</span> <span class="nx">logger</span>
+    <span class="nx">logger</span> <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span>
     <span class="nv">stack = </span><span class="nx">stackWalk</span><span class="p">()</span>
     <span class="k">if</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">length</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s2">&quot;Iced &#39;stack&#39; trace (w/ real line numbers):&quot;</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">join</span> <span class="s2">&quot;\n&quot;</span>
+      <span class="nx">logger</span> <span class="s2">&quot;Iced &#39;stack&#39; trace (w/ real line numbers):&quot;</span>
+      <span class="nx">logger</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">join</span> <span class="s2">&quot;\n&quot;</span>
  </pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <h3>catchExceptions</h3>
 
 <p>Catch all uncaught exceptions with the iced exception handler.
@@ -178,9 +179,9 @@ As mentioned here:</p>
 <p>http://debuggable.com/posts/node-js-dealing-with-uncaught-exceptions:4c933d54-1428-443c-928d-4e1ecbdd56cb </p>
 
 <p>It's good idea to kill the service at this point, since state
-is probably horked. See his examples for more explanations.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">runtime.catchExceptions = </span><span class="nf">() -&gt;</span>
+is probably horked. See his examples for more explanations.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">runtime.catchExceptions = </span><span class="nf">(logger) -&gt;</span>
     <span class="nx">process</span><span class="o">?</span><span class="p">.</span><span class="kc">on</span> <span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="nf">(err) -&gt;</span>
-      <span class="nx">exceptionHandler</span> <span class="nx">err</span>
+      <span class="nx">exceptionHandler</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">logger</span>
       <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span> <span class="mi">1</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h3>Exported items</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">exports.runtime = </span><span class="p">{}</span>
 <span class="nx">generator</span> <span class="k">this</span><span class="p">,</span> <span class="nx">exports</span><span class="p">,</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">runtime</span>
 
