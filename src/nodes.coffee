@@ -1965,8 +1965,12 @@ exports.While = class While extends Base
     # of the loop (if it's there), and also the recursive
     # call back to the top.
     continue_id = new Value new Literal iced.const.c_while
-    continue_block = new Block [ new Call top_id, [ k_id ] ]
-    continue_block.unshift d.step if d.step
+    continue_block_inner = new Block [ new Call top_id, [ k_id ] ]
+    continue_block_inner.unshift d.step if d.step
+    continue_fn = new Code [], continue_block_inner
+    tramp = new Value new Literal iced.const.ns
+    tramp.add(new Access new Value new Literal iced.const.trampoline)
+    continue_block = new Block [ new Call tramp, [ continue_fn ] ]
     continue_body = new Code [], continue_block, 'icedgen'
     continue_assign = new Assign continue_id, continue_body, null, { icedlocal : yes }
 
@@ -3220,11 +3224,21 @@ InlineRuntime =
     fn_name = new Value new Literal iced.const.findDeferral
     fn_assign = new Assign fn_name, fn_code, "object"
 
+    # A stub trampoline so that it strill works:
+    #     trampoline : (fn) -> fn()
+    fn = new Literal "_fn"
+    tr_block = new Block [ new Call (new Value fn), [] ]
+    tr_params = [ new Param fn ]
+    tr_code = new Code tr_params, tr_block
+    tr_name = new Value new Literal iced.const.trampoline
+    tr_assign = new Assign tr_name, tr_code, "object"
+
     # iced =
     #   Deferrals : <class>
     #   findDeferral : <code>
+    #   trampoline : <code>
     #
-    ns_obj = new Obj [ klass_assign, fn_assign ], true
+    ns_obj = new Obj [ klass_assign, fn_assign, tr_assign ], true
     ns_val = new Value ns_obj
     new Assign ns, ns_val
 

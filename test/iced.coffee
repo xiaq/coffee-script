@@ -647,4 +647,4 @@ atest 'for + ...', (cb) ->
     await delay defer(), 0
     inc()
   cb(x is 10, {})
-    
+

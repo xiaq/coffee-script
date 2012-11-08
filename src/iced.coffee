@@ -48,6 +48,7 @@ exports.generator = generator = (intern, compiletime, runtime) ->
     funcname : "funcname"
     catchExceptions : 'catchExceptions'
     runtime_modes : [ "node", "inline", "window", "none" ]
+    trampoline : "trampoline"
 
   #### runtime
   # 
@@ -96,6 +97,20 @@ exports.generator = generator = (intern, compiletime, runtime) ->
 
   intern._warn = (m) ->
     console?.log "ICED warning: #{m}"
+
+  ####
+  # 
+  # trampoline --- make a call to the next continuation...
+  #   we can either do this directly, or every 500 ticks, from the
+  #   main loop (so we don't overwhelm ourselves for stack space)..
+  # 
+  runtime.trampoline = (fn) ->
+    if not intern.tickCounter 500
+      fn()
+    else if process?
+      process.nextTick fn
+    else
+      setTimeout fn
     
   #### Deferrals
   #
@@ -122,12 +137,8 @@ exports.generator = generator = (intern, compiletime, runtime) ->
     _fulfill : (id, trace) ->
       if --@count > 0
         # noop
-      else if not intern.tickCounter 500
-        @_call trace
-      else if process?
-        process.nextTick (=> @_call trace)
       else
-        setTimeout (=> @_call trace), 0
+        runtime.trampoline ( () => @_call trace )
       
     defer : (args) ->
       @count++
