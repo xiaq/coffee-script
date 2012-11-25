@@ -648,3 +648,9 @@ atest 'for + ...', (cb) ->
     inc()
   cb(x is 10, {})
 
+atest "destructuring assignment in defer", (cb) ->
+  j = (cb) ->
+    await delay defer(), 0
+    cb { z : 33 }
+  await j defer { z }
+  cb(z is 33, {})

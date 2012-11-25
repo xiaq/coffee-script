@@ -1246,8 +1246,11 @@ exports.Obj = class Obj extends Base
   children: ['properties']
 
   toSlot : (i) ->
-    for prop in @properties when prop instanceof Assign
-      (prop.value.toSlot i).addAccess prop.variable
+    for prop in @properties
+      if prop instanceof Assign
+        (prop.value.toSlot i).addAccess prop.variable
+      else if prop instanceof Value
+        (prop.toSlot i).addAccess prop
 
   icedWrapContinuation : YES
   icedCpsRotate : ->
