@@ -41,12 +41,12 @@ git rebase master
 ./bin/cake test
 ```
 
-1. You're good to push if it all looks good.
-     a. First commit all the new changes post-rebase with:
+1. You're good to push if it all looks good. First commit all the new changes post-rebase with:
 ```sh
 git commit -a
 ```
-     a. Then do a push to the *<b>iced</b>* branch.
+
+1. Then do a push to the *<b>iced</b>* branch.
 ```sh
 git push origin iced
 ```
@@ -57,7 +57,8 @@ git tag -a -m vbump 1.4.0a
 git push --tags
 ```
 
-1. Finally, publish to npm:
+1. Finally, publish to npm.  It's usually worth cloning out a fresh
+copy from github, and then running:
 ```sh
 npm publish
 ```
@@ -85,6 +86,74 @@ to continue with the rebase.
 
 ### Proposed Method A: Compressed Rebase
 
+As above, but use `git rebase -i master` above.  Replace all but
+the first `pick` with a `squash`.  
+
 ### Proposed Method B: Merging
 
+Update *master* and *iced* branch as above, and then merge:
+
+```sh
+git checkout master
+git remote add upstream git@github.com:jashkenas/coffee-script
+git pull upstream master
+git checkout iced
+git pull origin iced
+git merge master
+# update versions and rebuild
+git commit -m "rebuild"
+git push origin iced
+```
+
 ## Documentation
+
+The documentation system is totally separate.  Here is the general idea:
+
+1. Make sure the *iced* branch is up-to-date:
+```sh
+git checkout iced
+git pull origin iced 
+```
+
+1. Checkout and update the *gh-pages* branch:
+```sh
+git checkout gh-pages
+git pull origin gh-pages
+```
+
+
+1. Then do the merge:
+```sh
+git merge iced
+```
+
+1. This will destroy you with conflicts, but most of them can be worked
+through.  Basically, you want to call `theirs`, as above, on everything
+*<b>but</b>* the `documentation/index.html.erb` file.
+
+1. Edit `documentation/index.html.erb` by hand, changing the current version
+number to whatever it is nowadays.
+
+1. Rebuild the documentation like `index.html` and the
+embedded examples.
+```sh
+rake doc
+```
+
+1. Run `docco` on the source files:
+```sh
+icake doc:source
+```
+
+1. Commit everything:
+```sh
+git commit -a
+```
+
+1. And push
+```sh
+git push origin gh-pages
+```
+
+1. Test that the `run` button still works on the front page, and that the
+sandbox is still operational.
