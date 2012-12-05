@@ -502,7 +502,6 @@ exports.Block = class Block extends Base
         code = node.compile o
         unless node.isStatement o
           code = "#{@tab}#{code};"
-          code = "#{code}\n" if node instanceof Literal
         codes.push code
       else
         codes.push node.compile o, LEVEL_LIST
@@ -1047,8 +1046,8 @@ exports.Call = class Call extends Base
       return """
         (function(func, args, ctor) {
         #{idt}ctor.prototype = func.prototype;
-        #{idt}var child = new ctor, result = func.apply(child, args), t = typeof result;
-        #{idt}return t == "object" || t == "function" ? result || child : child;
+        #{idt}var child = new ctor, result = func.apply(child, args);
+        #{idt}return Object(result) === result ? result : child;
         #{@tab}})(#{ @variable.compile o, LEVEL_LIST }, #{splatArgs}, function(){})
       """
     base = new Value @variable
@@ -1246,8 +1245,11 @@ exports.Obj = class Obj extends Base
   children: ['properties']
 
   toSlot : (i) ->
-    for prop in @properties when prop instanceof Assign
-      (prop.value.toSlot i).addAccess prop.variable
+    for prop in @properties
+      if prop instanceof Assign
+        (prop.value.toSlot i).addAccess prop.variable
+      else if prop instanceof Value
+        (prop.toSlot i).addAccess prop
 
   icedWrapContinuation : YES
   icedCpsRotate : ->
@@ -1965,8 +1967,12 @@ exports.While = class While extends Base
     # of the loop (if it's there), and also the recursive
     # call back to the top.
     continue_id = new Value new Literal iced.const.c_while
-    continue_block = new Block [ new Call top_id, [ k_id ] ]
-    continue_block.unshift d.step if d.step
+    continue_block_inner = new Block [ new Call top_id, [ k_id ] ]
+    continue_block_inner.unshift d.step if d.step
+    continue_fn = new Code [], continue_block_inner
+    tramp = new Value new Literal iced.const.ns
+    tramp.add(new Access new Value new Literal iced.const.trampoline)
+    continue_block = new Block [ new Call tramp, [ continue_fn ] ]
     continue_body = new Code [], continue_block, 'icedgen'
     continue_assign = new Assign continue_id, continue_body, null, { icedlocal : yes }
 
@@ -2185,9 +2191,12 @@ exports.Op = class Op extends Base
 
   # Compile a unary **Op**.
   compileUnary: (o) ->
+    parts = [op = @operator]
+    if op is '!' and @first instanceof Existence
+      @first.negated = not @first.negated
+      return @first.compile o
     if o.level >= LEVEL_ACCESS
       return (new Parens this).compile o
-    parts = [op = @operator]
     plusMinus = op in ['+', '-']
     parts.push ' ' if op in ['new', 'typeof', 'delete'] or
                       plusMinus and @first instanceof Op and @first.operator is op
@@ -2555,14 +2564,17 @@ exports.Try = class Try extends Base
   # is optional, the *catch* is not.
   compileNode: (o) ->
     o.indent  += TAB
-    errorPart = if @error then " (#{ @error.compile o }) " else ' '
     tryPart   = @attempt.compile o, LEVEL_TOP
 
     catchPart = if @recovery
+      if @error.isObject?()
+        placeholder = new Literal '_error'
+        @recovery.unshift new Assign @error, placeholder
+        @error = placeholder
       if @error.value in STRICT_PROSCRIBED
         throw SyntaxError "catch variable may not be \"#{@error.value}\""
       o.scope.add @error.value, 'param' unless o.scope.check @error.value
-      " catch#{errorPart}{\n#{ @recovery.compile o, LEVEL_TOP }\n#{@tab}}"
+      " catch (#{ @error.compile o }) {\n#{ @recovery.compile o, LEVEL_TOP }\n#{@tab}}"
     else unless @ensure or @recovery
       ' catch (_error) {}'
 
@@ -3220,11 +3232,21 @@ InlineRuntime =
     fn_name = new Value new Literal iced.const.findDeferral
     fn_assign = new Assign fn_name, fn_code, "object"
 
+    # A stub trampoline so that it strill works:
+    #     trampoline : (fn) -> fn()
+    fn = new Literal "_fn"
+    tr_block = new Block [ new Call (new Value fn), [] ]
+    tr_params = [ new Param fn ]
+    tr_code = new Code tr_params, tr_block
+    tr_name = new Value new Literal iced.const.trampoline
+    tr_assign = new Assign tr_name, tr_code, "object"
+
     # iced =
     #   Deferrals : <class>
     #   findDeferral : <code>
+    #   trampoline : <code>
     #
-    ns_obj = new Obj [ klass_assign, fn_assign ], true
+    ns_obj = new Obj [ klass_assign, fn_assign, tr_assign ], true
     ns_val = new Value ns_obj
     new Assign ns, ns_val
 

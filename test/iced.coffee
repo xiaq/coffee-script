@@ -630,3 +630,27 @@ atest 'super after await', (cb) ->
   b = new B()
   await b.foo defer()
   cb(b._i is 3, {})
+
+atest 'more for + when (Issue #38 via @boris-petrov)', (cb) ->
+  x = 'x'
+  bar = { b : 1 }
+  for o in [ { p : 'a' }, { p : 'b' } ] when bar[o.p]?
+    await delay defer()
+    x = o.p
+  cb(x is 'b', {})
+
+atest 'for + ...', (cb) ->
+  x = 0
+  inc = () ->
+    x++
+  for i in [0...10]
+    await delay defer(), 0
+    inc()
+  cb(x is 10, {})
+
+atest "destructuring assignment in defer", (cb) ->
+  j = (cb) ->
+    await delay defer(), 0
+    cb { z : 33 }
+  await j defer { z }
+  cb(z is 33, {})

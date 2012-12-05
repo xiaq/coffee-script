@@ -90,7 +90,9 @@ task 'build:parser', 'rebuild the Jison parser (run build first)', ->
 
 
 task 'build:ultraviolet', 'build and install the Ultraviolet syntax highlighter', ->
-  exec 'sudo mv coffeescript.yaml /usr/local/lib/ruby/gems/1.8/gems/ultraviolet-0.10.2/syntax/coffeescript.syntax'
+  exec 'plist2syntax ../coffee-script-tmbundle/Syntaxes/CoffeeScript.tmLanguage', (err) ->
+    throw err if err
+    exec 'sudo mv coffeescript.yaml /usr/local/lib/ruby/gems/1.8/gems/ultraviolet-0.10.2/syntax/coffeescript.syntax'
 
 
 jsGenLib = (name) ->
@@ -103,8 +105,7 @@ jsGenLib = (name) ->
     
 jsMinify = (code) ->
   unless process.env.MINIFY is 'false'
-    {parser, uglify} = require 'uglify-js'
-    code = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle parser.parse code
+    {code} = require('uglify-js').minify code, fromString: true
   code
 
 jsWrapCode = (code, klass, req, assigns) -> 
@@ -116,7 +117,6 @@ jsWrapCode = (code, klass, req, assigns) ->
         #{code}
         return require['./#{req}'];
       }();
-
       if (typeof define === 'function' && define.amd) {"""
         
   for x in assigns
