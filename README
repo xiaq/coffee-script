@@ -21,7 +21,7 @@
 
 
   CoffeeScript is a little language that compiles into JavaScript.
-  IcedCoffeeScript is a superset of CoffeeScript, which add two new 
+  IcedCoffeeScript is a superset of CoffeeScript, which adds two new 
   keywords: await and defer.
 
   Install Node.js, and then the CoffeeScript compiler:
