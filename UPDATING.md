@@ -7,27 +7,32 @@
 Here is the current system:
 
 1. Add a remote upstream repo to pull in the mainline changes:
-```
+```sh
 git remote add upstream git@github.com:jashkenas/coffee-script
 ```
+
 1. Pull from the upstream into our master branch:
-```
+```sh
 git pull upstream master
 ```
+
 1. Make sure the local `iced` branch is up-to-date:
-```
+```sh
 git checkout iced
 git pull origin iced
 ```
+
 1. Then do the rebase (which will fail all sorts of ways, see below...):
-```
+```sh
 git rebase master
 ```
+
 1. Then, once the rebase has succeeded:
     * Update the version number of `package.json`
     * Update the version number in `src/coffee-script.coffee`
+
 1. Then build a million different times:
-```
+```sh
 ./bin/cake build
 ./bin/cake build:parser
 ./bin/cake build
@@ -45,8 +50,7 @@ little shell script called `theirs`:
 #!/bin/sh
 
 git checkout --theirs $*
-git add $*
-
+git add $* 
 ```
 
 And run this on any file (or directory's worth of files) that has a
