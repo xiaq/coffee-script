@@ -28,8 +28,8 @@ git rebase master
 ```
 
 1. Then, once the rebase has succeeded:
-    1. Update the version number of `package.json`
-    1. Update the version number in `src/coffee-script.coffee`
+     a. Update the version number of `package.json`
+     a. Update the version number in `src/coffee-script.coffee`
 
 1. Then build a million different times:
 ```sh
@@ -40,6 +40,28 @@ git rebase master
 ./bin/cake build:browser
 ./bin/cake test
 ```
+
+1. You're good to push if it all looks good.
+     a. First commit all the new changes post-rebase with:
+```sh
+git commit -a
+```
+     a. Then do a push to the *<b>iced</b>* branch.
+```sh
+git push origin iced
+```
+
+1. Make and push a new tag (supplying whatever your new version is):
+```
+git tag -a -m vbump 1.4.0a
+git push --tags
+```
+
+1. Finally, publish to npm:
+```sh
+npm publish
+```
+
 
 #### Rebasing will fail!
 
