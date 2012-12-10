@@ -22,7 +22,7 @@ git checkout iced
 git pull origin iced
 ```
 
-1. Then do the rebase (which will fail all sorts of ways, see below...):
+1. Then do the rebase (which will fail in all sorts of ways, see below...):
 ```sh
 git rebase master
 ```

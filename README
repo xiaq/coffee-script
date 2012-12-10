@@ -28,14 +28,14 @@
   sudo bin/cake install
 
   Or, if you have the Node Package Manager installed:
-  npm install -g coffee-script
+  npm install -g iced-coffee-script
   (Leave off the -g if you don't wish to install globally.)
 
   Execute a script:
-  coffee /path/to/script.coffee
+  iced /path/to/script.coffee
 
   Compile a script:
-  coffee -c /path/to/script.coffee
+  iced -c /path/to/script.coffee
 
   For documentation, usage, and examples, see:
   http://maxtaco.github.com/coffee-script
@@ -43,8 +43,9 @@
   To suggest a feature, report a bug, or general discussion:
   http://github.com/maxtaco/coffee-script/issues/
 
-  If you'd like to chat, drop by #coffeescript on Freenode IRC,
-  or on webchat.freenode.net.
+  DM or tweet at me with questions: @maxtaco
+
+  Or better yet, tweet about how much you love IcedCoffeeScript.
 
   The source repository:
   git://github.com/maxtaco/coffee-script.git
