@@ -1,4 +1,3 @@
-
   
         
                                       ICED
@@ -40,8 +39,11 @@
   For documentation, usage, and examples, see:
   http://maxtaco.github.com/coffee-script
 
+  For iced-specific technical documentation, see:
+  https://github.com/maxtaco/coffee-script/blob/iced/iced.md
+
   To suggest a feature, report a bug, or general discussion:
-  http://github.com/maxtaco/coffee-script/issues/
+  https://github.com/maxtaco/coffee-script/issues/
 
   DM or tweet at me with questions: @maxtaco
 
