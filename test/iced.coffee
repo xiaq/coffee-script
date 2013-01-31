@@ -72,6 +72,15 @@ atest "for k,v in arr testing", (cb) ->
     s += v + " " + i + " "
   cb( s is "the 0 quick 1 brown 2 ", {} )
 
+atest "switch --- github issue #55", (cb) ->
+  await delay defer()
+  switch "blah"
+    when "a"
+      await delay defer()
+    when "b"
+      await delay defer()
+  cb( true, {} )
+
 atest "switch-a-roos", (cb) ->
   res = 0
   for i in [0..4]

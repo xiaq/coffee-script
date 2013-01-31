@@ -2888,7 +2888,12 @@ exports.Switch = class Switch extends Base
   icedCallContinuation : ->
     for [condition,block] in @cases
       block.icedThreadReturn()
-    @otherwise?.icedThreadReturn()
+    if @otherwise?
+      @otherwise.icedThreadReturn()
+    else
+      # See github issue #55.  If no else: was specified,
+      # we still need to call back the current continuation
+      @otherwise = new Block [ new IcedTailCall ]
 
   compileNode: (o) ->
     idt1 = o.indent + TAB
