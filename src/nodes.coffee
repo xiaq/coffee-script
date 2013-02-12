@@ -2499,9 +2499,15 @@ class IcedRuntime extends Block
         if window_mode
           window_val = new Value new Literal v
         InlineRuntime.generate(if window_val then window_val.copy() else null)
-      when "node"
-        file = new Literal "'iced-coffee-script'"
-        access = new Access new Literal iced.const.ns
+      when "node", "browserify"
+        if v is "browserify"
+          modname = "iced-coffee-script/lib/coffee-script/iced"
+          accessname = iced.const.runtime
+        else
+          modname = "iced-coffee-script"
+          accessname = iced.const.ns
+        file = new Literal "'#{modname}'"
+        access = new Access new Literal accessname
         req = new Value new Literal "require"
         call = new Call req, [ file ]
         callv = new Value call

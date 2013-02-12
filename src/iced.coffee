@@ -26,6 +26,7 @@ exports.generator = generator = (intern, compiletime, runtime) ->
     k_noop : "__iced_k_noop"
     param : "__iced_p_"
     ns: "iced"
+    runtime : "runtime"
     Deferrals : "Deferrals"
     deferrals : "__iced_deferrals"
     fulfill : "_fulfill"
@@ -47,7 +48,7 @@ exports.generator = generator = (intern, compiletime, runtime) ->
     filename : "filename"
     funcname : "funcname"
     catchExceptions : 'catchExceptions'
-    runtime_modes : [ "node", "inline", "window", "none" ]
+    runtime_modes : [ "node", "inline", "window", "none", "browserify" ]
     trampoline : "trampoline"
 
   #### runtime
