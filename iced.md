@@ -502,7 +502,7 @@ while x3
 
 * Here is schematic diagram for this AST:
 
-   <img src="/maxtaco/coffee-script/raw/iced/media/rotate1.png" width=650 />
+   <img src="/media/rotate1.png" width=650 />
 
 * After Step 2.1, nodes in blue are marked with **A**.  Recall, Step 2.1 traces
 upwards from all `await` blocks.
