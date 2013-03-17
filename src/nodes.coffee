@@ -88,21 +88,7 @@ exports.Base = class Base
     Closure.wrap(this).compileNode o
 
   # Statements that need CPS translation will have to be split into
-  # pieces as so.  Note that the icedPrequelsBlock is a slight ugly thing
-  # going on.  The problem is this: icedCpsRotate when working on an expression
-  # will want to extract the iced part **first** and then write the vanilla
-  # expression **second**.  But we're not allowed to change the 'this' node as
-  # we traverse the AST.  So therefore we introduce a Prequel, it's like the
-  # opposite of the continuation.  It's the part of the program that comes before
-  # 'this'.
-  #
-  # In the case of regular, easy-to-understand statements, we'll be in a nice
-  # situation, in which every Block has code, and potentially a continuation.
-  #
-  # In the case of expressions with nested await'ing, things are sadly way
-  # more complicated.  We could have an arbitrarily deep chain here, hence
-  # the calls to CpsCascading in a loop.
-  #
+  # pieces like so.
   compileCps : (o) ->
     @icedGotCpsSplitFlag = true
     code = CpsCascade.wrap this, @icedContinuationBlock, null, o
