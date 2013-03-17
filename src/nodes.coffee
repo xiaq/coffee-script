@@ -35,7 +35,6 @@ exports.Base = class Base
 
   constructor: ->
     @icedContinuationBlock = null
-    @icedPrequels          = []
 
     # iced AST node flags -- since we make several passes through the
     # tree setting these bits, we'll actually just flip bits in the nodes,
@@ -106,35 +105,7 @@ exports.Base = class Base
   #
   compileCps : (o) ->
     @icedGotCpsSplitFlag = true
-
-    if (l = @icedPrequels.length)
-
-      k = if @icedContinuationBlock
-        # Optimization:  We smush the "this" expression and the continuation
-        # into a flat block.
-        [ this, @icedContinuationBlock ]
-
-      else if @icedWrapContinuation()
-        # For some types of objects, we wrap the value of the object in a
-        # iced tail call here.  We might have done this earlier (in
-        # icedCallContinuation) but at that point we don't have the option
-        # to replace an AST node with IcedTailCall(this).  So instead, we
-        # do that now.
-        new IcedTailCall null, this
-
-      else
-        # The simple case is no continuation, and no added IcedTailCall
-        # needed.
-        this
-
-      while l--
-        pb = @icedPrequels[l]
-        k = CpsCascade.wrap pb.block, k, pb.retval, o
-      code = k
-
-    else
-      code = CpsCascade.wrap this, @icedContinuationBlock, null, o
-
+    code = CpsCascade.wrap this, @icedContinuationBlock, null, o
     code.compile o
 
   # If the code generation wishes to use the result of a complex expression
@@ -211,10 +182,6 @@ exports.Base = class Base
     tree = '\n' + idt + name
     tree += '?' if @soak
     tree += extras
-    for b in @icedPrequels
-      pidt = idt + TAB
-      tree += '\n' + pidt + "Prequel"
-      tree += b.block.toString pidt + TAB
     @eachChild (node) -> tree += node.toString idt + TAB
     if @icedContinuationBlock
       idt += TAB
@@ -328,30 +295,12 @@ exports.Base = class Base
       child.icedCpsRotate()
     this
 
-  # A CPS Rotation routine for expressions
-  icedCpsExprRotate : (v) ->
-    doRotate = v.icedIsIcedExpr()
-    if doRotate
-      v.icedCallContinuation()
-    v.icedCpsRotate() # do our children first, regardless...
-    if doRotate
-      @icedNestPrequelBlock v
-    else
-      null
-
   icedIsCpsPivot            :     -> @icedCpsPivotFlag
   icedNestContinuationBlock : (b) -> @icedContinuationBlock = b
-  icedHasContinuation       :     -> (!!@icedContinuationBlock or @icedPrequels?.length)
+  icedHasContinuation       :     -> (!!@icedContinuationBlock)
   icedCallContinuation      :     -> @icedCallContinuationFlag = true
   icedWrapContinuation      :     NO
   icedIsJump                :     NO
-  icedIsIcedExpr           :     -> (this not instanceof Code) and @icedNodeFlag
-
-  icedNestPrequelBlock: (bb) ->
-    rv = new IcedReturnValue()
-    obj = @icedParentAwait || this
-    obj.icedPrequels.push { block : bb, retval : rv }
-    rv
 
   icedUnwrap: (e) ->
     if e.icedHasContinuation() and @icedHasContinuation()
@@ -359,7 +308,6 @@ exports.Base = class Base
     else
       if @icedHasContinuation()
         e.icedContinuationBlock = @icedContinuationBlock
-        e.icedPrequels = @icedPrequels
       e
 
   isStatement     : NO
@@ -861,16 +809,6 @@ exports.Value = class Value extends Base
       nref = new Index nref
     [base.add(name), new Value(bref or base.base, [nref or name])]
 
-  icedWrapContinuation : YES
-  icedCpsRotate: ->
-    unless @properties.length
-      super()
-      return
-    @base = nv if (nv = @icedCpsExprRotate @base)
-    for p in @properties
-      if (p.index? and (v = @icedCpsExprRotate p.index))
-        p.index = v
-
   # We compile a value to JavaScript by compiling and joining each property.
   # Things get much more interesting if the chain of properties has *soak*
   # operators `?.` interspersed. Then we have to take care not to accidentally
@@ -961,12 +899,6 @@ exports.Call = class Call extends Base
     else
       method = o.scope.method
       (method and not method.klass and method.context) or "this"
-
-  icedWrapContinuation: YES
-  icedCpsRotate: ->
-    for a,i in @args
-      @args[i] = v if (v = @icedCpsExprRotate a)
-    @variable = v if (@variable and v = @icedCpsExprRotate @variable)
 
   # Soaked chained invocations unfold into if/else ternary structures.
   unfoldSoak: (o) ->
@@ -1251,11 +1183,6 @@ exports.Obj = class Obj extends Base
       else if prop instanceof Value
         (prop.toSlot i).addAccess prop
 
-  icedWrapContinuation : YES
-  icedCpsRotate : ->
-    for prop in @properties when prop instanceof Assign
-      prop.value = v if (v = @icedCpsExprRotate prop.value)
-
   compileNode: (o) ->
     props = @properties
     return (if @front then '({})' else '{}') unless props.length
@@ -1298,11 +1225,6 @@ exports.Arr = class Arr extends Base
   children: ['objects']
 
   filterImplicitObjects: Call::filterImplicitObjects
-
-  icedWrapContinuation : YES
-  icedCpsRotate: ->
-    for o,i in @objects
-      @objects[i] = v if (v = @icedCpsExprRotate o)
 
   compileNode: (o) ->
     return '[]' unless @objects.length
@@ -1484,10 +1406,6 @@ exports.Assign = class Assign extends Base
 
   unfoldSoak: (o) ->
     unfoldSoak o, this, 'variable'
-
-  # If our value needs a CPS rotation....
-  icedCpsRotate :  ->
-    @value = nv if (nv = @icedCpsExprRotate @value)
 
   # Compile an assignment, delegating to `compilePatternMatch` or
   # `compileSplice` if appropriate. Keep track of the name of the base object
@@ -2103,10 +2021,6 @@ exports.Op = class Op extends Base
   isChainable: ->
     @operator in ['<', '>', '>=', '<=', '===', '!==']
 
-  icedCpsRotate :  ->
-    @first = fnv if @first and (fnv = @icedCpsExprRotate @first)
-    @second = snv if @second and (snv = @icedCpsExprRotate @second)
-
   invert: ->
     if @isChainable() and @first.isChainable()
       allInvertable = yes
@@ -2648,10 +2562,6 @@ exports.Parens = class Parens extends Base
   unwrap    : -> @icedUnwrap @body
   isComplex : -> @body.isComplex()
 
-  #icedWrapContinuation : YES
-  #icedCpsRotate: ->
-  #  @body = b if (b = @icedCpsExprRotate @body)
-
   compileNode: (o) ->
     expr = @body.unwrap()
     if expr instanceof Value and expr.isAtomic()
@@ -3100,10 +3010,6 @@ class IcedTailCall extends Base
 
   literalFunc: -> new Literal @func
   extractFunc: -> new Value @literalFunc()
-
-  icedCpsRotate : ->
-    if @value
-      @value = nv if (nv = @icedCpsExprRotate @value)
 
   compileNode : (o) ->
     f = @literalFunc()
