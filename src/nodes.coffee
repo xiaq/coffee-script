@@ -1398,8 +1398,11 @@ exports.Assign = class Assign extends Base
   # we've been assigned to, for correct internal references. If the variable
   # has not been seen yet within the current scope, declare it.
   compileNode: (o) ->
+
+    # We're putting this here for now, but we're going to need it in a lot
+    # of other places...
     if @value.icedIsCpsPivot()
-      throw SyntaxError "await'ed statements can't act as expressions"
+      throw new SyntaxError "await'ed statements can't act as expressions"
 
     if isValue = @variable instanceof Value
       return @compilePatternMatch o if @variable.isArray() or @variable.isObject()
