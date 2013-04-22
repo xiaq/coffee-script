@@ -49,6 +49,16 @@
               </a>
             
               
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -113,16 +123,13 @@ generate code, you create a tree of scopes in the same shape as the nested
 function bodies. Each scope knows about the variables declared within it,
 and has a reference to its parent enclosing scope. In this way, we know which
 variables are new and need to be declared with <code>var</code>, and which are shared
-with external scopes.
-
-</p>
-<p>Import the helpers we plan to use.
-
-</p>
+with external scopes.</p>
+<p>Import the helpers we plan to use.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>{extend, last} = require <span class="string">'./helpers'</span>
+iced = require <span class="string">'./iced'</span>
 
 exports.Scope = <span class="class"><span class="keyword">class</span> <span class="title">Scope</span></span></pre></div></div>
             
@@ -135,9 +142,7 @@ exports.Scope = <span class="class"><span class="keyword">class</span> <span cla
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The <code>root</code> is the top-level <strong>Scope</strong> object for a given file.
-
-</p>
+              <p>The <code>root</code> is the top-level <strong>Scope</strong> object for a given file.</p>
 
             </div>
             
@@ -155,9 +160,7 @@ exports.Scope = <span class="class"><span class="keyword">class</span> <span cla
               <p>Initialize a scope with its parent, for lookups up the chain,
 as well as a reference to the <strong>Block</strong> node it belongs to, which is
 where it should declare its variables, and a reference to the function that
-it belongs to.
-
-</p>
+it belongs to.</p>
 
             </div>
             
@@ -175,9 +178,7 @@ it belongs to.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Adds a new variable or overrides an existing one.
-
-</p>
+              <p>Adds a new variable or overrides an existing one.</p>
 
             </div>
             
@@ -201,9 +202,7 @@ it belongs to.
 in, so that we know how to invoke the same method of the parent class. This
 can get complicated if super is being called from an inner function.
 <code>namedMethod</code> will walk up the scope tree until it either finds the first
-function object that has a name filled in, or bottoms out.
-
-</p>
+function object that has a name filled in, or bottoms out.</p>
 
             </div>
             
@@ -221,9 +220,7 @@ function object that has a name filled in, or bottoms out.
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Look up a variable name in lexical scope, and declare it if it does not
-already exist.
-
-</p>
+already exist.</p>
 
             </div>
             
@@ -242,9 +239,7 @@ already exist.
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Reserve a variable name as originating from a function parameter for this
-scope. No <code>var</code> required for internal references.
-
-</p>
+scope. No <code>var</code> required for internal references.</p>
 
             </div>
             
@@ -262,9 +257,7 @@ scope. No <code>var</code> required for internal references.
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Just check to see if a variable has already been declared, without reserving,
-walks up to the root scope.
-
-</p>
+walks up to the root scope.</p>
 
             </div>
             
@@ -280,9 +273,7 @@ walks up to the root scope.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Generate a temporary variable name at the given index.
-
-</p>
+              <p>Generate a temporary variable name at the given index.</p>
 
             </div>
             
@@ -301,9 +292,7 @@ walks up to the root scope.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Gets the type of a variable.
-
-</p>
+              <p>Gets the type of a variable.</p>
 
             </div>
             
@@ -321,9 +310,7 @@ walks up to the root scope.
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>If we need to store an intermediate result, find an available name for a
-compiler-generated variable. <code>_var</code>, <code>_var2</code>, and so on...
-
-</p>
+compiler-generated variable. <code>_var</code>, <code>_var2</code>, and so on...</p>
 
             </div>
             
@@ -343,9 +330,7 @@ compiler-generated variable. <code>_var</code>, <code>_var2</code>, and so on...
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Ensure that an assignment is made at the top of this scope
-(or at the top-level scope, if requested).
-
-</p>
+(or at the top-level scope, if requested).</p>
 
             </div>
             
@@ -362,9 +347,7 @@ compiler-generated variable. <code>_var</code>, <code>_var2</code>, and so on...
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Does this scope have any declared variables?
-
-</p>
+              <p>Does this scope have any declared variables?</p>
 
             </div>
             
@@ -380,18 +363,13 @@ compiler-generated variable. <code>_var</code>, <code>_var2</code>, and so on...
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Return the list of variables first declared in this scope.
-
-</p>
+              <p>Return the list of variables first declared in this scope.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  declaredVariables: -&gt;
     realVars = []
-    tempVars = []
-    <span class="keyword">for</span> v <span class="keyword">in</span> <span class="property">@variables</span> <span class="keyword">when</span> v.type <span class="keyword">is</span> <span class="string">'var'</span>
-      (<span class="keyword">if</span> v.name.charAt(<span class="number">0</span>) <span class="keyword">is</span> <span class="string">'_'</span> <span class="keyword">then</span> tempVars <span class="keyword">else</span> realVars).push v.name
-    realVars.sort().concat tempVars.sort()</pre></div></div>
+    tempVars = []</pre></div></div>
             
         </li>
         
@@ -402,10 +380,29 @@ compiler-generated variable. <code>_var</code>, <code>_var2</code>, and so on...
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Return the list of assignments that are supposed to be made at the top
-of this scope.
+              <p>An unfortunate iced hack, needed to get __iced_k to show up in the variable
+list and be a parameter for functions in the shared iced scope.  See test case
+&#39;autocb + wait + scoping problems&#39; in test.iced for an example where this is
+needed.</p>
 
-</p>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">for</span> v <span class="keyword">in</span> <span class="property">@variables</span> <span class="keyword">when</span> ((v.type <span class="keyword">is</span> <span class="string">'var'</span>) <span class="keyword">or</span>
+            (v.type <span class="keyword">is</span> <span class="string">'param'</span> <span class="keyword">and</span> v.name <span class="keyword">is</span> iced.<span class="reserved">const</span>.k))
+      (<span class="keyword">if</span> v.name.charAt(<span class="number">0</span>) <span class="keyword">is</span> <span class="string">'_'</span> <span class="keyword">then</span> tempVars <span class="keyword">else</span> realVars).push v.name
+    realVars.sort().concat tempVars.sort()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Return the list of assignments that are supposed to be made at the top
+of this scope.</p>
 
             </div>
             

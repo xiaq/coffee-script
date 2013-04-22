@@ -49,6 +49,16 @@
               </a>
             
               
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -109,14 +119,11 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>A simple <strong>OptionParser</strong> class to parse option flags from the command-line.
-Use it like so:
-
-</p>
+Use it like so:</p>
 <pre><code>parser  = new OptionParser switches, helpBanner
 options = parser.parse process.argv</code></pre>
 <p>The first non-option is considered to be the start of the file (and file
-option) list, and all subsequent arguments are left unparsed.
-</p>
+option) list, and all subsequent arguments are left unparsed.</p>
 
             </div>
             
@@ -131,12 +138,9 @@ option) list, and all subsequent arguments are left unparsed.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Initialize with a list of valid options, in the form:
-
-</p>
+              <p>Initialize with a list of valid options, in the form:</p>
 <pre><code>[short-flag, long-flag, description]</code></pre>
-<p>Along with an an optional banner for the usage help.
-</p>
+<p>Along with an an optional banner for the usage help.</p>
 
             </div>
             
@@ -157,8 +161,7 @@ specified options, and return it. Options after the first non-option
 argument are treated as arguments. <code>options.arguments</code> will be an array
 containing the remaining arguments. This is a simpler API than many option
 parsers that allow you to attach callback actions for every flag. Instead,
-you&#39;re responsible for interpreting the options object.
-</p>
+you&#39;re responsible for interpreting the options object.</p>
 
             </div>
             
@@ -187,8 +190,7 @@ you&#39;re responsible for interpreting the options object.
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>the CS option parser is a little odd; options after the first
-non-option argument are treated as non-option arguments themselves
-</p>
+non-option argument are treated as non-option arguments themselves</p>
 
             </div>
             
@@ -219,8 +221,7 @@ non-option argument are treated as non-option arguments themselves
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Return the help text for this <strong>OptionParser</strong>, listing and describing all
-of the valid options, for <code>--help</code> and such.
-</p>
+of the valid options, for <code>--help</code> and such.</p>
 
             </div>
             
@@ -256,8 +257,7 @@ of the valid options, for <code>--help</code> and such.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Regex matchers for option flags.
-</p>
+              <p>Regex matchers for option flags.</p>
 
             </div>
             
@@ -276,8 +276,7 @@ OPTIONAL   = <span class="regexp">/\[(\w+(\*?))\]/</span></pre></div></div>
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Build and return the list of option rules. If the optional <em>short-flag</em> is
-unspecified, leave it out by padding with <code>null</code>.
-</p>
+unspecified, leave it out by padding with <code>null</code>.</p>
 
             </div>
             
@@ -296,8 +295,7 @@ unspecified, leave it out by padding with <code>null</code>.
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Build a rule from a <code>-o</code> short flag, a <code>--output [DIR]</code> long flag, and the
-description of what the option does.
-</p>
+description of what the option does.</p>
 
             </div>
             
@@ -323,8 +321,7 @@ description of what the option does.
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Normalize arguments by expanding merged flags into multiple flags. This allows
-you to have <code>-wl</code> be the same as <code>--watch --lint</code>.
-</p>
+you to have <code>-wl</code> be the same as <code>--watch --lint</code>.</p>
 
             </div>
             

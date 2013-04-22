@@ -49,6 +49,16 @@
               </a>
             
               
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -113,11 +123,8 @@ and shorthand syntax. This can greatly complicate a grammar and bloat
 the resulting parse table. Instead of making the parser handle it all, we take
 a series of passes over the token stream, using this <strong>Rewriter</strong> to convert
 shorthand into the unambiguous long form, add implicit indentation and
-parentheses, and generally clean things up.
-
-</p>
-<p>Create a generated token: one that exists due to a use of implicit syntax.
-</p>
+parentheses, and generally clean things up.</p>
+<p>Create a generated token: one that exists due to a use of implicit syntax.</p>
 
             </div>
             
@@ -136,8 +143,7 @@ parentheses, and generally clean things up.
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>The <strong>Rewriter</strong> class is used by the <a href="lexer.html">Lexer</a>, directly against
-its internal array of tokens.
-</p>
+its internal array of tokens.</p>
 
             </div>
             
@@ -152,16 +158,13 @@ its internal array of tokens.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Helpful snippet for debugging:
-
-</p>
+              <p>Helpful snippet for debugging:</p>
 <pre><code>console.log (t[0] + &#39;/&#39; + t[1] for t in @tokens).join &#39; &#39;</code></pre>
 <p>Rewrite the token stream in multiple passes, one logical filter at
 a time. This could certainly be changed into a single pass through the
 stream, with a big ol&#39; efficient switch, but it&#39;s much nicer to work with
 like this. The order of these passes matters -- indentation must be
-corrected before implicit parentheses can be wrapped around blocks of code.
-</p>
+corrected before implicit parentheses can be wrapped around blocks of code.</p>
 
             </div>
             
@@ -189,8 +192,7 @@ corrected before implicit parentheses can be wrapped around blocks of code.
 Allow the return value of the block to tell us how many tokens to move
 forwards (or backwards) in the stream, to make sure we don&#39;t miss anything
 as tokens are inserted and removed, and the stream changes length under
-our feet.
-</p>
+our feet.</p>
 
             </div>
             
@@ -223,8 +225,7 @@ our feet.
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Leading newlines would introduce an ambiguity in the grammar, so we
-dispatch them here.
-</p>
+dispatch them here.</p>
 
             </div>
             
@@ -242,8 +243,7 @@ dispatch them here.
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Some blocks occur in the middle of expressions -- when we&#39;re expecting
-this, remove their trailing newlines.
-</p>
+this, remove their trailing newlines.</p>
 
             </div>
             
@@ -264,8 +264,7 @@ this, remove their trailing newlines.
               </div>
               <p>The lexer has tagged the opening parenthesis of a method call. Match it with
 its paired close. We have the mis-nested outdent case included here for
-calls that close on the same line, just before their outdent.
-</p>
+calls that close on the same line, just before their outdent.</p>
 
             </div>
             
@@ -291,8 +290,7 @@ calls that close on the same line, just before their outdent.
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>The lexer has tagged the opening parenthesis of an indexing operation call.
-Match it with its paired close.
-</p>
+Match it with its paired close.</p>
 
             </div>
             
@@ -318,8 +316,7 @@ Match it with its paired close.
               </div>
               <p>Match tags in token stream starting at i with pattern, skipping HERECOMMENTs
 Pattern may consist of strings (equality), an array of strings (one of)
-or null (wildcard)
-</p>
+or null (wildcard)</p>
 
             </div>
             
@@ -342,8 +339,7 @@ or null (wildcard)
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>yes iff standing in front of something looking like
-@<x>: or <x>:, skipping over &#39;HERECOMMENT&#39;s
-</p>
+@<x>: or <x>:, skipping over &#39;HERECOMMENT&#39;s</p>
 
             </div>
             
@@ -361,8 +357,7 @@ or null (wildcard)
               </div>
               <p>yes iff current line of tokens contain an element of tags on same
 expression level. Stop searching at LINEBREAKS or explicit start of
-containing balanced expression.
-</p>
+containing balanced expression.</p>
 
             </div>
             
@@ -387,8 +382,7 @@ containing balanced expression.
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Look for signs of implicit calls and objects in the token stream and
-add them.
-</p>
+add them.</p>
 
             </div>
             
@@ -403,8 +397,7 @@ add them.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Track current balancing depth (both implicit and explicit) on stack.
-</p>
+              <p>Track current balancing depth (both implicit and explicit) on stack.</p>
 
             </div>
             
@@ -427,8 +420,7 @@ add them.
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Helper function, used for keeping track of the number of tokens consumed
-and spliced, when returning for getting a new token.
-</p>
+and spliced, when returning for getting a new token.</p>
 
             </div>
             
@@ -443,8 +435,7 @@ and spliced, when returning for getting a new token.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Helper functions
-</p>
+              <p>Helper functions</p>
 
             </div>
             
@@ -462,8 +453,7 @@ and spliced, when returning for getting a new token.
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Unclosed control statement inside implicit parens (like
-class declaration or if-conditionals)
-</p>
+class declaration or if-conditionals)</p>
 
             </div>
             
@@ -501,8 +491,7 @@ class declaration or if-conditionals)
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>Don&#39;t end an implicit call on next indent if any of these are in an argument
-</p>
+              <p>Don&#39;t end an implicit call on next indent if any of these are in an argument</p>
 
             </div>
             
@@ -522,9 +511,7 @@ class declaration or if-conditionals)
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>An <code>INDENT</code> closes an implicit call unless
-
-</p>
+              <p>An <code>INDENT</code> closes an implicit call unless</p>
 <ol>
 <li>We have seen a <code>CONTROL</code> argument on the line.</li>
 <li>The last token before the indent is part of the list below</li>
@@ -547,8 +534,7 @@ class declaration or if-conditionals)
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Straightforward start of explicit expression
-</p>
+              <p>Straightforward start of explicit expression</p>
 
             </div>
             
@@ -565,8 +551,7 @@ class declaration or if-conditionals)
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>Close all implicit expressions inside of explicitly closed expressions.
-</p>
+              <p>Close all implicit expressions inside of explicitly closed expressions.</p>
 
             </div>
             
@@ -590,8 +575,7 @@ class declaration or if-conditionals)
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Recognize standard implicit calls like
-f a, f() b, f? c, h[0] d etc.
-</p>
+f a, f() b, f? c, h[0] d etc.</p>
 
             </div>
             
@@ -602,7 +586,8 @@ f a, f() b, f? c, h[0] d etc.
           <span class="keyword">not</span> tokens[i + <span class="number">1</span>]?.spaced <span class="keyword">and</span> <span class="keyword">not</span> tokens[i + <span class="number">1</span>]?.newLine)
         tag = token[<span class="number">0</span>] = <span class="string">'FUNC_EXIST'</span> <span class="keyword">if</span> tag <span class="keyword">is</span> <span class="string">'?'</span>
         startImplicitCall i + <span class="number">1</span>
-        <span class="keyword">return</span> forward(<span class="number">2</span>)</pre></div></div>
+        ret = forward(<span class="number">2</span>)
+        <span class="keyword">return</span> ret</pre></div></div>
             
         </li>
         
@@ -613,33 +598,24 @@ f a, f() b, f? c, h[0] d etc.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Implicit call taking an implicit indented object as first argument.
-
-</p>
+              <p>Implicit call taking an implicit indented object as first argument.</p>
 <pre><code>f
   a: b
   c: d</code></pre>
-<p>and
-
-</p>
+<p>and</p>
 <pre><code>f
   1
   a: b
   b: c</code></pre>
 <p>Don&#39;t accept implicit calls of this type, when on the same line
-as the control strucutures below as that may misinterpret constructs like:
-
-</p>
+as the control strucutures below as that may misinterpret constructs like:</p>
 <pre><code>if f
    a: 1</code></pre>
-<p>as
-
-</p>
+<p>as</p>
 <pre><code>if f(a: 1)</code></pre>
 <p>which is probably always unintended.
 Furthermore don&#39;t allow this in literal arrays, as
-that creates grammatical ambiguities.
-</p>
+that creates grammatical ambiguities.</p>
 
             </div>
             
@@ -659,8 +635,7 @@ that creates grammatical ambiguities.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Implicit objects start here
-</p>
+              <p>Implicit objects start here</p>
 
             </div>
             
@@ -675,8 +650,7 @@ that creates grammatical ambiguities.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Go back to the (implicit) start of the object
-</p>
+              <p>Go back to the (implicit) start of the object</p>
 
             </div>
             
@@ -694,8 +668,7 @@ that creates grammatical ambiguities.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Are we just continuing an already declared object?
-</p>
+              <p>Are we just continuing an already declared object?</p>
 
             </div>
             
@@ -718,9 +691,7 @@ that creates grammatical ambiguities.
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>End implicit calls when chaining method calls
-like e.g.:
-
-</p>
+like e.g.:</p>
 <pre><code>f -&gt;
   a
 .g b, -&gt;
@@ -748,8 +719,7 @@ like e.g.:
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Close implicit calls when reached end of argument list
-</p>
+              <p>Close implicit calls when reached end of argument list</p>
 
             </div>
             
@@ -766,8 +736,7 @@ like e.g.:
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Close implicit objects such as:
-return a: 1, b: 2 unless true
-</p>
+return a: 1, b: 2 unless true</p>
 
             </div>
             
@@ -785,8 +754,7 @@ return a: 1, b: 2 unless true
               </div>
               <p>Close implicit objects when at end of line, line didn&#39;t end with a comma
 and the implicit object didn&#39;t start the line or the next line doesn&#39;t look like
-the continuation of an object.
-</p>
+the continuation of an object.</p>
 
             </div>
             
@@ -807,16 +775,12 @@ the continuation of an object.
               </div>
               <p>Close implicit object if comma is the last character
 and what comes after doesn&#39;t look like it belongs.
-This is used for trailing commas and calls, like:
-
-</p>
+This is used for trailing commas and calls, like:</p>
 <pre><code>x =
     a: b,
     c: d,
 e = 2</code></pre>
-<p>and
-
-</p>
+<p>and</p>
 <pre><code>f a, b: c, d: e, f, g: h: i, j</code></pre>
 
             </div>
@@ -834,13 +798,9 @@ e = 2</code></pre>
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>When nextTag is OUTDENT the comma is insignificant and
-should just be ignored so embed it in the implicit object.
-
-</p>
+should just be ignored so embed it in the implicit object.</p>
 <p>When it isn&#39;t the comma go on to play a role in a call or
-array further up the stack, so give it a chance.
-
-</p>
+array further up the stack, so give it a chance.</p>
 
             </div>
             
@@ -858,8 +818,7 @@ array further up the stack, so give it a chance.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Add location data to all tokens generated by the rewriter.
-</p>
+              <p>Add location data to all tokens generated by the rewriter.</p>
 
             </div>
             
@@ -892,8 +851,7 @@ array further up the stack, so give it a chance.
               <p>Because our grammar is LALR(1), it can&#39;t handle some single-line
 expressions that lack ending delimiters. The <strong>Rewriter</strong> adds the implicit
 blocks, so it doesn&#39;t need to. &#39;)&#39; can close a single-line block,
-but we need to make sure it&#39;s balanced.
-</p>
+but we need to make sure it&#39;s balanced.</p>
 
             </div>
             
@@ -915,9 +873,10 @@ but we need to make sure it&#39;s balanced.
       <span class="keyword">if</span> tag <span class="keyword">is</span> <span class="string">'ELSE'</span> <span class="keyword">and</span> <span class="property">@tag</span>(i - <span class="number">1</span>) <span class="keyword">isnt</span> <span class="string">'OUTDENT'</span>
         tokens.splice i, <span class="number">0</span>, <span class="property">@indentation</span>()...
         <span class="keyword">return</span> <span class="number">2</span>
-      <span class="keyword">if</span> tag <span class="keyword">is</span> <span class="string">'CATCH'</span> <span class="keyword">and</span> <span class="property">@tag</span>(i + <span class="number">2</span>) <span class="keyword">in</span> [<span class="string">'OUTDENT'</span>, <span class="string">'TERMINATOR'</span>, <span class="string">'FINALLY'</span>]
-        tokens.splice i + <span class="number">2</span>, <span class="number">0</span>, <span class="property">@indentation</span>()...
-        <span class="keyword">return</span> <span class="number">4</span>
+      <span class="keyword">if</span> tag <span class="keyword">is</span> <span class="string">'CATCH'</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> [<span class="number">1.</span><span class="number">.2</span>] <span class="keyword">when</span> <span class="property">@tag</span>(i + j) <span class="keyword">in</span> [<span class="string">'OUTDENT'</span>, <span class="string">'TERMINATOR'</span>, <span class="string">'FINALLY'</span>]
+          tokens.splice i + j, <span class="number">0</span>, <span class="property">@indentation</span>()...
+          <span class="keyword">return</span> <span class="number">2</span> + j
       <span class="keyword">if</span> tag <span class="keyword">in</span> SINGLE_LINERS <span class="keyword">and</span> <span class="property">@tag</span>(i + <span class="number">1</span>) <span class="keyword">isnt</span> <span class="string">'INDENT'</span> <span class="keyword">and</span>
          <span class="keyword">not</span> (tag <span class="keyword">is</span> <span class="string">'ELSE'</span> <span class="keyword">and</span> <span class="property">@tag</span>(i + <span class="number">1</span>) <span class="keyword">is</span> <span class="string">'IF'</span>)
         starter = tag
@@ -939,8 +898,7 @@ but we need to make sure it&#39;s balanced.
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Tag postfix conditionals as such, so that we can parse them with a
-different precedence.
-</p>
+different precedence.</p>
 
             </div>
             
@@ -972,8 +930,7 @@ different precedence.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              <p>Generate the indentation tokens, based on another token on the same line.
-</p>
+              <p>Generate the indentation tokens, based on another token on the same line.</p>
 
             </div>
             
@@ -995,8 +952,7 @@ different precedence.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>Look up a tag by token index.
-</p>
+              <p>Look up a tag by token index.</p>
 
             </div>
             
@@ -1024,8 +980,7 @@ different precedence.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>List of the token pairs that must be balanced.
-</p>
+              <p>List of the token pairs that must be balanced.</p>
 
             </div>
             
@@ -1049,8 +1004,7 @@ different precedence.
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>The inverse mappings of <code>BALANCED_PAIRS</code> we&#39;re trying to fix up, so we can
-look things up from either end.
-</p>
+look things up from either end.</p>
 
             </div>
             
@@ -1065,8 +1019,7 @@ look things up from either end.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>The tokens that signal the start/end of a balanced pair.
-</p>
+              <p>The tokens that signal the start/end of a balanced pair.</p>
 
             </div>
             
@@ -1086,8 +1039,7 @@ EXPRESSION_END   = []
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>Tokens that indicate the close of a clause of an expression.
-</p>
+              <p>Tokens that indicate the close of a clause of an expression.</p>
 
             </div>
             
@@ -1102,8 +1054,7 @@ EXPRESSION_END   = []
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>Tokens that, if followed by an <code>IMPLICIT_CALL</code>, indicate a function invocation.
-</p>
+              <p>Tokens that, if followed by an <code>IMPLICIT_CALL</code>, indicate a function invocation.</p>
 
             </div>
             
@@ -1118,8 +1069,7 @@ EXPRESSION_END   = []
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>If preceded by an <code>IMPLICIT_FUNC</code>, indicates a function invocation.
-</p>
+              <p>If preceded by an <code>IMPLICIT_FUNC</code>, indicates a function invocation.</p>
 
             </div>
             
@@ -1140,8 +1090,7 @@ IMPLICIT_UNSPACED_CALL = [<span class="string">'+'</span>, <span class="string">
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>Tokens indicating that the implicit call must enclose a block of expressions.
-</p>
+              <p>Tokens indicating that the implicit call must enclose a block of expressions.</p>
 
             </div>
             
@@ -1156,8 +1105,7 @@ IMPLICIT_UNSPACED_CALL = [<span class="string">'+'</span>, <span class="string">
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <p>Tokens that always mark the end of an implicit call for single-liners.
-</p>
+              <p>Tokens that always mark the end of an implicit call for single-liners.</p>
 
             </div>
             
@@ -1174,8 +1122,7 @@ IMPLICIT_UNSPACED_CALL = [<span class="string">'+'</span>, <span class="string">
                 <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Single-line flavors of block expressions that have unclosed endings.
-The grammar can&#39;t disambiguate them, so we insert the implicit indentation.
-</p>
+The grammar can&#39;t disambiguate them, so we insert the implicit indentation.</p>
 
             </div>
             
@@ -1191,12 +1138,28 @@ SINGLE_CLOSERS   = [<span class="string">'TERMINATOR'</span>, <span class="strin
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <p>Tokens that end a line.
-</p>
+              <p>Tokens that end a line.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>LINEBREAKS       = [<span class="string">'TERMINATOR'</span>, <span class="string">'INDENT'</span>, <span class="string">'OUTDENT'</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>iced additions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>IMPLICIT_FUNC.push <span class="string">'DEFER'</span>
+IMPLICIT_CALL.push <span class="string">'DEFER'</span>
+IMPLICIT_END.push <span class="string">'AWAIT'</span></pre></div></div>
             
         </li>
         

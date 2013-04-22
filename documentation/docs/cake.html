@@ -49,6 +49,16 @@
               </a>
             
               
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -111,15 +121,10 @@
               <p><code>cake</code> is a simplified version of <a href="http://www.gnu.org/software/make/">Make</a>
 (<a href="http://rake.rubyforge.org/">Rake</a>, <a href="http://github.com/280north/jake">Jake</a>)
 for CoffeeScript. You define tasks with names and descriptions in a Cakefile,
-and can call them from the command line, or invoke them from other tasks.
-
-</p>
+and can call them from the command line, or invoke them from other tasks.</p>
 <p>Running <code>cake</code> with no arguments will print out a list of all the tasks in the
-current directory&#39;s Cakefile.
-
-</p>
-<p>External dependencies.
-</p>
+current directory&#39;s Cakefile.</p>
+<p>External dependencies.</p>
 
             </div>
             
@@ -140,8 +145,7 @@ existsSync   = fs.existsSync <span class="keyword">or</span> path.existsSync</pr
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Keep track of the list of defined tasks, the accepted options, and so on.
-</p>
+              <p>Keep track of the list of defined tasks, the accepted options, and so on.</p>
 
             </div>
             
@@ -159,8 +163,7 @@ oparse    = <span class="literal">null</span></pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Mixin the top-level Cake functions for Cakefiles to use directly.
-</p>
+              <p>Mixin the top-level Cake functions for Cakefiles to use directly.</p>
 
             </div>
             
@@ -176,8 +179,7 @@ oparse    = <span class="literal">null</span></pre></div></div>
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Define a Cake task with a short name, an optional sentence description,
-and the function to run as the action itself.
-</p>
+and the function to run as the action itself.</p>
 
             </div>
             
@@ -196,8 +198,7 @@ and the function to run as the action itself.
               </div>
               <p>Define an option that the Cakefile accepts. The parsed options hash,
 containing all of the command-line options passed, will be made available
-as the first argument to the action.
-</p>
+as the first argument to the action.</p>
 
             </div>
             
@@ -213,12 +214,11 @@ as the first argument to the action.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Invoke another task in the current Cakefile.
-</p>
+              <p>Invoke another task in the current Cakefile.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  invoke: (name) -&gt;
+            <div class="content"><div class='highlight'><pre>  invoke: (name, cb) -&gt;
     missingTask name <span class="keyword">unless</span> tasks[name]
     tasks[name].action options</pre></div></div>
             
@@ -234,12 +234,11 @@ as the first argument to the action.
               <p>Run <code>cake</code>. Executes all of the tasks you pass, in order. Note that Node&#39;s
 asynchrony may cause tasks to execute in a different order than you&#39;d expect.
 If no tasks are passed, print the help screen. Keep a reference to the
-original directory name, when running Cake tasks from subdirectories.
-</p>
+original directory name, when running Cake tasks from subdirectories.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">run</span></span> = -&gt;
+            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">run</span></span> = (cb) -&gt;
   global.__originalDirname = fs.realpathSync <span class="string">'.'</span>
   process.chdir cakefileDirectory __originalDirname
   args = process.argv[<span class="number">2.</span>.]
@@ -261,8 +260,7 @@ original directory name, when running Cake tasks from subdirectories.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Display the list of Cake tasks in a format similar to <code>rake -T</code>
-</p>
+              <p>Display the list of Cake tasks in a format similar to <code>rake -T</code></p>
 
             </div>
             
@@ -286,8 +284,7 @@ original directory name, when running Cake tasks from subdirectories.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Print an error and exit when attempting to use an invalid task/option.
-</p>
+              <p>Print an error and exit when attempting to use an invalid task/option.</p>
 
             </div>
             
@@ -308,8 +305,7 @@ original directory name, when running Cake tasks from subdirectories.
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>When <code>cake</code> is invoked, search in the current and all parent directories
-to find the relevant Cakefile.
-</p>
+to find the relevant Cakefile.</p>
 
             </div>
             

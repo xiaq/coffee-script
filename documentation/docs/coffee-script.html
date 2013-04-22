@@ -49,6 +49,16 @@
               </a>
             
               
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -111,9 +121,7 @@
               <p>CoffeeScript can be used both on the server, as a command-line compiler based
 on Node.js/V8, or to run CoffeeScript directly in the browser. This module
 contains the main entry functions for tokenizing, parsing, and compiling
-source CoffeeScript into JavaScript.
-
-</p>
+source CoffeeScript into JavaScript.</p>
 
             </div>
             
@@ -124,7 +132,8 @@ child_process = require <span class="string">'child_process'</span>
 {Lexer}       = require <span class="string">'./lexer'</span>
 {parser}      = require <span class="string">'./parser'</span>
 helpers       = require <span class="string">'./helpers'</span>
-SourceMap     = require <span class="string">'./sourcemap'</span></pre></div></div>
+SourceMap     = require <span class="string">'./sourcemap'</span>
+iced          = require <span class="string">'./iced'</span></pre></div></div>
             
         </li>
         
@@ -135,12 +144,11 @@ SourceMap     = require <span class="string">'./sourcemap'</span></pre></div></d
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The current CoffeeScript version number.
-</p>
+              <p>The current CoffeeScript version number.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>exports.VERSION = <span class="string">'1.6.2'</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>exports.VERSION = <span class="string">'1.6.2a'</span></pre></div></div>
             
         </li>
         
@@ -151,8 +159,7 @@ SourceMap     = require <span class="string">'./sourcemap'</span></pre></div></d
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Expose helpers for testing.
-</p>
+              <p>Expose helpers for testing.</p>
 
             </div>
             
@@ -167,18 +174,13 @@ SourceMap     = require <span class="string">'./sourcemap'</span></pre></div></d
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Compile CoffeeScript code to JavaScript, using the Coffee/Jison compiler.
-
-</p>
+              <p>Compile CoffeeScript code to JavaScript, using the Coffee/Jison compiler.</p>
 <p>If <code>options.sourceMap</code> is specified, then <code>options.filename</code> must also be specified.  All
-options that can be passed to <code>SourceMap#generate</code> may also be passed here.
-
-</p>
+options that can be passed to <code>SourceMap#generate</code> may also be passed here.</p>
 <p>This returns a javascript string, unless <code>options.sourceMap</code> is passed,
 in which case this returns a `{js, v3SourceMap, sourceMap}
 object, where sourceMap is a sourcemap.coffee#SourceMap object, handy for doing programatic
-lookups.
-</p>
+lookups.</p>
 
             </div>
             
@@ -188,10 +190,11 @@ lookups.
   <span class="keyword">if</span> options.sourceMap
     map = <span class="keyword">new</span> SourceMap
 
-  fragments = (parser.parse lexer.tokenize(code, options)).compileToFragments options
+  fragments = (iced.transform parser.parse lexer.tokenize(code, options)).compileToFragments options
 
   currentLine = <span class="number">0</span>
-  currentLine += <span class="number">1</span> <span class="keyword">if</span> options.header <span class="keyword">or</span> options.inline
+  currentLine += <span class="number">1</span> <span class="keyword">if</span> options.header
+  currentLine += <span class="number">1</span> <span class="keyword">if</span> options.shiftLine
   currentColumn = <span class="number">0</span>
   js = <span class="string">""</span>
   <span class="keyword">for</span> fragment <span class="keyword">in</span> fragments</pre></div></div>
@@ -205,8 +208,7 @@ lookups.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Update the sourcemap with data from each fragment
-</p>
+              <p>Update the sourcemap with data from each fragment</p>
 
             </div>
             
@@ -229,8 +231,7 @@ lookups.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Copy the code from each fragment into the final JavaScript.
-</p>
+              <p>Copy the code from each fragment into the final JavaScript.</p>
 
             </div>
             
@@ -257,8 +258,7 @@ lookups.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Tokenize a string of CoffeeScript code, and return the array of tokens.
-</p>
+              <p>Tokenize a string of CoffeeScript code, and return the array of tokens.</p>
 
             </div>
             
@@ -276,16 +276,15 @@ lookups.
               </div>
               <p>Parse a string of CoffeeScript code or an array of lexed tokens, and
 return the AST. You can then compile it by calling <code>.compile()</code> on the root,
-or traverse it by using <code>.traverseChildren()</code> with a callback.
-</p>
+or traverse it by using <code>.traverseChildren()</code> with a callback.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">nodes</span></span> = (source, options) -&gt;
   <span class="keyword">if</span> <span class="keyword">typeof</span> source <span class="keyword">is</span> <span class="string">'string'</span>
-    parser.parse lexer.tokenize source, options
+    iced.transform parser.parse lexer.tokenize source, options
   <span class="keyword">else</span>
-    parser.parse source</pre></div></div>
+    iced.transform parser.parse source</pre></div></div>
             
         </li>
         
@@ -297,8 +296,7 @@ or traverse it by using <code>.traverseChildren()</code> with a callback.
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Compile and execute a string of CoffeeScript (on the server), correctly
-setting <code>__filename</code>, <code>__dirname</code>, and relative <code>require()</code>.
-</p>
+setting <code>__filename</code>, <code>__dirname</code>, and relative <code>require()</code>.</p>
 
             </div>
             
@@ -315,8 +313,7 @@ setting <code>__filename</code>, <code>__dirname</code>, and relative <code>requ
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Set the filename.
-</p>
+              <p>Set the filename.</p>
 
             </div>
             
@@ -332,8 +329,7 @@ setting <code>__filename</code>, <code>__dirname</code>, and relative <code>requ
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Clear the module cache.
-</p>
+              <p>Clear the module cache.</p>
 
             </div>
             
@@ -348,8 +344,7 @@ setting <code>__filename</code>, <code>__dirname</code>, and relative <code>requ
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Assign paths for node_modules loading
-</p>
+              <p>Assign paths for node_modules loading</p>
 
             </div>
             
@@ -364,8 +359,7 @@ setting <code>__filename</code>, <code>__dirname</code>, and relative <code>requ
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Compile.
-</p>
+              <p>Compile.</p>
 
             </div>
             
@@ -382,8 +376,7 @@ setting <code>__filename</code>, <code>__dirname</code>, and relative <code>requ
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Attach sourceMap object to mainModule._sourceMaps[options.filename] so that
-it is accessible by Error.prepareStackTrace.
-</p>
+it is accessible by Error.prepareStackTrace.</p>
 
             </div>
             
@@ -403,8 +396,7 @@ it is accessible by Error.prepareStackTrace.
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Compile and evaluate a string of CoffeeScript (in a Node.js-like environment).
-The CoffeeScript REPL uses this to run the input.
-</p>
+The CoffeeScript REPL uses this to run the input.</p>
 
             </div>
             
@@ -433,8 +425,7 @@ The CoffeeScript REPL uses this to run the input.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>define module/require only if they chose not to specify their own
-</p>
+              <p>define module/require only if they chose not to specify their own</p>
 
             </div>
             
@@ -454,8 +445,7 @@ The CoffeeScript REPL uses this to run the input.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>use the same hack node currently uses for their own REPL
-</p>
+              <p>use the same hack node currently uses for their own REPL</p>
 
             </div>
             
@@ -479,8 +469,7 @@ The CoffeeScript REPL uses this to run the input.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>Load and run a CoffeeScript file for Node, stripping any <code>BOM</code>s.
-</p>
+              <p>Load and run a CoffeeScript file for Node, stripping any <code>BOM</code>s.</p>
 
             </div>
             
@@ -499,13 +488,12 @@ The CoffeeScript REPL uses this to run the input.
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>If the installed version of Node supports <code>require.extensions</code>, register
-CoffeeScript as an extension.
-</p>
+CoffeeScript as an extension.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="keyword">if</span> require.extensions
-  <span class="keyword">for</span> ext <span class="keyword">in</span> [<span class="string">'.coffee'</span>, <span class="string">'.litcoffee'</span>, <span class="string">'.coffee.md'</span>]
+  <span class="keyword">for</span> ext <span class="keyword">in</span> [<span class="string">'.coffee'</span>, <span class="string">'.litcoffee'</span>, <span class="string">'.coffee.md'</span>, <span class="string">'.iced'</span>]
     require.extensions[ext] = loadFile</pre></div></div>
             
         </li>
@@ -518,8 +506,7 @@ CoffeeScript as an extension.
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>If we&#39;re on Node, patch <code>child_process.fork</code> so that Coffee scripts are able
-to fork both CoffeeScript files, and JavaScript files, directly.
-</p>
+to fork both CoffeeScript files, and JavaScript files, directly.</p>
 
             </div>
             
@@ -542,8 +529,7 @@ to fork both CoffeeScript files, and JavaScript files, directly.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Instantiate a Lexer for our use here.
-</p>
+              <p>Instantiate a Lexer for our use here.</p>
 
             </div>
             
@@ -560,8 +546,7 @@ to fork both CoffeeScript files, and JavaScript files, directly.
               </div>
               <p>The real Lexer produces a generic stream of tokens. This object provides a
 thin wrapper around it, compatible with the Jison API. We can then pass it
-directly as a &quot;Jison lexer&quot;.
-</p>
+directly as a &quot;Jison lexer&quot;.</p>
 
             </div>
             
@@ -589,8 +574,7 @@ directly as a &quot;Jison lexer&quot;.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Make all the AST nodes visible to the parser.
-</p>
+              <p>Make all the AST nodes visible to the parser.</p>
 
             </div>
             
@@ -605,12 +589,11 @@ directly as a &quot;Jison lexer&quot;.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Override Jison&#39;s default error handling function.
-</p>
+              <p>Export the iced runtime as &#39;iced&#39;</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>parser.yy.<span class="function"><span class="title">parseError</span></span> = (message, {token}) -&gt;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>exports.iced = iced.runtime</pre></div></div>
             
         </li>
         
@@ -621,12 +604,11 @@ directly as a &quot;Jison lexer&quot;.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Disregard Jison&#39;s message, it contains redundant line numer information.
-</p>
+              <p>Override Jison&#39;s default error handling function.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  message = <span class="string">"unexpected <span class="subst">#{<span class="keyword">if</span> token <span class="keyword">is</span> <span class="number">1</span> <span class="keyword">then</span> 'end <span class="keyword">of</span> input' <span class="keyword">else</span> token}</span>"</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>parser.yy.<span class="function"><span class="title">parseError</span></span> = (message, {token}) -&gt;</pre></div></div>
             
         </li>
         
@@ -637,15 +619,11 @@ directly as a &quot;Jison lexer&quot;.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>The second argument has a <code>loc</code> property, which should have the location
-data for this token. Unfortunately, Jison seems to send an outdated <code>loc</code>
-(from the previous token), so we take the location information directly
-from the lexer.
-</p>
+              <p>Disregard Jison&#39;s message, it contains redundant line numer information.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  helpers.throwSyntaxError message, parser.lexer.yylloc</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  message = <span class="string">"unexpected <span class="subst">#{<span class="keyword">if</span> token <span class="keyword">is</span> <span class="number">1</span> <span class="keyword">then</span> 'end <span class="keyword">of</span> input' <span class="keyword">else</span> token}</span>"</span></pre></div></div>
             
         </li>
         
@@ -656,12 +634,28 @@ from the lexer.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
+              <p>The second argument has a <code>loc</code> property, which should have the location
+data for this token. Unfortunately, Jison seems to send an outdated <code>loc</code>
+(from the previous token), so we take the location information directly
+from the lexer.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  helpers.throwSyntaxError message, parser.lexer.yylloc</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
               <p>Based on <a href="http://goo.gl/ZTx1p">michaelficarra/CoffeeScriptRedux</a>
 NodeJS / V8 have no support for transforming positions in stack traces using
 sourceMap, so we must monkey-patch Error to display CoffeeScript source
-positions.
-
-</p>
+positions.</p>
 
             </div>
             
@@ -674,14 +668,13 @@ positions.
         </li>
         
         
-        <li id="section-28">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Map of filenames -&gt; sourceMap object.
-</p>
+              <p>Map of filenames -&gt; sourceMap object.</p>
 
             </div>
             
@@ -690,17 +683,15 @@ positions.
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>(Assigning to a property of the Module object in the normal module cache is
 unsuitable, because node deletes those objects from the cache if an
-exception is thrown in the module body.)
-
-</p>
+exception is thrown in the module body.)</p>
 
             </div>
             
@@ -721,15 +712,14 @@ exception is thrown in the module body.)
         </li>
         
         
-        <li id="section-30">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Based on <a href="http://v8.googlecode.com/svn/branches/bleeding_edge/src/messages.js">http://v8.googlecode.com/svn/branches/bleeding_edge/src/messages.js</a>
-Modified to handle sourceMap
-</p>
+Modified to handle sourceMap</p>
 
             </div>
             
@@ -754,14 +744,13 @@ Modified to handle sourceMap
         </li>
         
         
-        <li id="section-31">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Check for a sourceMap position
-</p>
+              <p>Check for a sourceMap position</p>
 
             </div>
             

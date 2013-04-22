@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>iced.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="browser.html">
+                browser.coffee
+              </a>
+            
+              
+              <a class="source" href="cake.html">
+                cake.coffee
+              </a>
+            
+              
+              <a class="source" href="coffee-script.html">
+                coffee-script.coffee
+              </a>
+            
+              
+              <a class="source" href="command.html">
+                command.coffee
+              </a>
+            
+              
+              <a class="source" href="grammar.html">
+                grammar.coffee
+              </a>
+            
+              
+              <a class="source" href="helpers.html">
+                helpers.coffee
+              </a>
+            
+              
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.coffee
+              </a>
+            
+              
+              <a class="source" href="lexer.html">
+                lexer.coffee
+              </a>
+            
+              
+              <a class="source" href="nodes.html">
+                nodes.coffee
+              </a>
+            
+              
+              <a class="source" href="optparse.html">
+                optparse.coffee
+              </a>
+            
+              
+              <a class="source" href="repl.html">
+                repl.coffee
+              </a>
+            
+              
+              <a class="source" href="rewriter.html">
+                rewriter.coffee
+              </a>
+            
+              
+              <a class="source" href="scope.html">
+                scope.litcoffee
+              </a>
+            
+              
+              <a class="source" href="sourcemap.html">
+                sourcemap.litcoffee
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>iced.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3>Library generator</h3>
+<p>Generate three categories of objects:
+  intern -- for internal use only
+  compiletime -- for compiletime lookups
+  runtime -- for when it&#39;s actually run, either inlined or require&#39;d</p>
+<p>Eventually, we might want to call this generator to generate into
+different contexts (like back into inline code, but for now, we abandon
+this project).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.generator = <span class="function"><span class="title">generator</span></span> = (intern, compiletime, runtime) -&gt;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h4>Compile time</h4>
+<p>Constants mainly for compile-time behavior, but some shared with the
+runtime too.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  compiletime.<span class="function"><span class="title">transform</span></span> = (x) -&gt;
+    x.icedTransform()
+
+  compiletime.<span class="reserved">const</span> = C =
+    k : <span class="string">"__iced_k"</span>
+    k_noop : <span class="string">"__iced_k_noop"</span>
+    param : <span class="string">"__iced_p_"</span>
+    ns: <span class="string">"iced"</span>
+    runtime : <span class="string">"runtime"</span>
+    Deferrals : <span class="string">"Deferrals"</span>
+    deferrals : <span class="string">"__iced_deferrals"</span>
+    fulfill : <span class="string">"_fulfill"</span>
+    b_while : <span class="string">"_break"</span>
+    t_while : <span class="string">"_while"</span>
+    c_while : <span class="string">"_continue"</span>
+    n_while : <span class="string">"_next"</span>
+    n_arg   : <span class="string">"__iced_next_arg"</span>
+    defer_method : <span class="string">"defer"</span>
+    slot : <span class="string">"__slot"</span>
+    assign_fn : <span class="string">"assign_fn"</span>
+    autocb : <span class="string">"autocb"</span>
+    retslot : <span class="string">"ret"</span>
+    trace : <span class="string">"__iced_trace"</span>
+    passed_deferral : <span class="string">"__iced_passed_deferral"</span>
+    findDeferral : <span class="string">"findDeferral"</span>
+    lineno : <span class="string">"lineno"</span>
+    parent : <span class="string">"parent"</span>
+    filename : <span class="string">"filename"</span>
+    funcname : <span class="string">"funcname"</span>
+    catchExceptions : <span class="string">'catchExceptions'</span>
+    runtime_modes : [ <span class="string">"node"</span>, <span class="string">"inline"</span>, <span class="string">"window"</span>, <span class="string">"none"</span>, <span class="string">"browserify"</span> ]
+    trampoline : <span class="string">"trampoline"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3>runtime</h3>
+<p>Support and libraries for runtime behavior</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  intern.<span class="function"><span class="title">makeDeferReturn</span></span> = (obj, defer_args, id, trace_template, multi) -&gt;
+  
+    trace = {}
+    <span class="keyword">for</span> k,v <span class="keyword">of</span> trace_template
+      trace[k] = v
+    trace[C.lineno] = defer_args?[C.lineno]
+    
+    <span class="function"><span class="title">ret</span></span> = (inner_args...) -&gt;
+      defer_args?.assign_fn?.apply(<span class="literal">null</span>, inner_args)
+      <span class="keyword">if</span> obj
+        o = obj
+        obj = <span class="literal">null</span> <span class="keyword">unless</span> multi
+        o._fulfill id, trace
+      <span class="keyword">else</span>
+        intern._warn <span class="string">"overused deferral at <span class="subst">#{intern._trace_to_string trace}</span>"</span>
+  
+    ret[C.trace] = trace
+      
+    ret</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3>Tick Counter</h3>
+<p> count off every mod processor ticks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  intern.__c = <span class="number">0</span>
+
+  intern.<span class="function"><span class="title">tickCounter</span></span> = (mod) -&gt;
+    intern.__c++
+    <span class="keyword">if</span> (intern.__c % mod) == <span class="number">0</span>
+      intern.__c = <span class="number">0</span>
+      <span class="literal">true</span>
+    <span class="keyword">else</span>
+      <span class="literal">false</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3>Trace management and debugging</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  intern.__active_trace = <span class="literal">null</span>
+
+  intern.<span class="function"><span class="title">_trace_to_string</span></span> = (tr) -&gt;
+    fn = tr[C.funcname] || <span class="string">"&lt;anonymous&gt;"</span>
+    <span class="string">"<span class="subst">#{fn}</span> (<span class="subst">#{tr[C.filename]}</span>:<span class="subst">#{tr[C.lineno] + <span class="number">1</span>}</span>)"</span>
+
+  intern.<span class="function"><span class="title">_warn</span></span> = (m) -&gt;
+    console?.log <span class="string">"ICED warning: <span class="subst">#{m}</span>"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2>#</h2>
+<p>trampoline --- make a call to the next continuation...
+  we can either do this directly, or every 500 ticks, from the
+  main loop (so we don&#39;t overwhelm ourselves for stack space)..</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.<span class="function"><span class="title">trampoline</span></span> = (fn) -&gt;
+    <span class="keyword">if</span> <span class="keyword">not</span> intern.tickCounter <span class="number">500</span>
+      fn()
+    <span class="keyword">else</span> <span class="keyword">if</span> process?
+      process.nextTick fn
+    <span class="keyword">else</span>
+      setTimeout fn</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3>Deferrals</h3>
+<p>  A collection of Deferrals; this is a better version than the one
+  that&#39;s inline; it allows for iced tracing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.Deferrals = <span class="class"><span class="keyword">class</span> <span class="title">Deferrals</span></span>
+
+    constructor: (k, <span class="property">@trace</span>) -&gt;
+      <span class="property">@continuation</span> = k
+      <span class="property">@count</span> = <span class="number">1</span>
+      <span class="property">@ret</span> = <span class="literal">null</span>
+
+    _call : (trace) -&gt;
+      <span class="keyword">if</span> <span class="property">@continuation</span>
+        intern.__active_trace = trace
+        c = <span class="property">@continuation</span>
+        <span class="property">@continuation</span> = <span class="literal">null</span>
+        c <span class="property">@ret</span>
+      <span class="keyword">else</span>
+        intern._warn <span class="string">"Entered dead await at <span class="subst">#{intern._trace_to_string trace}</span>"</span>
+
+    _fulfill : (id, trace) -&gt;
+      <span class="keyword">if</span> --<span class="property">@count</span> &gt; <span class="number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>noop</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">else</span>
+        runtime.trampoline ( () =&gt; <span class="property">@_call</span> trace )
+      
+    defer : (args) -&gt;
+      <span class="property">@count</span>++
+      self = <span class="keyword">this</span>
+      <span class="keyword">return</span> intern.makeDeferReturn self, args, <span class="literal">null</span>, <span class="property">@trace</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3>findDeferral</h3>
+<p>Search an argument vector for a deferral-generated callback</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.findDeferral = <span class="function"><span class="title">findDeferral</span></span> = (args) -&gt;
+    <span class="keyword">for</span> a <span class="keyword">in</span> args
+      <span class="keyword">return</span> a <span class="keyword">if</span> a?[C.trace]
+    <span class="literal">null</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h3>Rendezvous</h3>
+<p>More flexible runtime behavior, can wait for the first deferral
+to fire, rather than just the last.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.Rendezvous = <span class="class"><span class="keyword">class</span> <span class="title">Rendezvous</span></span>
+    constructor: -&gt;
+      <span class="property">@completed</span> = []
+      <span class="property">@waiters</span> = []
+      <span class="property">@defer_id</span> = <span class="number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>This is a hack to work with the desugaring of
+&#39;defer&#39; output by the coffee compiler.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      @[C.deferrals] = <span class="keyword">this</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>RvId -- A helper class the allows deferalls to take on an ID
+when used with Rendezvous</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="class"><span class="keyword">class</span> <span class="title">RvId</span></span>
+      constructor: (<span class="property">@rv</span>,<span class="property">@id</span>,<span class="property">@multi</span>)-&gt;
+      defer: (defer_args) -&gt;
+        <span class="property">@rv</span>._deferWithId <span class="property">@id</span>, defer_args, <span class="property">@multi</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Public interface</p>
+<p>The public interface has 3 methods --- wait, defer and id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    wait: (cb) -&gt;
+      <span class="keyword">if</span> <span class="property">@completed</span>.length
+        x = <span class="property">@completed</span>.shift()
+        cb(x)
+      <span class="keyword">else</span>
+        <span class="property">@waiters</span>.push cb
+
+    defer: (defer_args) -&gt;
+      id = <span class="property">@defer_id</span>++
+      <span class="property">@deferWithId</span> id, defer_args</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>id -- assign an ID to a deferral, and also toggle the multi
+bit on the deferral.  By default, this bit is off.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    id: (i, multi) -&gt;
+      multi = <span class="literal">false</span> <span class="keyword">unless</span> multi?
+      ret = {}
+      ret[C.deferrals] = <span class="keyword">new</span> RvId(<span class="keyword">this</span>, i, multi)
+      ret</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Private Interface</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
+    _fulfill: (id, trace) -&gt;
+      <span class="keyword">if</span> <span class="property">@waiters</span>.length
+        cb = <span class="property">@waiters</span>.shift()
+        cb id
+      <span class="keyword">else</span>
+        <span class="property">@completed</span>.push id
+  
+    _deferWithId: (id, defer_args, multi) -&gt;
+      <span class="property">@count</span>++
+      intern.makeDeferReturn <span class="keyword">this</span>, defer_args, id, {}, multi</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <h3>stackWalk</h3>
+<p>Follow an iced-generated stack walk from the active trace
+up as far as we can. Output a vector of stack frames.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.stackWalk = <span class="function"><span class="title">stackWalk</span></span> = (cb) -&gt;
+    ret = []
+    tr = <span class="keyword">if</span> cb <span class="keyword">then</span> cb[C.trace] <span class="keyword">else</span> intern.__active_trace
+    <span class="keyword">while</span> tr
+      line = <span class="string">"   at <span class="subst">#{intern._trace_to_string tr}</span>"</span>
+      ret.push line
+      tr = tr?[C.parent]?[C.trace]
+    ret</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <h3>exceptionHandler</h3>
+<p>An exception handler that triggers the above iced stack walk</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.exceptionHandler = <span class="function"><span class="title">exceptionHandler</span></span> = (err, logger) -&gt;
+    logger = console.log <span class="keyword">unless</span> logger
+    logger err.stack
+    stack = stackWalk()
+    <span class="keyword">if</span> stack.length
+      logger <span class="string">"Iced 'stack' trace (w/ real line numbers):"</span>
+      logger stack.join <span class="string">"\n"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <h3>catchExceptions</h3>
+<p>Catch all uncaught exceptions with the iced exception handler.
+As mentioned here:</p>
+<p>   <a href="http://debuggable.com/posts/node-js-dealing-with-uncaught-exceptions:4c933d54-1428-443c-928d-4e1ecbdd56cb">http://debuggable.com/posts/node-js-dealing-with-uncaught-exceptions:4c933d54-1428-443c-928d-4e1ecbdd56cb</a> </p>
+<p>It&#39;s good idea to kill the service at this point, since state
+is probably horked. See his examples for more explanations.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  runtime.<span class="function"><span class="title">catchExceptions</span></span> = (logger) -&gt;
+    process?.<span class="literal">on</span> <span class="string">'uncaughtException'</span>, (err) -&gt;
+      exceptionHandler err, logger
+      process.exit <span class="number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h3>Exported items</h3>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.runtime = {}
+generator <span class="keyword">this</span>, exports, exports.runtime</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
