@@ -1490,7 +1490,7 @@ awaits on the same level</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  icedTransform : -&gt;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  icedTransform : (opts) -&gt;</pre></div></div>
             
         </li>
         
@@ -1517,11 +1517,13 @@ awaits on the same level</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
-              <p>Add a runtime if necessary</p>
+              <p>Add a runtime if necessary, but don&#39;t add a runtime for the REPL.
+For some reason, even outputting an empty runtime doesn&#39;t work as far as the
+REPL is concerned.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="property">@icedAddRuntime</span> obj.foundDefer, obj.foundAwait</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="property">@icedAddRuntime</span> obj.foundDefer, obj.foundAwait <span class="keyword">unless</span> opts?.repl</pre></div></div>
             
         </li>
         

@@ -158,8 +158,8 @@ runtime too.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  compiletime.<span class="function"><span class="title">transform</span></span> = (x) -&gt;
-    x.icedTransform()
+            <div class="content"><div class='highlight'><pre>  compiletime.<span class="function"><span class="title">transform</span></span> = (x, options) -&gt;
+    x.icedTransform options
 
   compiletime.<span class="reserved">const</span> = C =
     k : <span class="string">"__iced_k"</span>
