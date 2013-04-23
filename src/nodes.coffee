@@ -310,7 +310,7 @@ exports.Base = class Base
       e
 
   icedStatementAssertion : () ->
-    @error "await'ed statement can't act as expressions" if @icedIsCpsPivot()
+    @error "await'ed statements can't act as expressions" if @icedIsCpsPivot()
 
   # End iced additions...
 
@@ -519,6 +519,8 @@ exports.Block = class Block extends Base
           fragments.push @makeCode ",\n#{@tab + TAB}" if declars
           fragments.push @makeCode (scope.assignedVariables().join ",\n#{@tab + TAB}")
         fragments.push @makeCode ";\n#{if @spaced then '\n' else ''}"
+      else if fragments.length and post.length
+        fragments.push @makeCode "\n"
     fragments.concat post
 
   # Wrap up the given nodes as a **Block**, unless it already happens
@@ -908,7 +910,7 @@ exports.Comment = class Comment extends Base
   makeReturn:      THIS
 
   compileNode: (o, level) ->
-    code = '/*' + multident(@comment, @tab) + "\n#{@tab}*/\n"
+    code = "/*#{multident @comment, @tab}#{if '\n' in @comment then "\n#{@tab}" else ''}*/\n"
     code = o.indent + code if (level or o.level) is LEVEL_TOP
     [@makeCode code]
 
@@ -995,6 +997,7 @@ exports.Call = class Call extends Base
       return @compileSplat o, compiledArray
     compiledArgs = []
     for arg, argIndex in @args
+      arg.icedStatementAssertion()
       if argIndex then compiledArgs.push @makeCode ", "
       compiledArgs.push (arg.compileToFragments o, LEVEL_LIST)...
 
@@ -1258,7 +1261,7 @@ exports.Obj = class Obj extends Base
         ',\n'
       indent = if prop instanceof Comment then '' else idt
       if prop instanceof Assign and prop.variable instanceof Value and prop.variable.hasProperties()
-        throw new SyntaxError 'Invalid object key'
+        prop.variable.error 'Invalid object key'
       if prop instanceof Value and prop.this
         prop = new Assign prop.properties[0].name, prop, 'object'
       if prop not instanceof Comment
@@ -1970,6 +1973,7 @@ exports.While = class While extends Base
   # *while* can be used as a part of a larger expression -- while loops may
   # return an array containing the computed result of each iteration.
   compileNode: (o) ->
+    @condition.icedStatementAssertion()
     return @icedCompileIced o if @icedNodeFlag
     o.indent += TAB
     set      = ''
@@ -2204,8 +2208,9 @@ exports.Op = class Op extends Base
       (shared.compileToFragments o), @makeCode(" #{@operator} "), (@second.compileToFragments o, LEVEL_OP)
     @wrapInBraces fragments
 
+  # Keep reference to the left expression, unless this an existential assignment
   compileExistence: (o) ->
-    if @first.isComplex()
+    if !o.isExistentialEquals and @first.isComplex()
       ref = new Literal o.scope.freeVariable 'ref'
       fst = new Parens new Assign ref, @first
     else
@@ -2737,6 +2742,8 @@ exports.For = class For extends While
     defPart   = ''
     idt1      = @tab + TAB
 
+    source.icedStatementAssertion()
+
     return @icedCompileIced(o, { stepVar, body, rvar, kvar, @guard }) if @icedNodeFlag
 
     if @range
@@ -2924,6 +2931,7 @@ exports.Switch = class Switch extends Base
     this
 
   compileNode: (o) ->
+    @subject.icedStatementAssertion() if @subject
     idt1 = o.indent + TAB
     idt2 = o.indent = idt1 + TAB
     fragments = [].concat @makeCode(@tab + "switch ("),
@@ -2991,6 +2999,7 @@ exports.If = class If extends Base
   jumps: (o) -> @body.jumps(o) or @elseBody?.jumps(o)
 
   compileNode: (o) ->
+    @condition.icedStatementAssertion()
     if @isStatement o or @icedIsCpsPivot() then @compileStatement o else @compileExpression o
 
   makeReturn: (res) ->
