@@ -175,6 +175,7 @@ runtime too.</p>
     c_while : <span class="string">"_continue"</span>
     n_while : <span class="string">"_next"</span>
     n_arg   : <span class="string">"__iced_next_arg"</span>
+    context : <span class="string">"context"</span>
     defer_method : <span class="string">"defer"</span>
     slot : <span class="string">"__slot"</span>
     assign_fn : <span class="string">"assign_fn"</span>
@@ -356,8 +357,25 @@ runtime too.</p>
         <li id="section-10">
             <div class="annotation">
               
-              <div class="pilwrap for-h3">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>As above, but won&#39;t get rewritten bythe compiler...
+This is in case custom defer implementations want to
+access the base implementation.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    _defer : (args) -&gt; @[<span class="string">"defer"</span>] args</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <h3>findDeferral</h3>
 <p>Search an argument vector for a deferral-generated callback</p>
@@ -372,11 +390,11 @@ runtime too.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap for-h3">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <h3>Rendezvous</h3>
 <p>More flexible runtime behavior, can wait for the first deferral
@@ -389,22 +407,6 @@ to fire, rather than just the last.</p>
       <span class="property">@completed</span> = []
       <span class="property">@waiters</span> = []
       <span class="property">@defer_id</span> = <span class="number">0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>This is a hack to work with the desugaring of
-&#39;defer&#39; output by the coffee compiler.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      @[C.deferrals] = <span class="keyword">this</span></pre></div></div>
             
         </li>
         
@@ -466,9 +468,7 @@ bit on the deferral.  By default, this bit is off.</p>
             
             <div class="content"><div class='highlight'><pre>    id: (i, multi) -&gt;
       multi = <span class="literal">false</span> <span class="keyword">unless</span> multi?
-      ret = {}
-      ret[C.deferrals] = <span class="keyword">new</span> RvId(<span class="keyword">this</span>, i, multi)
-      ret</pre></div></div>
+      <span class="keyword">new</span> RvId(<span class="keyword">this</span>, i, multi)</pre></div></div>
             
         </li>
         
@@ -538,7 +538,7 @@ up as far as we can. Output a vector of stack frames.</p>
     logger err.stack
     stack = stackWalk()
     <span class="keyword">if</span> stack.length
-      logger <span class="string">"Iced 'stack' trace (w/ real line numbers):"</span>
+      logger <span class="string">"Iced callback trace:"</span>
       logger stack.join <span class="string">"\n"</span></pre></div></div>
             
         </li>

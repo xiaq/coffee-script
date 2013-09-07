@@ -49,6 +49,16 @@
               </a>
             
               
+              <a class="source" href="iced.html">
+                iced.coffee
+              </a>
+            
+              
+              <a class="source" href="icedlib.html">
+                icedlib.coffee
+              </a>
+            
+              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -119,26 +129,10 @@ shifts tokens from our token stream, from left to right, and
 <a href="http://en.wikipedia.org/wiki/Bottom-up_parsing">attempts to match</a>
 the token sequence against the rules below. When a match can be made, it
 reduces into the <a href="http://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">nonterminal</a>
-(the enclosing name at the top), and we proceed from there.
-
-</p>
+(the enclosing name at the top), and we proceed from there.</p>
 <p>If you run the <code>cake build:parser</code> command, Jison constructs a parse table
-from our rules and saves it into <code>lib/parser.js</code>.
-</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>The only dependency is on the <strong>Jison.Parser</strong>.
-</p>
+from our rules and saves it into <code>lib/parser.js</code>.</p>
+<p>The only dependency is on the <strong>Jison.Parser</strong>.</p>
 
             </div>
             
@@ -147,15 +141,32 @@ from our rules and saves it into <code>lib/parser.js</code>.
         </li>
         
         
-        <li id="section-3">
+        <li id="section-2">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <h2>Jison DSL</h2>
 
             </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Since we&#39;re going to be wrapped in a function by Jison in any case, if our
+action immediately returns a value, we can optimize by removing the function
+wrapper and just returning the value directly.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>unwrap = <span class="regexp">/^function\s*\(\)\s*\{\s*return\s*([\s\S]*);\s*\}/</span></pre></div></div>
             
         </li>
         
@@ -166,42 +177,11 @@ from our rules and saves it into <code>lib/parser.js</code>.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>Since we&#39;re going to be wrapped in a function by Jison in any case, if our
-action immediately returns a value, we can optimize by removing the function
-wrapper and just returning the value directly.
-</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>unwrap = <span class="regexp">/^function\s*\(\)\s*\{\s*return\s*([\s\S]*);\s*\}/</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
               <p>Our handy DSL for Jison grammar generation, thanks to
 <a href="http://github.com/creationix">Tim Caswell</a>. For every rule in the grammar,
 we pass the pattern-defining string, the action to run, and extra options,
 optionally. If no action is specified, we simply pass the value of the
-previous nonterminal.
-</p>
+previous nonterminal.</p>
 
             </div>
             
@@ -214,14 +194,13 @@ previous nonterminal.
         </li>
         
         
-        <li id="section-7">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>All runtime functions we need are defined on &quot;yy&quot;
-</p>
+              <p>All runtime functions we need are defined on &quot;yy&quot;</p>
 
             </div>
             
@@ -231,16 +210,15 @@ previous nonterminal.
         </li>
         
         
-        <li id="section-8">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Returns a function which adds location data to the first parameter passed
 in, and returns the parameter.  If the parameter is not a node, it will
-just be passed through unaffected.
-</p>
+just be passed through unaffected.</p>
 
             </div>
             
@@ -258,15 +236,56 @@ just be passed through unaffected.
         </li>
         
         
-        <li id="section-9">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <h2>Grammatical Rules</h2>
 
             </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>In all of the rules that follow, you&#39;ll see the name of the nonterminal as
+the key to a list of alternative matches. With each match&#39;s action, the
+dollar-sign variables are provided by Jison as references to the value of
+their numeric position, so in this rule:</p>
+<pre><code>&quot;Expression UNLESS Expression&quot;</code></pre>
+<p><code>$1</code> would be the value of the first <code>Expression</code>, <code>$2</code> would be the token
+for the <code>UNLESS</code> terminal, and <code>$3</code> would be the value of the second
+<code>Expression</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>grammar =</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>The <strong>Root</strong> is the top-level node in the syntax tree. Since we parse bottom-up,
+all parsing must end here.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  Root: [
+    o <span class="string">''</span>,                                       -&gt; <span class="keyword">new</span> Block
+    o <span class="string">'Body'</span>
+  ]</pre></div></div>
             
         </li>
         
@@ -277,66 +296,7 @@ just be passed through unaffected.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>In all of the rules that follow, you&#39;ll see the name of the nonterminal as
-the key to a list of alternative matches. With each match&#39;s action, the
-dollar-sign variables are provided by Jison as references to the value of
-their numeric position, so in this rule:
-
-</p>
-<pre><code>&quot;Expression UNLESS Expression&quot;</code></pre>
-<p><code>$1</code> would be the value of the first <code>Expression</code>, <code>$2</code> would be the token
-for the <code>UNLESS</code> terminal, and <code>$3</code> would be the value of the second
-<code>Expression</code>.
-</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>grammar =</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>The <strong>Root</strong> is the top-level node in the syntax tree. Since we parse bottom-up,
-all parsing must end here.
-</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  Root: [
-    o <span class="string">''</span>,                                       -&gt; <span class="keyword">new</span> Block
-    o <span class="string">'Body'</span>
-    o <span class="string">'Block TERMINATOR'</span>
-  ]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>Any list of statements and expressions, separated by line breaks or semicolons.
-</p>
+              <p>Any list of statements and expressions, separated by line breaks or semicolons.</p>
 
             </div>
             
@@ -349,14 +309,13 @@ all parsing must end here.
         </li>
         
         
-        <li id="section-14">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Block and statements, which make up a line in a body.
-</p>
+              <p>Block and statements, which make up a line in a body.</p>
 
             </div>
             
@@ -368,14 +327,13 @@ all parsing must end here.
         </li>
         
         
-        <li id="section-15">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Pure statements which cannot be expressions.
-</p>
+              <p>Pure statements which cannot be expressions.</p>
 
             </div>
             
@@ -383,22 +341,27 @@ all parsing must end here.
     o <span class="string">'Return'</span>
     o <span class="string">'Comment'</span>
     o <span class="string">'STATEMENT'</span>,                              -&gt; <span class="keyword">new</span> Literal $<span class="number">1</span>
+    o <span class="string">'Await'</span>
+  ]
+
+  Await: [
+    o <span class="string">'AWAIT Block'</span>,                             -&gt; <span class="keyword">new</span> Await $<span class="number">2</span>
+    o <span class="string">'AWAIT Expression'</span>,                        -&gt; <span class="keyword">new</span> Await Block.wrap [$<span class="number">2</span> ]
   ]</pre></div></div>
             
         </li>
         
         
-        <li id="section-16">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>All the different types of expressions in our language. The basic unit of
 CoffeeScript is the <strong>Expression</strong> -- everything that can be an expression
 is one. Blocks serve as the building blocks of many other rules, making
-them somewhat circular.
-</p>
+them somewhat circular.</p>
 
             </div>
             
@@ -415,21 +378,21 @@ them somewhat circular.
     o <span class="string">'Switch'</span>
     o <span class="string">'Class'</span>
     o <span class="string">'Throw'</span>
+    o <span class="string">'Defer'</span>
   ]</pre></div></div>
             
         </li>
         
         
-        <li id="section-17">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>An indented block of expressions. Note that the <a href="rewriter.html">Rewriter</a>
 will convert some postfix forms into blocks for us, by adjusting the
-token stream.
-</p>
+token stream.</p>
 
             </div>
             
@@ -441,14 +404,13 @@ token stream.
         </li>
         
         
-        <li id="section-18">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>A literal identifier, a variable name or property.
-</p>
+              <p>A literal identifier, a variable name or property.</p>
 
             </div>
             
@@ -459,15 +421,14 @@ token stream.
         </li>
         
         
-        <li id="section-19">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Alphanumerics are separated from the other <strong>Literal</strong> matchers because
-they can also serve as keys in object literals.
-</p>
+they can also serve as keys in object literals.</p>
 
             </div>
             
@@ -479,15 +440,14 @@ they can also serve as keys in object literals.
         </li>
         
         
-        <li id="section-20">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>All of our immediate values. Generally these can be passed straight
-through and printed to JavaScript.
-</p>
+through and printed to JavaScript.</p>
 
             </div>
             
@@ -504,14 +464,13 @@ through and printed to JavaScript.
         </li>
         
         
-        <li id="section-21">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>Assignment of a variable, property, or index to a value.
-</p>
+              <p>Assignment of a variable, property, or index to a value.</p>
 
             </div>
             
@@ -524,15 +483,14 @@ through and printed to JavaScript.
         </li>
         
         
-        <li id="section-22">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Assignment when it happens within an object literal. The difference from
-the ordinary <strong>Assign</strong> is that these allow numbers and strings as keys.
-</p>
+the ordinary <strong>Assign</strong> is that these allow numbers and strings as keys.</p>
 
             </div>
             
@@ -553,14 +511,13 @@ the ordinary <strong>Assign</strong> is that these allow numbers and strings as 
         </li>
         
         
-        <li id="section-23">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>A return statement from a function body.
-</p>
+              <p>A return statement from a function body.</p>
 
             </div>
             
@@ -572,14 +529,13 @@ the ordinary <strong>Assign</strong> is that these allow numbers and strings as 
         </li>
         
         
-        <li id="section-24">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>A block comment.
-</p>
+              <p>A block comment.</p>
 
             </div>
             
@@ -590,16 +546,15 @@ the ordinary <strong>Assign</strong> is that these allow numbers and strings as 
         </li>
         
         
-        <li id="section-25">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>The <strong>Code</strong> node is the function literal. It&#39;s defined by an indented block
 of <strong>Block</strong> preceded by a function arrow, with an optional parameter
-list.
-</p>
+list.</p>
 
             </div>
             
@@ -611,15 +566,14 @@ list.
         </li>
         
         
-        <li id="section-26">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>CoffeeScript has two different symbols for functions. <code>-&gt;</code> is for ordinary
-functions, and <code>=&gt;</code> is for functions bound to the current value of <em>this</em>.
-</p>
+functions, and <code>=&gt;</code> is for functions bound to the current value of <em>this</em>.</p>
 
             </div>
             
@@ -631,14 +585,13 @@ functions, and <code>=&gt;</code> is for functions bound to the current value of
         </li>
         
         
-        <li id="section-27">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>An optional, trailing comma.
-</p>
+              <p>An optional, trailing comma.</p>
 
             </div>
             
@@ -650,14 +603,13 @@ functions, and <code>=&gt;</code> is for functions bound to the current value of
         </li>
         
         
-        <li id="section-28">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>The list of parameters that a function accepts can be of any length.
-</p>
+              <p>The list of parameters that a function accepts can be of any length.</p>
 
             </div>
             
@@ -672,15 +624,14 @@ functions, and <code>=&gt;</code> is for functions bound to the current value of
         </li>
         
         
-        <li id="section-29">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>A single parameter in a function definition can be ordinary, or a splat
-that hoovers up the remaining arguments.
-</p>
+that hoovers up the remaining arguments.</p>
 
             </div>
             
@@ -693,14 +644,13 @@ that hoovers up the remaining arguments.
         </li>
         
         
-        <li id="section-30">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Function Parameters
-</p>
+              <p>Function Parameters</p>
 
             </div>
             
@@ -714,14 +664,13 @@ that hoovers up the remaining arguments.
         </li>
         
         
-        <li id="section-31">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>A splat that occurs outside of a parameter list.
-</p>
+              <p>A splat that occurs outside of a parameter list.</p>
 
             </div>
             
@@ -732,14 +681,13 @@ that hoovers up the remaining arguments.
         </li>
         
         
-        <li id="section-32">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Variables and properties that can be assigned to.
-</p>
+              <p>Variables and properties that can be assigned to.</p>
 
             </div>
             
@@ -753,14 +701,13 @@ that hoovers up the remaining arguments.
         </li>
         
         
-        <li id="section-33">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>Everything that can be assigned to.
-</p>
+              <p>Everything that can be assigned to.</p>
 
             </div>
             
@@ -773,15 +720,14 @@ that hoovers up the remaining arguments.
         </li>
         
         
-        <li id="section-34">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>The types of things that can be treated as values -- assigned to, invoked
-as functions, indexed into, named as a class, etc.
-</p>
+as functions, indexed into, named as a class, etc.</p>
 
             </div>
             
@@ -796,20 +742,20 @@ as functions, indexed into, named as a class, etc.
         </li>
         
         
-        <li id="section-35">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>The general group of accessors into an object, by property, by prototype
-or by array index or slice.
-</p>
+or by array index or slice.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  Accessor: [
     o <span class="string">'.  Identifier'</span>,                          -&gt; <span class="keyword">new</span> Access $<span class="number">2</span>
+    o <span class="string">'.  Defer'</span>,                               -&gt; <span class="keyword">new</span> Access $<span class="number">2.</span>setCustom()
     o <span class="string">'?. Identifier'</span>,                          -&gt; <span class="keyword">new</span> Access $<span class="number">2</span>, <span class="string">'soak'</span>
     o <span class="string">':: Identifier'</span>,                          -&gt; [LOC(<span class="number">1</span>)(<span class="keyword">new</span> Access <span class="keyword">new</span> Literal(<span class="string">'prototype'</span>)), LOC(<span class="number">2</span>)(<span class="keyword">new</span> Access $<span class="number">2</span>)]
     o <span class="string">'?:: Identifier'</span>,                         -&gt; [LOC(<span class="number">1</span>)(<span class="keyword">new</span> Access <span class="keyword">new</span> Literal(<span class="string">'prototype'</span>), <span class="string">'soak'</span>), LOC(<span class="number">2</span>)(<span class="keyword">new</span> Access $<span class="number">2</span>)]
@@ -820,14 +766,13 @@ or by array index or slice.
         </li>
         
         
-        <li id="section-36">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>Indexing into an object or array using bracket notation.
-</p>
+              <p>Indexing into an object or array using bracket notation.</p>
 
             </div>
             
@@ -844,14 +789,13 @@ or by array index or slice.
         </li>
         
         
-        <li id="section-37">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p>In CoffeeScript, an object literal is simply a list of assignments.
-</p>
+              <p>In CoffeeScript, an object literal is simply a list of assignments.</p>
 
             </div>
             
@@ -862,15 +806,14 @@ or by array index or slice.
         </li>
         
         
-        <li id="section-38">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Assignment of properties within an object literal can be separated by
-comma, as in JavaScript, or simply by newline.
-</p>
+comma, as in JavaScript, or simply by newline.</p>
 
             </div>
             
@@ -885,15 +828,14 @@ comma, as in JavaScript, or simply by newline.
         </li>
         
         
-        <li id="section-39">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Class definitions have optional bodies of prototype property assignments,
-and optional references to the superclass.
-</p>
+and optional references to the superclass.</p>
 
             </div>
             
@@ -911,14 +853,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-40">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>Ordinary function invocation, or a chained series of calls.
-</p>
+              <p>Ordinary function invocation, or a chained series of calls.</p>
 
             </div>
             
@@ -927,19 +868,22 @@ and optional references to the superclass.
     o <span class="string">'Invocation OptFuncExist Arguments'</span>,      -&gt; <span class="keyword">new</span> Call $<span class="number">1</span>, $<span class="number">3</span>, $<span class="number">2</span>
     o <span class="string">'SUPER'</span>,                                  -&gt; <span class="keyword">new</span> Call <span class="string">'super'</span>, [<span class="keyword">new</span> Splat <span class="keyword">new</span> Literal <span class="string">'arguments'</span>]
     o <span class="string">'SUPER Arguments'</span>,                        -&gt; <span class="keyword">new</span> Call <span class="string">'super'</span>, $<span class="number">2</span>
+  ]
+
+  Defer : [
+    o <span class="string">'DEFER Arguments'</span>,                        -&gt; <span class="keyword">new</span> Defer $<span class="number">2</span>, yylineno
   ]</pre></div></div>
             
         </li>
         
         
-        <li id="section-41">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>An optional existence check on a function.
-</p>
+              <p>An optional existence check on a function.</p>
 
             </div>
             
@@ -951,14 +895,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-42">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>The list of arguments to a function call.
-</p>
+              <p>The list of arguments to a function call.</p>
 
             </div>
             
@@ -970,14 +913,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-43">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>A reference to the <em>this</em> current object.
-</p>
+              <p>A reference to the <em>this</em> current object.</p>
 
             </div>
             
@@ -989,14 +931,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-44">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>A reference to a property on <em>this</em>.
-</p>
+              <p>A reference to a property on <em>this</em>.</p>
 
             </div>
             
@@ -1007,14 +948,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-45">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>The array literal.
-</p>
+              <p>The array literal.</p>
 
             </div>
             
@@ -1026,14 +966,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-46">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>Inclusive and exclusive range dots.
-</p>
+              <p>Inclusive and exclusive range dots.</p>
 
             </div>
             
@@ -1045,14 +984,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-47">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>The CoffeeScript range literal.
-</p>
+              <p>The CoffeeScript range literal.</p>
 
             </div>
             
@@ -1063,14 +1001,13 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-48">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <p>Array slice literals.
-</p>
+              <p>Array slice literals.</p>
 
             </div>
             
@@ -1084,16 +1021,15 @@ and optional references to the superclass.
         </li>
         
         
-        <li id="section-49">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>The <strong>ArgList</strong> is both the list of objects passed into a function call,
 as well as the contents of an array literal
-(i.e. comma-separated expressions). Newlines work as well.
-</p>
+(i.e. comma-separated expressions). Newlines work as well.</p>
 
             </div>
             
@@ -1108,14 +1044,13 @@ as well as the contents of an array literal
         </li>
         
         
-        <li id="section-50">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <p>Valid arguments are Blocks or Splats.
-</p>
+              <p>Valid arguments are Blocks or Splats.</p>
 
             </div>
             
@@ -1127,16 +1062,15 @@ as well as the contents of an array literal
         </li>
         
         
-        <li id="section-51">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Just simple, comma-separated, required arguments (no fancy syntax). We need
 this to be separate from the <strong>ArgList</strong> for use in <strong>Switch</strong> blocks, where
-having the newlines wouldn&#39;t make sense.
-</p>
+having the newlines wouldn&#39;t make sense.</p>
 
             </div>
             
@@ -1148,14 +1082,13 @@ having the newlines wouldn&#39;t make sense.
         </li>
         
         
-        <li id="section-52">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
-              <p>The variants of <em>try/catch/finally</em> exception handling blocks.
-</p>
+              <p>The variants of <em>try/catch/finally</em> exception handling blocks.</p>
 
             </div>
             
@@ -1169,14 +1102,13 @@ having the newlines wouldn&#39;t make sense.
         </li>
         
         
-        <li id="section-53">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <p>A catch clause names its error and runs a block of code.
-</p>
+              <p>A catch clause names its error and runs a block of code.</p>
 
             </div>
             
@@ -1189,14 +1121,13 @@ having the newlines wouldn&#39;t make sense.
         </li>
         
         
-        <li id="section-54">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <p>Throw an exception object.
-</p>
+              <p>Throw an exception object.</p>
 
             </div>
             
@@ -1207,17 +1138,16 @@ having the newlines wouldn&#39;t make sense.
         </li>
         
         
-        <li id="section-55">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>Parenthetical expressions. Note that the <strong>Parenthetical</strong> is a <strong>Value</strong>,
 not an <strong>Expression</strong>, so if you need to use an expression in a place
 where only values are accepted, wrapping it in parentheses will always do
-the trick.
-</p>
+the trick.</p>
 
             </div>
             
@@ -1229,14 +1159,13 @@ the trick.
         </li>
         
         
-        <li id="section-56">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              <p>The condition portion of a while loop.
-</p>
+              <p>The condition portion of a while loop.</p>
 
             </div>
             
@@ -1250,15 +1179,14 @@ the trick.
         </li>
         
         
-        <li id="section-57">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>The while loop can either be normal, with a block of expressions to execute,
-or postfix, with a single expression. There is no do..while.
-</p>
+or postfix, with a single expression. There is no do..while.</p>
 
             </div>
             
@@ -1277,16 +1205,15 @@ or postfix, with a single expression. There is no do..while.
         </li>
         
         
-        <li id="section-58">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Array, object, and range comprehensions, at the most generic level.
 Comprehensions can either be normal, with a block of expressions to execute,
-or postfix, with a single expression.
-</p>
+or postfix, with a single expression.</p>
 
             </div>
             
@@ -1309,15 +1236,14 @@ or postfix, with a single expression.
         </li>
         
         
-        <li id="section-59">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>An array of all accepted values for a variable inside the loop.
-This enables support for pattern matching.
-</p>
+This enables support for pattern matching.</p>
 
             </div>
             
@@ -1331,16 +1257,15 @@ This enables support for pattern matching.
         </li>
         
         
-        <li id="section-60">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>An array or range comprehension has variables for the current element
 and (optional) reference to the current index. Or, <em>key, value</em>, in the case
-of object comprehensions.
-</p>
+of object comprehensions.</p>
 
             </div>
             
@@ -1352,16 +1277,15 @@ of object comprehensions.
         </li>
         
         
-        <li id="section-61">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>The source of a comprehension is an array or object with an optional guard
 clause. If it&#39;s an array comprehension, you can also choose to step through
-in fixed-size increments.
-</p>
+in fixed-size increments.</p>
 
             </div>
             
@@ -1390,14 +1314,13 @@ in fixed-size increments.
         </li>
         
         
-        <li id="section-62">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
-              <p>An individual <strong>When</strong> clause, with action.
-</p>
+              <p>An individual <strong>When</strong> clause, with action.</p>
 
             </div>
             
@@ -1409,36 +1332,34 @@ in fixed-size increments.
         </li>
         
         
-        <li id="section-63">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>The most basic form of <em>if</em> is a condition and an action. The following
 if-related rules are broken up along these lines in order to avoid
-ambiguity.
-</p>
+ambiguity.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  IfBlock: [
     o <span class="string">'IF Expression Block'</span>,                    -&gt; <span class="keyword">new</span> If $<span class="number">2</span>, $<span class="number">3</span>, type: $<span class="number">1</span>
-    o <span class="string">'IfBlock ELSE IF Expression Block'</span>,       -&gt; $<span class="number">1.</span>addElse <span class="keyword">new</span> If $<span class="number">4</span>, $<span class="number">5</span>, type: $<span class="number">3</span>
+    o <span class="string">'IfBlock ELSE IF Expression Block'</span>,       -&gt; $<span class="number">1.</span>addElse LOC(<span class="number">3</span>,<span class="number">5</span>) <span class="keyword">new</span> If $<span class="number">4</span>, $<span class="number">5</span>, type: $<span class="number">3</span>
   ]</pre></div></div>
             
         </li>
         
         
-        <li id="section-64">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>The full complement of <em>if</em> expressions, including postfix one-liner
-<em>if</em> and <em>unless</em>.
-</p>
+<em>if</em> and <em>unless</em>.</p>
 
             </div>
             
@@ -1452,19 +1373,18 @@ ambiguity.
         </li>
         
         
-        <li id="section-65">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>Arithmetic and logical operators, working on one or more operands.
 Here they are grouped by order of precedence. The actual precedence rules
 are defined at the bottom of the page. It would be shorter if we could
 combine most of these rules into a single generic <em>Operand OpSymbol Operand</em>
 -type rule, but in order to make the precedence binding possible, separate
-rules are necessary.
-</p>
+rules are necessary.</p>
 
             </div>
             
@@ -1481,14 +1401,13 @@ rules are necessary.
         </li>
         
         
-        <li id="section-66">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
-              <p><a href="http://jashkenas.github.com/coffee-script/#existence">The existential operator</a>.
-</p>
+              <p><a href="http://jashkenas.github.com/coffee-script/#existence">The existential operator</a>.</p>
 
             </div>
             
@@ -1519,11 +1438,11 @@ rules are necessary.
         </li>
         
         
-        <li id="section-67">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <h2>Precedence</h2>
 
@@ -1532,32 +1451,16 @@ rules are necessary.
         </li>
         
         
-        <li id="section-68">
+        <li id="section-65">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-69">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>Operators at the top of this list have higher precedence than the ones lower
-down. Following these rules is what makes <code>2 + 3 * 4</code> parse as:
-
-</p>
+down. Following these rules is what makes <code>2 + 3 * 4</code> parse as:</p>
 <pre><code>2 + (3 * 4)</code></pre>
-<p>And not:
-
-</p>
+<p>And not:</p>
 <pre><code>(2 + 3) * 4</code></pre>
 
             </div>
@@ -1577,18 +1480,18 @@ down. Following these rules is what makes <code>2 + 3 * 4</code> parse as:
   [<span class="string">'nonassoc'</span>,  <span class="string">'INDENT'</span>, <span class="string">'OUTDENT'</span>]
   [<span class="string">'right'</span>,     <span class="string">'='</span>, <span class="string">':'</span>, <span class="string">'COMPOUND_ASSIGN'</span>, <span class="string">'RETURN'</span>, <span class="string">'THROW'</span>, <span class="string">'EXTENDS'</span>]
   [<span class="string">'right'</span>,     <span class="string">'FORIN'</span>, <span class="string">'FOROF'</span>, <span class="string">'BY'</span>, <span class="string">'WHEN'</span>]
-  [<span class="string">'right'</span>,     <span class="string">'IF'</span>, <span class="string">'ELSE'</span>, <span class="string">'FOR'</span>, <span class="string">'WHILE'</span>, <span class="string">'UNTIL'</span>, <span class="string">'LOOP'</span>, <span class="string">'SUPER'</span>, <span class="string">'CLASS'</span>]
+  [<span class="string">'right'</span>,     <span class="string">'IF'</span>, <span class="string">'ELSE'</span>, <span class="string">'FOR'</span>, <span class="string">'WHILE'</span>, <span class="string">'UNTIL'</span>, <span class="string">'LOOP'</span>, <span class="string">'SUPER'</span>, <span class="string">'CLASS'</span>, <span class="string">'AWAIT'</span>]
   [<span class="string">'right'</span>,     <span class="string">'POST_IF'</span>]
 ]</pre></div></div>
             
         </li>
         
         
-        <li id="section-70">
+        <li id="section-66">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-70">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <h2>Wrapping Up</h2>
 
@@ -1597,29 +1500,16 @@ down. Following these rules is what makes <code>2 + 3 * 4</code> parse as:
         </li>
         
         
-        <li id="section-71">
+        <li id="section-67">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-72">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>Finally, now that we have our <strong>grammar</strong> and our <strong>operators</strong>, we can create
 our <strong>Jison.Parser</strong>. We do this by processing all of our rules, recording all
 terminals (every symbol which does not appear as the name of a rule above)
-as &quot;tokens&quot;.
-</p>
+as &quot;tokens&quot;.</p>
 
             </div>
             
@@ -1634,17 +1524,16 @@ as &quot;tokens&quot;.
         </li>
         
         
-        <li id="section-73">
+        <li id="section-68">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>Initialize the <strong>Parser</strong> with our list of terminal <strong>tokens</strong>, our <strong>grammar</strong>
 rules, and the name of the root. Reverse the operators because Jison orders
 precedence from low to high, and we have it high to low
-(as in <a href="http://dinosaur.compilertools.net/yacc/index.html">Yacc</a>).
-</p>
+(as in <a href="http://dinosaur.compilertools.net/yacc/index.html">Yacc</a>).</p>
 
             </div>
             
