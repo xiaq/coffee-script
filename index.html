@@ -147,7 +147,7 @@
 
     <p>
       <b>Latest Version:</b>
-      <a href="http://github.com/maxtaco/coffee-script/tarball/iced2">1.6.2b</a>
+      <a href="http://github.com/maxtaco/coffee-script/tarball/iced2">1.6.3-f</a>
     </p>
 
     <h2>
@@ -216,21 +216,21 @@ sudo bin/cake install</pre>
     </p>
 
     <p>
-     <div class='code'><pre class="idle"># Search for 'keyword' on twitter, then callback 'cb'
-# with the results found.
-search = (keyword, cb) -&gt;
-  host = &quot;http://search.twitter.com/&quot;
-  url = &quot;#{host}/search.json?q=#{keyword}&amp;callback=?&quot;
-  await $.getJSON url, defer json
+     <div class='code'><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for 'keyword' on twitter, then callback 'cb'</span>
+<span class="Comment"><span class="Comment">#</span> with the results found.</span>
+<span class="FunctionName">searc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keyword, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keyword, cb)</span> <span class="Storage">-&gt;</span>
+  host <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>http://search.twitter.com/<span class="String">&quot;</span></span>
+  url <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>host<span class="String">}</span></span>/search.json?q=<span class="String"><span class="String">#{</span>keyword<span class="String">}</span></span>&amp;callback=?<span class="String">&quot;</span></span>
+  <span class="Keyword">await</span> $.getJSON url, <span class="Keyword">defer</span> json
   cb json.results
 
 
-</pre><pre class="idle"># Search for 'keyword' on twitter, then callback 'cb'
-# with the results found.
-search = (keyword, cb) -&gt;
-  host = &quot;http://search.twitter.com/&quot;
-  url = &quot;#{host}/search.json?q=#{keyword}&amp;callback=?&quot;
-  $.getJSON url, (json) -&gt;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for 'keyword' on twitter, then callback 'cb'</span>
+<span class="Comment"><span class="Comment">#</span> with the results found.</span>
+<span class="FunctionName">searc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keyword, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keyword, cb)</span> <span class="Storage">-&gt;</span>
+  host <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>http://search.twitter.com/<span class="String">&quot;</span></span>
+  url <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>host<span class="String">}</span></span>/search.json?q=<span class="String"><span class="String">#{</span>keyword<span class="String">}</span></span>&amp;callback=?<span class="String">&quot;</span></span>
+  $.getJSON url, <span class="FunctionArgument">(json)</span> <span class="Storage">-&gt;</span>
     cb json.results
 
 </pre><script>window.example1 = "# Search for 'keyword' on twitter, then callback 'cb'\n# with the results found.\nsearch = (keyword, cb) ->\n  host = \"http://search.twitter.com/\"\n  url = \"#{host}/search.json?q=#{keyword}&callback=?\"\n  await $.getJSON url, defer json\n  cb json.results\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example1);'>load</div><br class='clear' /></div>
@@ -280,26 +280,26 @@ search = (keyword, cb) -&gt;
     </p>
 
     <p>
-     <div class='code'><pre class="idle"># Search for 'keywords' in parallel, then callback
-# 'cb' with an array of the parallel results
-parallelSearch = (keywords, cb) -&gt;
-  out = []
-  await 
-    for k,i in keywords
-      search k, defer out[i]
+     <div class='code'><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for 'keywords' in parallel, then callback</span>
+<span class="Comment"><span class="Comment">#</span> 'cb' with an array of the parallel results</span>
+<span class="FunctionName">parallelSearc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  out <span class="Keyword">=</span> []
+  <span class="Keyword">await</span> 
+    <span class="Keyword">for</span> k,i <span class="Keyword">in</span> keywords
+      search k, <span class="Keyword">defer</span> out[i]
   cb out
-</pre><pre class="idle"># Search for 'keywords' in parallel, then callback
-# 'cb' with an array of the parallel results
-parallelSearch = (keywords, cb) -&gt;
-  results = []
-  n_out = 0
-  cb_generator = (i) -&gt;
-    n_out++
-    (json) -&gt;
-      results[i] = json
-      if n_out-- is 0
+</pre><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for 'keywords' in parallel, then callback</span>
+<span class="Comment"><span class="Comment">#</span> 'cb' with an array of the parallel results</span>
+<span class="FunctionName">parallelSearc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  results <span class="Keyword">=</span> []
+  n_out <span class="Keyword">=</span> <span class="Number">0</span>
+  <span class="FunctionName">cb_generato<span class="FunctionName">r</span> </span>=<span class="FunctionArgument"> (i)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(i)</span> <span class="Storage">-&gt;</span>
+    n_out<span class="Keyword">++</span>
+    <span class="FunctionArgument">(json)</span> <span class="Storage">-&gt;</span>
+      results[i] <span class="Keyword">=</span> json
+      <span class="Keyword">if</span> n_out<span class="Keyword">--</span> <span class="Keyword">is</span> <span class="Number">0</span>
         cb results
-  for k,i in keywords
+  <span class="Keyword">for</span> k,i <span class="Keyword">in</span> keywords
     search k, cb_generator i
 </pre><script>window.example2 = "# Search for 'keywords' in parallel, then callback\n# 'cb' with an array of the parallel results\nparallelSearch = (keywords, cb) ->\n  out = []\n  await \n    for k,i in keywords\n      search k, defer out[i]\n  cb out\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example2);'>load</div><br class='clear' /></div>
     </p>
@@ -329,27 +329,27 @@ parallelSearch = (keywords, cb) -&gt;
     <p>
 
     <p>
-     <div class='code'><pre class="idle"># Search for 'keywords' in serial, then callback
-# 'cb' with an array of the parallel results
-serialSearch = (keywords, cb) -&gt;
-  out = []
-  for k,i in keywords
-    await search k, defer out[i]
+     <div class='code'><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for 'keywords' in serial, then callback</span>
+<span class="Comment"><span class="Comment">#</span> 'cb' with an array of the parallel results</span>
+<span class="FunctionName">serialSearc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  out <span class="Keyword">=</span> []
+  <span class="Keyword">for</span> k,i <span class="Keyword">in</span> keywords
+    <span class="Keyword">await</span> search k, <span class="Keyword">defer</span> out[i]
   cb out
-</pre><pre class="idle"># Search for 'keywords' in serial, then callback
-# 'cb' with an array of the parallel results
-serialSearch = (keywords, cb) -&gt;
-  result = []
-  i = 0
-  launch = () -&gt;
-    if i &lt; keywords.length
-       j = i++
+</pre><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for 'keywords' in serial, then callback</span>
+<span class="Comment"><span class="Comment">#</span> 'cb' with an array of the parallel results</span>
+<span class="FunctionName">serialSearc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  result <span class="Keyword">=</span> []
+  i <span class="Keyword">=</span> <span class="Number">0</span>
+  <span class="FunctionName">launc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> ()</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">()</span> <span class="Storage">-&gt;</span>
+    <span class="Keyword">if</span> i <span class="Keyword">&lt;</span> keywords.length
+       j <span class="Keyword">=</span> i<span class="Keyword">++</span>
        search keywords[j], cb_generator j
-     else
+     <span class="Keyword">else</span>
        cb results
-  cb_generator = (i) -&gt;
-    (json) -&gt;
-      results[i] = json
+  <span class="FunctionName">cb_generato<span class="FunctionName">r</span> </span>=<span class="FunctionArgument"> (i)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(i)</span> <span class="Storage">-&gt;</span>
+    <span class="FunctionArgument">(json)</span> <span class="Storage">-&gt;</span>
+      results[i] <span class="Keyword">=</span> json
       launch()
   launch()
 </pre><script>window.example3 = "# Search for 'keywords' in serial, then callback\n# 'cb' with an array of the parallel results\nserialSearch = (keywords, cb) ->\n  out = []\n  for k,i in keywords\n    await search k, defer out[i]\n  cb out\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example3);'>load</div><br class='clear' /></div>
@@ -378,31 +378,31 @@ serialSearch = (keywords, cb) -&gt;
     </p>
     
     <p>
-     <div class='code'><pre class="idle"># Do a parallel search on 'keywords', and call 'cb' with
-# the keywords sorted in decreasing popular order.
-# Determine popularity based on the time of the least
-# recent tweet (since we always get 15 from Twitter).
-rankPopularity = (keywords, cb) -&gt;
-  await parallelSearch keywords, defer results
-  times = for r,i in results
-    last = r[r.length - 1]
-    [(new Date last.created_at).getTime(), i]
-  times = times.sort (a,b) -&gt; b[0] - a[0]
-  cb (keywords[tuple[1]] for tuple in times)
+     <div class='code'><pre class="idle"><span class="Comment"><span class="Comment">#</span> Do a parallel search on 'keywords', and call 'cb' with</span>
+<span class="Comment"><span class="Comment">#</span> the keywords sorted in decreasing popular order.</span>
+<span class="Comment"><span class="Comment">#</span> Determine popularity based on the time of the least</span>
+<span class="Comment"><span class="Comment">#</span> recent tweet (since we always get 15 from Twitter).</span>
+<span class="FunctionName">rankPopularit<span class="FunctionName">y</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  <span class="Keyword">await</span> parallelSearch keywords, <span class="Keyword">defer</span> results
+  times <span class="Keyword">=</span> <span class="Keyword">for</span> r,i <span class="Keyword">in</span> results
+    last <span class="Keyword">=</span> r[r.length <span class="Keyword">-</span> <span class="Number">1</span>]
+    [(<span class="Keyword">new</span> <span class="TypeName">Date</span> last.created_at).getTime(), i]
+  times <span class="Keyword">=</span> times.<span class="LibraryFunction">sort</span> <span class="FunctionArgument">(a,b)</span> <span class="Storage">-&gt;</span> b[<span class="Number">0</span>] <span class="Keyword">-</span> a[<span class="Number">0</span>]
+  cb (keywords[tuple[<span class="Number">1</span>]] <span class="Keyword">for</span> tuple <span class="Keyword">in</span> times)
 
 
 
-</pre><pre class="idle"># Do a parallel search on 'keywords', and call 'cb' with
-# the keywords sorted in decreasing popular order.
-# Determine popularity based on the time of the least
-# recent tweet (since we always get 15 from Twitter).
-rankPopularity = (keywords, cb) -&gt;
-  parallelSearch keywords, (results) -&gt;
-    times = for r,i in results
-      last = r[r.length - 1]
-      [(new Date last.created_at).getTime(), i]
-    times = times.sort (a,b) -&gt; b[0] - a[0]
-    cb (keywords[tuple[1]] for tuple in times)
+</pre><pre class="idle"><span class="Comment"><span class="Comment">#</span> Do a parallel search on 'keywords', and call 'cb' with</span>
+<span class="Comment"><span class="Comment">#</span> the keywords sorted in decreasing popular order.</span>
+<span class="Comment"><span class="Comment">#</span> Determine popularity based on the time of the least</span>
+<span class="Comment"><span class="Comment">#</span> recent tweet (since we always get 15 from Twitter).</span>
+<span class="FunctionName">rankPopularit<span class="FunctionName">y</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  parallelSearch keywords, <span class="FunctionArgument">(results)</span> <span class="Storage">-&gt;</span>
+    times <span class="Keyword">=</span> <span class="Keyword">for</span> r,i <span class="Keyword">in</span> results
+      last <span class="Keyword">=</span> r[r.length <span class="Keyword">-</span> <span class="Number">1</span>]
+      [(<span class="Keyword">new</span> <span class="TypeName">Date</span> last.created_at).getTime(), i]
+    times <span class="Keyword">=</span> times.<span class="LibraryFunction">sort</span> <span class="FunctionArgument">(a,b)</span> <span class="Storage">-&gt;</span> b[<span class="Number">0</span>] <span class="Keyword">-</span> a[<span class="Number">0</span>]
+    cb (keywords[tuple[<span class="Number">1</span>]] <span class="Keyword">for</span> tuple <span class="Keyword">in</span> times)
 
 
 </pre><script>window.example4 = "# Do a parallel search on 'keywords', and call 'cb' with\n# the keywords sorted in decreasing popular order.\n# Determine popularity based on the time of the least\n# recent tweet (since we always get 15 from Twitter).\nrankPopularity = (keywords, cb) ->\n  await parallelSearch keywords, defer results\n  times = for r,i in results\n    last = r[r.length - 1]\n    [(new Date last.created_at).getTime(), i]\n  times = times.sort (a,b) -> b[0] - a[0]\n  cb (keywords[tuple[1]] for tuple in times)\n\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example4);'>load</div><br class='clear' /></div>
@@ -411,47 +411,47 @@ rankPopularity = (keywords, cb) -&gt;
     <p>And a main block of code:</p>
 
     <p>
-     <div class='code'><pre class="idle"># Search for the most popular food and the most
-# popular weather pattern in parallel.
-w_list = [ &quot;sun&quot;, &quot;rain&quot;, &quot;snow&quot;, &quot;sleet&quot; ]
-f_list = [ &quot;tacos&quot;, &quot;burritos&quot;, &quot;pizza&quot;, &quot;shrooms&quot; ]
+     <div class='code'><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for the most popular food and the most</span>
+<span class="Comment"><span class="Comment">#</span> popular weather pattern in parallel.</span>
+w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
 
-await
-  rankPopularity w_list, defer weather
-  rankPopularity f_list, defer food
+<span class="Keyword">await</span>
+  rankPopularity w_list, <span class="Keyword">defer</span> weather
+  rankPopularity f_list, <span class="Keyword">defer</span> food
 
-# If we got results for both, do a final search
-if weather.length and food.length
-  await search &quot;#{weather[0]}+#{food[0]}&quot;, defer tweets
-  msg = tweets[0]?.text
+<span class="Comment"><span class="Comment">#</span> If we got results for both, do a final search</span>
+<span class="Keyword">if</span> weather.length <span class="Keyword">and</span> food.length
+  <span class="Keyword">await</span> search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="Keyword">defer</span> tweets
+  msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
 
-# Alert the results to the browser
-alert if msg? then msg else &quot;&lt;nothing found&gt;&quot;
-</pre><pre class="idle"># Search for the most popular food and the most
-# popular weather pattern in parallel.
-w_list = [ &quot;sun&quot;, &quot;rain&quot;, &quot;snow&quot;, &quot;sleet&quot; ]
-f_list = [ &quot;tacos&quot;, &quot;burritos&quot;, &quot;pizza&quot;, &quot;shrooms&quot; ]
+<span class="Comment"><span class="Comment">#</span> Alert the results to the browser</span>
+alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">#</span> Search for the most popular food and the most</span>
+<span class="Comment"><span class="Comment">#</span> popular weather pattern in parallel.</span>
+w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
 
-o = {}
-n_out = 0
-nothing = &quot;&lt;nothing found&gt;&quot;
+o <span class="Keyword">=</span> {}
+n_out <span class="Keyword">=</span> <span class="Number">0</span>
+nothing <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
   
-cb_generator = (field) -&gt;
-  n_out++
-  (json) -&gt;
-    o[field] = json
-    if --n_out is 0
-      # If we got results for both, do a final search
-      if o.weather.length and o.food.length
-        search &quot;#{o.weather[0]}+#{o.food[0]}&quot;, (tweets) -&gt;
-          # Alert the results to the browser
-          msg = tweets[0]?.text
-          alert if msg? then msg else nothing
-      else
+<span class="FunctionName">cb_generato<span class="FunctionName">r</span> </span>=<span class="FunctionArgument"> (field)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(field)</span> <span class="Storage">-&gt;</span>
+  n_out<span class="Keyword">++</span>
+  <span class="FunctionArgument">(json)</span> <span class="Storage">-&gt;</span>
+    o[field] <span class="Keyword">=</span> json
+    <span class="Keyword">if</span> <span class="Keyword">--</span>n_out <span class="Keyword">is</span> <span class="Number">0</span>
+      <span class="Comment"><span class="Comment">#</span> If we got results for both, do a final search</span>
+      <span class="Keyword">if</span> o.weather.length <span class="Keyword">and</span> o.food.length
+        search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>o<span class="String">.</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>o<span class="String">.</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="FunctionArgument">(tweets)</span> <span class="Storage">-&gt;</span>
+          <span class="Comment"><span class="Comment">#</span> Alert the results to the browser</span>
+          msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
+          alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> nothing
+      <span class="Keyword">else</span>
         alert nothing
 
-rankPopularity w_list, cb_generator &quot;weather&quot;
-rankPopularity f_list, cb_generator &quot;food&quot;
+rankPopularity w_list, cb_generator <span class="String"><span class="String">&quot;</span>weather<span class="String">&quot;</span></span>
+rankPopularity f_list, cb_generator <span class="String"><span class="String">&quot;</span>food<span class="String">&quot;</span></span>
 </pre><script>window.example5 = "# Search for the most popular food and the most\n# popular weather pattern in parallel.\nw_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritos\", \"pizza\", \"shrooms\" ]\n\nawait\n  rankPopularity w_list, defer weather\n  rankPopularity f_list, defer food\n\n# If we got results for both, do a final search\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\n\n# Alert the results to the browser\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example5);'>load</div><br class='clear' /></div>
     </p>
 
@@ -465,28 +465,28 @@ rankPopularity f_list, cb_generator &quot;food&quot;
     </p>
 
     <p>
-     <div class='code'><pre class="idle">w_list = [ &quot;sun&quot;, &quot;rain&quot;, &quot;snow&quot;, &quot;sleet&quot; ]
-f_list = [ &quot;tacos&quot;, &quot;burritos&quot;, &quot;pizza&quot;, &quot;shrooms&quot; ]
-await rankPopularity w_list, defer weather
-if weather.length
-  await rankPopularity f_list, defer food
-if weather.length and food.length
-  await search &quot;#{weather[0]}+#{food[0]}&quot;, defer tweets
-  msg = tweets[0]?.text
-alert if msg? then msg else &quot;&lt;nothing found&gt;&quot;
-</pre><pre class="idle">w_list = [ &quot;sun&quot;, &quot;rain&quot;, &quot;snow&quot;, &quot;sleet&quot; ]
-f_list = [ &quot;tacos&quot;, &quot;burritos&quot;, &quot;pizza&quot;, &quot;shrooms&quot; ]
-nothing = &quot;&lt;nothing found&gt;&quot;
-rankPopularity w_list, (weather) -&gt;
-  if weather.length
-    rankPopularity f_list, (food) -&gt;
-      if weather.length and food.length
-        search &quot;#{weather[0]}+#{food[0]}&quot;, (tweets)-&gt;
-          msg = tweets[0]?.text
-          alert if msg? then msg else nothing
-      else
+     <div class='code'><pre class="idle">w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+<span class="Keyword">await</span> rankPopularity w_list, <span class="Keyword">defer</span> weather
+<span class="Keyword">if</span> weather.length
+  <span class="Keyword">await</span> rankPopularity f_list, <span class="Keyword">defer</span> food
+<span class="Keyword">if</span> weather.length <span class="Keyword">and</span> food.length
+  <span class="Keyword">await</span> search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="Keyword">defer</span> tweets
+  msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
+alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
+</pre><pre class="idle">w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+nothing <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
+rankPopularity w_list, <span class="FunctionArgument">(weather)</span> <span class="Storage">-&gt;</span>
+  <span class="Keyword">if</span> weather.length
+    rankPopularity f_list, <span class="FunctionArgument">(food)</span> <span class="Storage">-&gt;</span>
+      <span class="Keyword">if</span> weather.length <span class="Keyword">and</span> food.length
+        search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="FunctionArgument">(tweets)</span><span class="Storage">-&gt;</span>
+          msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
+          alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> nothing
+      <span class="Keyword">else</span>
         alert nothing
-  else
+  <span class="Keyword">else</span>
     alert nothing
 
 </pre><script>window.example6 = "w_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritos\", \"pizza\", \"shrooms\" ]\nawait rankPopularity w_list, defer weather\nif weather.length\n  await rankPopularity f_list, defer food\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><br class='clear' /></div>
@@ -504,200 +504,200 @@ rankPopularity w_list, (weather) -&gt;
      your browser!
     </p>
 
-   <div class='code' style="height: 630px; overflow-y: scroll;"><pre class="idle">search = (keyword, cb) -&gt;
-  host = &quot;http://search.twitter.com/&quot;
-  url = &quot;#{host}/search.json?q=#{keyword}&amp;callback=?&quot;
-  await $.getJSON url, defer json
+   <div class='code' style="height: 630px; overflow-y: scroll;"><pre class="idle"><span class="FunctionName">searc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keyword, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keyword, cb)</span> <span class="Storage">-&gt;</span>
+  host <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>http://search.twitter.com/<span class="String">&quot;</span></span>
+  url <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>host<span class="String">}</span></span>/search.json?q=<span class="String"><span class="String">#{</span>keyword<span class="String">}</span></span>&amp;callback=?<span class="String">&quot;</span></span>
+  <span class="Keyword">await</span> $.getJSON url, <span class="Keyword">defer</span> json
   cb json.results
 
-parallelSearch = (keywords, cb) -&gt;
-  out = []
-  await 
-    for k,i in keywords
-      search k, defer out[i]
+<span class="FunctionName">parallelSearc<span class="FunctionName">h</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  out <span class="Keyword">=</span> []
+  <span class="Keyword">await</span> 
+    <span class="Keyword">for</span> k,i <span class="Keyword">in</span> keywords
+      search k, <span class="Keyword">defer</span> out[i]
   cb out
 
-rankPopularity = (keywords, cb) -&gt;
-  await parallelSearch keywords, defer results
-  times = for r,i in results
-    last = r[r.length - 1]
-    [(new Date last.created_at).getTime(), i]
-  times = times.sort (a,b) -&gt; b[0] - a[0]
-  cb (keywords[tuple[1]] for tuple in times)
+<span class="FunctionName">rankPopularit<span class="FunctionName">y</span> </span>=<span class="FunctionArgument"> (keywords, cb)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(keywords, cb)</span> <span class="Storage">-&gt;</span>
+  <span class="Keyword">await</span> parallelSearch keywords, <span class="Keyword">defer</span> results
+  times <span class="Keyword">=</span> <span class="Keyword">for</span> r,i <span class="Keyword">in</span> results
+    last <span class="Keyword">=</span> r[r.length <span class="Keyword">-</span> <span class="Number">1</span>]
+    [(<span class="Keyword">new</span> <span class="TypeName">Date</span> last.created_at).getTime(), i]
+  times <span class="Keyword">=</span> times.<span class="LibraryFunction">sort</span> <span class="FunctionArgument">(a,b)</span> <span class="Storage">-&gt;</span> b[<span class="Number">0</span>] <span class="Keyword">-</span> a[<span class="Number">0</span>]
+  cb (keywords[tuple[<span class="Number">1</span>]] <span class="Keyword">for</span> tuple <span class="Keyword">in</span> times)
 
-w_list = [ &quot;sun&quot;, &quot;rain&quot;, &quot;snow&quot;, &quot;sleet&quot; ]
-f_list = [ &quot;tacos&quot;, &quot;burritos&quot;, &quot;pizza&quot;, &quot;shrooms&quot; ]
-await
-  rankPopularity w_list, defer weather
-  rankPopularity f_list, defer food
+w_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span> ]
+f_list <span class="Keyword">=</span> [ <span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span> ]
+<span class="Keyword">await</span>
+  rankPopularity w_list, <span class="Keyword">defer</span> weather
+  rankPopularity f_list, <span class="Keyword">defer</span> food
 
-if weather.length and food.length
-  await search &quot;#{weather[0]}+#{food[0]}&quot;, defer tweets
-  msg = tweets[0]?.text
+<span class="Keyword">if</span> weather.length <span class="Keyword">and</span> food.length
+  <span class="Keyword">await</span> search <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>weather<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span>+<span class="String"><span class="String">#{</span>food<span class="String">[</span><span class="Number">0</span><span class="String">]</span><span class="String">}</span></span><span class="String">&quot;</span></span>, <span class="Keyword">defer</span> tweets
+  msg <span class="Keyword">=</span> tweets[<span class="Number">0</span>]<span class="Keyword">?</span>.text
 
-alert if msg? then msg else &quot;&lt;nothing found&gt;&quot;
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var f_list, food, msg, parallelSearch, rankPopularity, search, tweets, w_list, weather, __id, __iced_k, __iced_k_noop,
-  _this = this;
+alert <span class="Keyword">if</span> msg<span class="Keyword">?</span> <span class="Keyword">then</span> msg <span class="Keyword">else</span> <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> f_list, food, msg, parallelSearch, rankPopularity, search, tweets, w_list, weather, __id, __iced_k, __iced_k_noop,
+  _this <span class="Keyword">=</span> <span class="Variable">this</span>;
 
-__iced_k = __iced_k_noop = function() {};
+__iced_k <span class="Keyword">=</span> <span class="FunctionName">__iced_k_noop</span> = <span class="Storage">function</span>() {};
 
-search = function(keyword, cb) {
-  var host, json, url, ___iced_passed_deferral, __id, __iced_k,
-    _this = this;
-  __iced_k = __iced_k_noop;
-  ___iced_passed_deferral = iced.findDeferral(arguments);
-  host = &quot;http://search.twitter.com/&quot;;
-  url = &quot;&quot; + host + &quot;/search.json?q=&quot; + keyword + &quot;&amp;callback=?&quot;;
-  (function(__iced_k) {
-    __id = new iced.Deferrals(__iced_k, {
+<span class="FunctionName">search</span> = <span class="Storage">function</span>(<span class="FunctionArgument">keyword, cb</span>) {
+  <span class="Storage">var</span> host, json, url, ___iced_passed_deferral, __id, __iced_k,
+    _this <span class="Keyword">=</span> <span class="Variable">this</span>;
+  __iced_k <span class="Keyword">=</span> __iced_k_noop;
+  ___iced_passed_deferral <span class="Keyword">=</span> iced.findDeferral(arguments);
+  host <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>http://search.twitter.com/<span class="String">&quot;</span></span>;
+  url <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> host <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>/search.json?q=<span class="String">&quot;</span></span> <span class="Keyword">+</span> keyword <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>&amp;callback=?<span class="String">&quot;</span></span>;
+  (<span class="Storage">function</span>(__iced_k) {
+    __id <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: &quot;documentation/coffee/iced_tw_full.coffee&quot;,
-      funcname: &quot;search&quot;
+      filename: <span class="String"><span class="String">&quot;</span>documentation/coffee/iced_tw_full.coffee<span class="String">&quot;</span></span>,
+      funcname: <span class="String"><span class="String">&quot;</span>search<span class="String">&quot;</span></span>
     });
-    $.getJSON(url, __id.defer({
-      assign_fn: (function() {
-        return function() {
-          return json = arguments[0];
+    <span class="Keyword">$</span>.getJSON(url, __id.<span class="LibraryConstant">defer</span>({
+      assign_fn: (<span class="Storage">function</span>() {
+        <span class="Keyword">return</span> <span class="Storage">function</span>() {
+          <span class="Keyword">return</span> json <span class="Keyword">=</span> arguments[<span class="Number">0</span>];
         };
       })(),
-      lineno: 3
+      lineno: <span class="Number">3</span>
     }));
     __id._fulfill();
-  })(function() {
-    return cb(json.results);
+  })(<span class="Storage">function</span>() {
+    <span class="Keyword">return</span> cb(json.results);
   });
 };
 
-parallelSearch = function(keywords, cb) {
-  var i, k, out, ___iced_passed_deferral, __id, __iced_k,
-    _this = this;
-  __iced_k = __iced_k_noop;
-  ___iced_passed_deferral = iced.findDeferral(arguments);
-  out = [];
-  (function(__iced_k) {
-    var _i, _len;
-    __id = new iced.Deferrals(__iced_k, {
+<span class="FunctionName">parallelSearch</span> = <span class="Storage">function</span>(<span class="FunctionArgument">keywords, cb</span>) {
+  <span class="Storage">var</span> i, k, out, ___iced_passed_deferral, __id, __iced_k,
+    _this <span class="Keyword">=</span> <span class="Variable">this</span>;
+  __iced_k <span class="Keyword">=</span> __iced_k_noop;
+  ___iced_passed_deferral <span class="Keyword">=</span> iced.findDeferral(arguments);
+  out <span class="Keyword">=</span> [];
+  (<span class="Storage">function</span>(__iced_k) {
+    <span class="Storage">var</span> _i, _len;
+    __id <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: &quot;documentation/coffee/iced_tw_full.coffee&quot;,
-      funcname: &quot;parallelSearch&quot;
+      filename: <span class="String"><span class="String">&quot;</span>documentation/coffee/iced_tw_full.coffee<span class="String">&quot;</span></span>,
+      funcname: <span class="String"><span class="String">&quot;</span>parallelSearch<span class="String">&quot;</span></span>
     });
-    for (i = _i = 0, _len = keywords.length; _i &lt; _len; i = ++_i) {
-      k = keywords[i];
-      search(k, __id.defer({
-        assign_fn: (function(__slot_1, __slot_2) {
-          return function() {
-            return __slot_1[__slot_2] = arguments[0];
+    <span class="Keyword">for</span> (i <span class="Keyword">=</span> _i <span class="Keyword">=</span> <span class="Number">0</span>, _len <span class="Keyword">=</span> keywords.<span class="LibraryConstant">length</span>; _i <span class="Keyword">&lt;</span> _len; i <span class="Keyword">=</span> <span class="Keyword">++</span>_i) {
+      k <span class="Keyword">=</span> keywords[i];
+      <span class="LibraryFunction">search</span>(k, __id.<span class="LibraryConstant">defer</span>({
+        assign_fn: (<span class="Storage">function</span>(__slot_1, __slot_2) {
+          <span class="Keyword">return</span> <span class="Storage">function</span>() {
+            <span class="Keyword">return</span> __slot_1[__slot_2] <span class="Keyword">=</span> arguments[<span class="Number">0</span>];
           };
         })(out, i),
-        lineno: 10
+        lineno: <span class="Number">10</span>
       }));
     }
     __id._fulfill();
-  })(function() {
-    return cb(out);
+  })(<span class="Storage">function</span>() {
+    <span class="Keyword">return</span> cb(out);
   });
 };
 
-rankPopularity = function(keywords, cb) {
-  var i, last, r, results, times, tuple, ___iced_passed_deferral, __id, __iced_k,
-    _this = this;
-  __iced_k = __iced_k_noop;
-  ___iced_passed_deferral = iced.findDeferral(arguments);
-  (function(__iced_k) {
-    __id = new iced.Deferrals(__iced_k, {
+<span class="FunctionName">rankPopularity</span> = <span class="Storage">function</span>(<span class="FunctionArgument">keywords, cb</span>) {
+  <span class="Storage">var</span> i, last, r, results, times, tuple, ___iced_passed_deferral, __id, __iced_k,
+    _this <span class="Keyword">=</span> <span class="Variable">this</span>;
+  __iced_k <span class="Keyword">=</span> __iced_k_noop;
+  ___iced_passed_deferral <span class="Keyword">=</span> iced.findDeferral(arguments);
+  (<span class="Storage">function</span>(__iced_k) {
+    __id <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k, {
       parent: ___iced_passed_deferral,
-      filename: &quot;documentation/coffee/iced_tw_full.coffee&quot;,
-      funcname: &quot;rankPopularity&quot;
+      filename: <span class="String"><span class="String">&quot;</span>documentation/coffee/iced_tw_full.coffee<span class="String">&quot;</span></span>,
+      funcname: <span class="String"><span class="String">&quot;</span>rankPopularity<span class="String">&quot;</span></span>
     });
-    parallelSearch(keywords, __id.defer({
-      assign_fn: (function() {
-        return function() {
-          return results = arguments[0];
+    parallelSearch(keywords, __id.<span class="LibraryConstant">defer</span>({
+      assign_fn: (<span class="Storage">function</span>() {
+        <span class="Keyword">return</span> <span class="Storage">function</span>() {
+          <span class="Keyword">return</span> results <span class="Keyword">=</span> arguments[<span class="Number">0</span>];
         };
       })(),
-      lineno: 14
+      lineno: <span class="Number">14</span>
     }));
     __id._fulfill();
-  })(function() {
-    times = (function() {
-      var _i, _len, _results;
-      _results = [];
-      for (i = _i = 0, _len = results.length; _i &lt; _len; i = ++_i) {
-        r = results[i];
-        last = r[r.length - 1];
-        _results.push([(new Date(last.created_at)).getTime(), i]);
+  })(<span class="Storage">function</span>() {
+    times <span class="Keyword">=</span> (<span class="Storage">function</span>() {
+      <span class="Storage">var</span> _i, _len, _results;
+      _results <span class="Keyword">=</span> [];
+      <span class="Keyword">for</span> (i <span class="Keyword">=</span> _i <span class="Keyword">=</span> <span class="Number">0</span>, _len <span class="Keyword">=</span> results.<span class="LibraryConstant">length</span>; _i <span class="Keyword">&lt;</span> _len; i <span class="Keyword">=</span> <span class="Keyword">++</span>_i) {
+        r <span class="Keyword">=</span> results[i];
+        last <span class="Keyword">=</span> r[r.<span class="LibraryConstant">length</span> <span class="Keyword">-</span> <span class="Number">1</span>];
+        _results.<span class="LibraryFunction">push</span>([(<span class="Keyword">new</span> <span class="TypeName">Date</span>(last.created_at)).<span class="LibraryFunction">getTime</span>(), i]);
       }
-      return _results;
+      <span class="Keyword">return</span> _results;
     })();
-    times = times.sort(function(a, b) {
-      return b[0] - a[0];
+    times <span class="Keyword">=</span> times.<span class="LibraryFunction">sort</span>(<span class="Storage">function</span>(a, b) {
+      <span class="Keyword">return</span> b[<span class="Number">0</span>] <span class="Keyword">-</span> a[<span class="Number">0</span>];
     });
-    return cb((function() {
-      var _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = times.length; _i &lt; _len; _i++) {
-        tuple = times[_i];
-        _results.push(keywords[tuple[1]]);
+    <span class="Keyword">return</span> cb((<span class="Storage">function</span>() {
+      <span class="Storage">var</span> _i, _len, _results;
+      _results <span class="Keyword">=</span> [];
+      <span class="Keyword">for</span> (_i <span class="Keyword">=</span> <span class="Number">0</span>, _len <span class="Keyword">=</span> times.<span class="LibraryConstant">length</span>; _i <span class="Keyword">&lt;</span> _len; _i<span class="Keyword">++</span>) {
+        tuple <span class="Keyword">=</span> times[_i];
+        _results.<span class="LibraryFunction">push</span>(keywords[tuple[<span class="Number">1</span>]]);
       }
-      return _results;
+      <span class="Keyword">return</span> _results;
     })());
   });
 };
 
-w_list = [&quot;sun&quot;, &quot;rain&quot;, &quot;snow&quot;, &quot;sleet&quot;];
+w_list <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>sun<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>rain<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>snow<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>sleet<span class="String">&quot;</span></span>];
 
-f_list = [&quot;tacos&quot;, &quot;burritos&quot;, &quot;pizza&quot;, &quot;shrooms&quot;];
+f_list <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>tacos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>burritos<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>pizza<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>shrooms<span class="String">&quot;</span></span>];
 
-(function(__iced_k) {
-  __id = new iced.Deferrals(__iced_k, {
-    filename: &quot;documentation/coffee/iced_tw_full.coffee&quot;
+(<span class="Storage">function</span>(__iced_k) {
+  __id <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k, {
+    filename: <span class="String"><span class="String">&quot;</span>documentation/coffee/iced_tw_full.coffee<span class="String">&quot;</span></span>
   });
-  rankPopularity(w_list, __id.defer({
-    assign_fn: (function() {
-      return function() {
-        return weather = arguments[0];
+  rankPopularity(w_list, __id.<span class="LibraryConstant">defer</span>({
+    assign_fn: (<span class="Storage">function</span>() {
+      <span class="Keyword">return</span> <span class="Storage">function</span>() {
+        <span class="Keyword">return</span> weather <span class="Keyword">=</span> arguments[<span class="Number">0</span>];
       };
     })(),
-    lineno: 24
+    lineno: <span class="Number">24</span>
   }));
-  rankPopularity(f_list, __id.defer({
-    assign_fn: (function() {
-      return function() {
-        return food = arguments[0];
+  rankPopularity(f_list, __id.<span class="LibraryConstant">defer</span>({
+    assign_fn: (<span class="Storage">function</span>() {
+      <span class="Keyword">return</span> <span class="Storage">function</span>() {
+        <span class="Keyword">return</span> food <span class="Keyword">=</span> arguments[<span class="Number">0</span>];
       };
     })(),
-    lineno: 25
+    lineno: <span class="Number">25</span>
   }));
   __id._fulfill();
-})(function() {
-  (function(__iced_k) {
-    if (weather.length &amp;&amp; food.length) {
-      (function(__iced_k) {
-        __id = new iced.Deferrals(__iced_k, {
-          filename: &quot;documentation/coffee/iced_tw_full.coffee&quot;
+})(<span class="Storage">function</span>() {
+  (<span class="Storage">function</span>(__iced_k) {
+    <span class="Keyword">if</span> (weather.<span class="LibraryConstant">length</span> <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> food.<span class="LibraryConstant">length</span>) {
+      (<span class="Storage">function</span>(__iced_k) {
+        __id <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">iced.Deferrals</span>(__iced_k, {
+          filename: <span class="String"><span class="String">&quot;</span>documentation/coffee/iced_tw_full.coffee<span class="String">&quot;</span></span>
         });
-        search(&quot;&quot; + weather[0] + &quot;+&quot; + food[0], __id.defer({
-          assign_fn: (function() {
-            return function() {
-              return tweets = arguments[0];
+        <span class="LibraryFunction">search</span>(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> weather[<span class="Number">0</span>] <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>+<span class="String">&quot;</span></span> <span class="Keyword">+</span> food[<span class="Number">0</span>], __id.<span class="LibraryConstant">defer</span>({
+          assign_fn: (<span class="Storage">function</span>() {
+            <span class="Keyword">return</span> <span class="Storage">function</span>() {
+              <span class="Keyword">return</span> tweets <span class="Keyword">=</span> arguments[<span class="Number">0</span>];
             };
           })(),
-          lineno: 28
+          lineno: <span class="Number">28</span>
         }));
         __id._fulfill();
-      })(function() {
-        var _ref;
-        return __iced_k(msg = (_ref = tweets[0]) != null ? _ref.text : void 0);
+      })(<span class="Storage">function</span>() {
+        <span class="Storage">var</span> _ref;
+        <span class="Keyword">return</span> __iced_k(msg <span class="Keyword">=</span> (_ref <span class="Keyword">=</span> tweets[<span class="Number">0</span>]) <span class="Keyword">!</span><span class="Keyword">=</span> <span class="BuiltInConstant">null</span> ? _ref.<span class="LibraryConstant">text</span> : <span class="Storage">void</span> <span class="Number">0</span>);
       });
-    } else {
-      return __iced_k();
+    } <span class="Keyword">else</span> {
+      <span class="Keyword">return</span> __iced_k();
     }
-  })(function() {
-    return alert(typeof msg !== &quot;undefined&quot; &amp;&amp; msg !== null ? msg : &quot;&lt;nothing found&gt;&quot;);
+  })(<span class="Storage">function</span>() {
+    <span class="Keyword">return</span> <span class="LibraryFunction">alert</span>(<span class="Keyword">typeof</span> msg <span class="Keyword">!</span><span class="Keyword">==</span> <span class="String"><span class="String">&quot;</span>undefined<span class="String">&quot;</span></span> <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> msg <span class="Keyword">!</span><span class="Keyword">==</span> <span class="BuiltInConstant">null</span> ? msg : <span class="String"><span class="String">&quot;</span>&lt;nothing found&gt;<span class="String">&quot;</span></span>);
   });
 });
-</pre><script>window.example7 = "search = (keyword, cb) ->\n  host = \"http://search.twitter.com/\"\n  url = \"#{host}/search.json?q=#{keyword}&callback=?\"\n  await $.getJSON url, defer json\n  cb json.results\n\nparallelSearch = (keywords, cb) ->\n  out = []\n  await \n    for k,i in keywords\n      search k, defer out[i]\n  cb out\n\nrankPopularity = (keywords, cb) ->\n  await parallelSearch keywords, defer results\n  times = for r,i in results\n    last = r[r.length - 1]\n    [(new Date last.created_at).getTime(), i]\n  times = times.sort (a,b) -> b[0] - a[0]\n  cb (keywords[tuple[1]] for tuple in times)\n\nw_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritos\", \"pizza\", \"shrooms\" ]\nawait\n  rankPopularity w_list, defer weather\n  rankPopularity f_list, defer food\n\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\n\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example7);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example7 = "search = (keyword, cb) ->\n  host = \"http://search.twitter.com/\"\n  url = \"#{host}/search.json?q=#{keyword}&callback=?\"\n  await $.getJSON url, defer json\n  cb json.results\n\nparallelSearch = (keywords, cb) ->\n  out = []\n  await \n    for k,i in keywords\n      search k, defer out[i]\n  cb out\n\nrankPopularity = (keywords, cb) ->\n  await parallelSearch keywords, defer results\n  times = for r,i in results\n    last = r[r.length - 1]\n    [(new Date last.created_at).getTime(), i]\n  times = times.sort (a,b) -> b[0] - a[0]\n  cb (keywords[tuple[1]] for tuple in times)\n\nw_list = [ \"sun\", \"rain\", \"snow\", \"sleet\" ]\nf_list = [ \"tacos\", \"burritos\", \"pizza\", \"shrooms\" ]\nawait\n  rankPopularity w_list, defer weather\n  rankPopularity f_list, defer food\n\nif weather.length and food.length\n  await search \"#{weather[0]}+#{food[0]}\", defer tweets\n  msg = tweets[0]?.text\n\nalert if msg? then msg else \"<nothing found>\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example7);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var f_list, food, msg, parallelSearch, rankPopularity, search, tweets, w_list, weather, __id, __iced_k, __iced_k_noop,
   _this = this;
 
@@ -884,82 +884,82 @@ f_list = ["tacos", "burritos", "pizza", "shrooms"];
 
     <p><i>CoffeeScript on the left, compiled JavaScript output on the right.</i></p>
 
-    <div class='code' ><pre class="idle"># Assignment:
-number   = 42
-opposite = true
+    <div class='code' ><pre class="idle"><span class="Comment"><span class="Comment">#</span> Assignment:</span>
+number   <span class="Keyword">=</span> <span class="Number">42</span>
+opposite <span class="Keyword">=</span> <span class="BuiltInConstant">true</span>
 
-# Conditions:
-number = -42 if opposite
+<span class="Comment"><span class="Comment">#</span> Conditions:</span>
+number <span class="Keyword">=</span> <span class="Keyword">-</span><span class="Number">42</span> <span class="Keyword">if</span> opposite
 
-# Functions:
-square = (x) -&gt; x * x
+<span class="Comment"><span class="Comment">#</span> Functions:</span>
+<span class="FunctionName">squar<span class="FunctionName">e</span> </span>=<span class="FunctionArgument"> (x)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(x)</span> <span class="Storage">-&gt;</span> x <span class="Keyword">*</span> x
 
-# Arrays:
-list = [1, 2, 3, 4, 5]
+<span class="Comment"><span class="Comment">#</span> Arrays:</span>
+list <span class="Keyword">=</span> [<span class="Number">1</span>, <span class="Number">2</span>, <span class="Number">3</span>, <span class="Number">4</span>, <span class="Number">5</span>]
 
-# Objects:
-math =
-  root:   Math.sqrt
+<span class="Comment"><span class="Comment">#</span> Objects:</span>
+math <span class="Keyword">=</span>
+  root:   <span class="LibraryClassType">Math</span>.<span class="LibraryFunction">sqrt</span>
   square: square
-  cube:   (x) -&gt; x * square x
+  <span class="FunctionName">cub<span class="FunctionName">e</span></span>:<span class="FunctionArgument">   (x)</span> <span class="Storage">-&gt;</span><span class="Keyword">:</span>   <span class="FunctionArgument">(x)</span> <span class="Storage">-&gt;</span> x <span class="Keyword">*</span> square x
 
-# Splats:
-race = (winner, runners...) -&gt;
+<span class="Comment"><span class="Comment">#</span> Splats:</span>
+<span class="FunctionName">rac<span class="FunctionName">e</span> </span>=<span class="FunctionArgument"> (winner, runners...)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(winner, runners...)</span> <span class="Storage">-&gt;</span>
   print winner, runners
 
-# Existence:
-alert &quot;I knew it!&quot; if elvis?
+<span class="Comment"><span class="Comment">#</span> Existence:</span>
+alert <span class="String"><span class="String">&quot;</span>I knew it!<span class="String">&quot;</span></span> <span class="Keyword">if</span> elvis<span class="Keyword">?</span>
 
-# Array comprehensions:
-cubes = (math.cube num for num in list)
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var cubes, list, math, num, number, opposite, race, square,
-  __slice = [].slice;
+<span class="Comment"><span class="Comment">#</span> Array comprehensions:</span>
+cubes <span class="Keyword">=</span> (math.cube num <span class="Keyword">for</span> num <span class="Keyword">in</span> list)
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> cubes, list, math, num, number, opposite, race, square,
+  __slice <span class="Keyword">=</span> [].slice;
 
 
 
-number = 42;
+number <span class="Keyword">=</span> <span class="Number">42</span>;
 
-opposite = true;
+opposite <span class="Keyword">=</span> <span class="BuiltInConstant">true</span>;
 
-if (opposite) {
-  number = -42;
+<span class="Keyword">if</span> (opposite) {
+  number <span class="Keyword">=</span> <span class="Keyword">-</span><span class="Number">42</span>;
 }
 
-square = function(x) {
-  return x * x;
+<span class="FunctionName">square</span> = <span class="Storage">function</span>(<span class="FunctionArgument">x</span>) {
+  <span class="Keyword">return</span> x <span class="Keyword">*</span> x;
 };
 
-list = [1, 2, 3, 4, 5];
+list <span class="Keyword">=</span> [<span class="Number">1</span>, <span class="Number">2</span>, <span class="Number">3</span>, <span class="Number">4</span>, <span class="Number">5</span>];
 
-math = {
-  root: Math.sqrt,
+math <span class="Keyword">=</span> {
+  root: <span class="LibraryClassType">Math</span>.sqrt,
   square: square,
-  cube: function(x) {
-    return x * square(x);
+  <span class="FunctionName">cube</span>: <span class="Storage">function</span>(<span class="FunctionArgument">x</span>) {
+    <span class="Keyword">return</span> x <span class="Keyword">*</span> square(x);
   }
 };
 
-race = function() {
-  var runners, winner;
-  winner = arguments[0], runners = 2 &lt;= arguments.length ? __slice.call(arguments, 1) : [];
-  return print(winner, runners);
+<span class="FunctionName">race</span> = <span class="Storage">function</span>() {
+  <span class="Storage">var</span> runners, winner;
+  winner <span class="Keyword">=</span> arguments[<span class="Number">0</span>], runners <span class="Keyword">=</span> <span class="Number">2</span> <span class="Keyword">&lt;=</span> arguments.<span class="LibraryConstant">length</span> ? __slice.<span class="LibraryFunction">call</span>(arguments, <span class="Number">1</span>) : [];
+  <span class="Keyword">return</span> <span class="LibraryFunction">print</span>(winner, runners);
 };
 
-if (typeof elvis !== &quot;undefined&quot; &amp;&amp; elvis !== null) {
-  alert(&quot;I knew it!&quot;);
+<span class="Keyword">if</span> (<span class="Keyword">typeof</span> elvis <span class="Keyword">!</span><span class="Keyword">==</span> <span class="String"><span class="String">&quot;</span>undefined<span class="String">&quot;</span></span> <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> elvis <span class="Keyword">!</span><span class="Keyword">==</span> <span class="BuiltInConstant">null</span>) {
+  <span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span>I knew it!<span class="String">&quot;</span></span>);
 }
 
-cubes = (function() {
-  var _i, _len, _results;
-  _results = [];
-  for (_i = 0, _len = list.length; _i &lt; _len; _i++) {
-    num = list[_i];
-    _results.push(math.cube(num));
+cubes <span class="Keyword">=</span> (<span class="Storage">function</span>() {
+  <span class="Storage">var</span> _i, _len, _results;
+  _results <span class="Keyword">=</span> [];
+  <span class="Keyword">for</span> (_i <span class="Keyword">=</span> <span class="Number">0</span>, _len <span class="Keyword">=</span> list.<span class="LibraryConstant">length</span>; _i <span class="Keyword">&lt;</span> _len; _i<span class="Keyword">++</span>) {
+    num <span class="Keyword">=</span> list[_i];
+    _results.<span class="LibraryFunction">push</span>(math.cube(num));
   }
-  return _results;
+  <span class="Keyword">return</span> _results;
 })();
-</pre><script>window.example8 = "# Assignment:\nnumber   = 42\nopposite = true\n\n# Conditions:\nnumber = -42 if opposite\n\n# Functions:\nsquare = (x) -> x * x\n\n# Arrays:\nlist = [1, 2, 3, 4, 5]\n\n# Objects:\nmath =\n  root:   Math.sqrt\n  square: square\n  cube:   (x) -> x * square x\n\n# Splats:\nrace = (winner, runners...) ->\n  print winner, runners\n\n# Existence:\nalert \"I knew it!\" if elvis?\n\n# Array comprehensions:\ncubes = (math.cube num for num in list)\n\nalert cubes"</script><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example8 = "# Assignment:\nnumber   = 42\nopposite = true\n\n# Conditions:\nnumber = -42 if opposite\n\n# Functions:\nsquare = (x) -> x * x\n\n# Arrays:\nlist = [1, 2, 3, 4, 5]\n\n# Objects:\nmath =\n  root:   Math.sqrt\n  square: square\n  cube:   (x) -> x * square x\n\n# Splats:\nrace = (winner, runners...) ->\n  print winner, runners\n\n# Existence:\nalert \"I knew it!\" if elvis?\n\n# Array comprehensions:\ncubes = (math.cube num for num in list)\n\nalert cubes"</script><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var cubes, list, math, num, number, opposite, race, square,
   __slice = [].slice;
 
@@ -1232,21 +1232,21 @@ Expressions
       an arrow, and the function body. The empty function looks like this:
       <tt>-></tt>
     </p>
-    <div class='code' ><pre class="idle">square = (x) -&gt; x * x
-cube   = (x) -&gt; square(x) * x
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var cube, square;
+    <div class='code' ><pre class="idle"><span class="FunctionName">squar<span class="FunctionName">e</span> </span>=<span class="FunctionArgument"> (x)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(x)</span> <span class="Storage">-&gt;</span> x <span class="Keyword">*</span> x
+<span class="FunctionName">cub<span class="FunctionName">e</span>   </span>=<span class="FunctionArgument"> (x)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(x)</span> <span class="Storage">-&gt;</span> square(x) <span class="Keyword">*</span> x
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> cube, square;
 
 
 
-square = function(x) {
-  return x * x;
+<span class="FunctionName">square</span> = <span class="Storage">function</span>(<span class="FunctionArgument">x</span>) {
+  <span class="Keyword">return</span> x <span class="Keyword">*</span> x;
 };
 
-cube = function(x) {
-  return square(x) * x;
+<span class="FunctionName">cube</span> = <span class="Storage">function</span>(<span class="FunctionArgument">x</span>) {
+  <span class="Keyword">return</span> square(x) <span class="Keyword">*</span> x;
 };
-</pre><script>window.example9 = "square = (x) -> x * x\ncube   = (x) -> square(x) * x\n\nalert cube(5)"</script><div class='minibutton load' onclick='javascript: loadConsole(example9);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example9 = "square = (x) -> x * x\ncube   = (x) -> square(x) * x\n\nalert cube(5)"</script><div class='minibutton load' onclick='javascript: loadConsole(example9);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var cube, square;
 
 
@@ -1263,26 +1263,26 @@ cube = function(x) {
       Functions may also have default values for arguments. Override the default
       value by passing a non-null argument.
     </p>
-    <div class='code' ><pre class="idle">fill = (container, liquid = &quot;coffee&quot;) -&gt;
-  &quot;Filling the #{container} with #{liquid}...&quot;
+    <div class='code' ><pre class="idle"><span class="FunctionName">fil<span class="FunctionName">l</span> </span>=<span class="FunctionArgument"> (container, liquid = &quot;coffee&quot;)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(container, liquid = &quot;coffee&quot;)</span> <span class="Storage">-&gt;</span>
+  <span class="String"><span class="String">&quot;</span>Filling the <span class="String"><span class="String">#{</span>container<span class="String">}</span></span> with <span class="String"><span class="String">#{</span>liquid<span class="String">}</span></span>...<span class="String">&quot;</span></span>
 
 
 
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var fill;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> fill;
 
 
 
-fill = function(container, liquid) {
-  if (liquid == null) {
-    liquid = &quot;coffee&quot;;
+<span class="FunctionName">fill</span> = <span class="Storage">function</span>(<span class="FunctionArgument">container, liquid</span>) {
+  <span class="Keyword">if</span> (liquid <span class="Keyword">==</span> <span class="BuiltInConstant">null</span>) {
+    liquid <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>coffee<span class="String">&quot;</span></span>;
   }
-  return &quot;Filling the &quot; + container + &quot; with &quot; + liquid + &quot;...&quot;;
+  <span class="Keyword">return</span> <span class="String"><span class="String">&quot;</span>Filling the <span class="String">&quot;</span></span> <span class="Keyword">+</span> container <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> with <span class="String">&quot;</span></span> <span class="Keyword">+</span> liquid <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>...<span class="String">&quot;</span></span>;
 };
-</pre><script>window.example10 = "fill = (container, liquid = \"coffee\") ->\n  \"Filling the #{container} with #{liquid}...\"\n\nalert fill(\"cup\")"</script><div class='minibutton load' onclick='javascript: loadConsole(example10);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example10 = "fill = (container, liquid = \"coffee\") ->\n  \"Filling the #{container} with #{liquid}...\"\n\nalert fill(\"cup\")"</script><div class='minibutton load' onclick='javascript: loadConsole(example10);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var fill;
 
 
@@ -1303,50 +1303,50 @@ fill = function(container, liquid) {
       the commas are optional. Objects may be created using indentation instead
       of explicit braces, similar to <a href="http://yaml.org">YAML</a>.
     </p>
-    <div class='code' ><pre class="idle">song = [&quot;do&quot;, &quot;re&quot;, &quot;mi&quot;, &quot;fa&quot;, &quot;so&quot;]
+    <div class='code' ><pre class="idle">song <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>do<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>re<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>mi<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>fa<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>so<span class="String">&quot;</span></span>]
 
-singers = {Jagger: &quot;Rock&quot;, Elvis: &quot;Roll&quot;}
+singers <span class="Keyword">=</span> {Jagger: <span class="String"><span class="String">&quot;</span>Rock<span class="String">&quot;</span></span>, Elvis: <span class="String"><span class="String">&quot;</span>Roll<span class="String">&quot;</span></span>}
 
-bitlist = [
-  1, 0, 1
-  0, 0, 1
-  1, 1, 0
+bitlist <span class="Keyword">=</span> [
+  <span class="Number">1</span>, <span class="Number">0</span>, <span class="Number">1</span>
+  <span class="Number">0</span>, <span class="Number">0</span>, <span class="Number">1</span>
+  <span class="Number">1</span>, <span class="Number">1</span>, <span class="Number">0</span>
 ]
 
-kids =
+kids <span class="Keyword">=</span>
   brother:
-    name: &quot;Max&quot;
-    age:  11
+    name: <span class="String"><span class="String">&quot;</span>Max<span class="String">&quot;</span></span>
+    age:  <span class="Number">11</span>
   sister:
-    name: &quot;Ida&quot;
-    age:  9
+    name: <span class="String"><span class="String">&quot;</span>Ida<span class="String">&quot;</span></span>
+    age:  <span class="Number">9</span>
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var bitlist, kids, singers, song;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> bitlist, kids, singers, song;
 
 
 
-song = [&quot;do&quot;, &quot;re&quot;, &quot;mi&quot;, &quot;fa&quot;, &quot;so&quot;];
+song <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>do<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>re<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>mi<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>fa<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>so<span class="String">&quot;</span></span>];
 
-singers = {
-  Jagger: &quot;Rock&quot;,
-  Elvis: &quot;Roll&quot;
+singers <span class="Keyword">=</span> {
+  Jagger: <span class="String"><span class="String">&quot;</span>Rock<span class="String">&quot;</span></span>,
+  Elvis: <span class="String"><span class="String">&quot;</span>Roll<span class="String">&quot;</span></span>
 };
 
-bitlist = [1, 0, 1, 0, 0, 1, 1, 1, 0];
+bitlist <span class="Keyword">=</span> [<span class="Number">1</span>, <span class="Number">0</span>, <span class="Number">1</span>, <span class="Number">0</span>, <span class="Number">0</span>, <span class="Number">1</span>, <span class="Number">1</span>, <span class="Number">1</span>, <span class="Number">0</span>];
 
-kids = {
+kids <span class="Keyword">=</span> {
   brother: {
-    name: &quot;Max&quot;,
-    age: 11
+    name: <span class="String"><span class="String">&quot;</span>Max<span class="String">&quot;</span></span>,
+    age: <span class="Number">11</span>
   },
   sister: {
-    name: &quot;Ida&quot;,
-    age: 9
+    name: <span class="String"><span class="String">&quot;</span>Ida<span class="String">&quot;</span></span>,
+    age: <span class="Number">9</span>
   }
 };
-</pre><script>window.example11 = "song = [\"do\", \"re\", \"mi\", \"fa\", \"so\"]\n\nsingers = {Jagger: \"Rock\", Elvis: \"Roll\"}\n\nbitlist = [\n  1, 0, 1\n  0, 0, 1\n  1, 1, 0\n]\n\nkids =\n  brother:\n    name: \"Max\"\n    age:  11\n  sister:\n    name: \"Ida\"\n    age:  9\n\nalert song.join(\" ... \")"</script><div class='minibutton load' onclick='javascript: loadConsole(example11);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example11 = "song = [\"do\", \"re\", \"mi\", \"fa\", \"so\"]\n\nsingers = {Jagger: \"Rock\", Elvis: \"Roll\"}\n\nbitlist = [\n  1, 0, 1\n  0, 0, 1\n  1, 1, 0\n]\n\nkids =\n  brother:\n    name: \"Max\"\n    age:  11\n  sister:\n    name: \"Ida\"\n    age:  9\n\nalert song.join(\" ... \")"</script><div class='minibutton load' onclick='javascript: loadConsole(example11);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var bitlist, kids, singers, song;
 
 
@@ -1377,19 +1377,19 @@ kids = {
       used as keys in objects and quotes them for you, so you don't have to worry
       about it (say, when using jQuery).
     </p>
-    <div class='code' ><pre class="idle">$('.account').attr class: 'active'
+    <div class='code' ><pre class="idle">$(<span class="String"><span class="String">'</span>.account<span class="String">'</span></span>).attr class: <span class="String"><span class="String">'</span>active<span class="String">'</span></span>
 
-log object.class
-
-
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
+log object.<span class="Storage">class</span>
 
 
-$('.account').attr({
-  &quot;class&quot;: 'active'
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+
+
+<span class="Keyword">$</span>(<span class="String"><span class="String">'</span>.account<span class="String">'</span></span>).attr({
+  <span class="String"><span class="String">&quot;</span>class<span class="String">&quot;</span></span>: <span class="String"><span class="String">'</span>active<span class="String">'</span></span>
 });
 
-log(object[&quot;class&quot;]);
+<span class="LibraryFunction">log</span>(object[<span class="String"><span class="String">&quot;</span>class<span class="String">&quot;</span></span>]);
 </pre><script>window.example12 = "$('.account').attr class: 'active'\n\nlog object.class\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example12);'>load</div><br class='clear' /></div>
 
     <p>
@@ -1399,26 +1399,26 @@ log(object[&quot;class&quot;]);
       are properly declared within lexical scope &mdash; you never need to write
       <tt>var</tt> yourself.
     </p>
-    <div class='code' ><pre class="idle">outer = 1
-changeNumbers = -&gt;
-  inner = -1
-  outer = 10
-inner = changeNumbers()
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var changeNumbers, inner, outer;
+    <div class='code' ><pre class="idle">outer <span class="Keyword">=</span> <span class="Number">1</span>
+<span class="FunctionName">changeNumber<span class="FunctionName">s</span> </span>= <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="Storage">-&gt;</span>
+  inner <span class="Keyword">=</span> <span class="Keyword">-</span><span class="Number">1</span>
+  outer <span class="Keyword">=</span> <span class="Number">10</span>
+inner <span class="Keyword">=</span> changeNumbers()
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> changeNumbers, inner, outer;
 
 
 
-outer = 1;
+outer <span class="Keyword">=</span> <span class="Number">1</span>;
 
-changeNumbers = function() {
-  var inner;
-  inner = -1;
-  return outer = 10;
+<span class="FunctionName">changeNumbers</span> = <span class="Storage">function</span>() {
+  <span class="Storage">var</span> inner;
+  inner <span class="Keyword">=</span> <span class="Keyword">-</span><span class="Number">1</span>;
+  <span class="Keyword">return</span> outer <span class="Keyword">=</span> <span class="Number">10</span>;
 };
 
-inner = changeNumbers();
-</pre><script>window.example13 = "outer = 1\nchangeNumbers = ->\n  inner = -1\n  outer = 10\ninner = changeNumbers()\n\nalert inner"</script><div class='minibutton load' onclick='javascript: loadConsole(example13);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+inner <span class="Keyword">=</span> changeNumbers();
+</pre><script>window.example13 = "outer = 1\nchangeNumbers = ->\n  inner = -1\n  outer = 10\ninner = changeNumbers()\n\nalert inner"</script><div class='minibutton load' onclick='javascript: loadConsole(example13);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var changeNumbers, inner, outer;
 
 
@@ -1477,35 +1477,35 @@ inner = changeNumbers();
       is no explicit ternary statement in CoffeeScript &mdash; you simply use
       a regular <b>if</b> statement on a single line.
     </p>
-    <div class='code' ><pre class="idle">mood = greatlyImproved if singing
+    <div class='code' ><pre class="idle">mood <span class="Keyword">=</span> greatlyImproved <span class="Keyword">if</span> singing
 
-if happy and knowsIt
+<span class="Keyword">if</span> happy <span class="Keyword">and</span> knowsIt
   clapsHands()
   chaChaCha()
-else
+<span class="Keyword">else</span>
   showIt()
 
-date = if friday then sue else jill
+date <span class="Keyword">=</span> <span class="Keyword">if</span> friday <span class="Keyword">then</span> sue <span class="Keyword">else</span> jill
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var date, mood;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> date, mood;
 
 
 
-if (singing) {
-  mood = greatlyImproved;
+<span class="Keyword">if</span> (singing) {
+  mood <span class="Keyword">=</span> greatlyImproved;
 }
 
-if (happy &amp;&amp; knowsIt) {
+<span class="Keyword">if</span> (happy <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> knowsIt) {
   clapsHands();
   chaChaCha();
-} else {
+} <span class="Keyword">else</span> {
   showIt();
 }
 
-date = friday ? sue : jill;
+date <span class="Keyword">=</span> friday ? sue : jill;
 </pre><script>window.example14 = "mood = greatlyImproved if singing\n\nif happy and knowsIt\n  clapsHands()\n  chaChaCha()\nelse\n  showIt()\n\ndate = if friday then sue else jill\n\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example14);'>load</div><br class='clear' /></div>
 
     <p>
@@ -1516,59 +1516,59 @@ date = friday ? sue : jill;
       splats <tt>...</tt>, both for function definition as well as invocation,
       making variable numbers of arguments a little bit more palatable.
     </p>
-    <div class='code' ><pre class="idle">gold = silver = rest = &quot;unknown&quot;
+    <div class='code' ><pre class="idle">gold <span class="Keyword">=</span> silver <span class="Keyword">=</span> rest <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>unknown<span class="String">&quot;</span></span>
 
-awardMedals = (first, second, others...) -&gt;
-  gold   = first
-  silver = second
-  rest   = others
+<span class="FunctionName">awardMedal<span class="FunctionName">s</span> </span>=<span class="FunctionArgument"> (first, second, others...)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(first, second, others...)</span> <span class="Storage">-&gt;</span>
+  gold   <span class="Keyword">=</span> first
+  silver <span class="Keyword">=</span> second
+  rest   <span class="Keyword">=</span> others
 
-contenders = [
-  &quot;Michael Phelps&quot;
-  &quot;Liu Xiang&quot;
-  &quot;Yao Ming&quot;
-  &quot;Allyson Felix&quot;
-  &quot;Shawn Johnson&quot;
-  &quot;Roman Sebrle&quot;
-  &quot;Guo Jingjing&quot;
-  &quot;Tyson Gay&quot;
-  &quot;Asafa Powell&quot;
-  &quot;Usain Bolt&quot;
+contenders <span class="Keyword">=</span> [
+  <span class="String"><span class="String">&quot;</span>Michael Phelps<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Liu Xiang<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Yao Ming<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Allyson Felix<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Shawn Johnson<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Roman Sebrle<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Guo Jingjing<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Tyson Gay<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Asafa Powell<span class="String">&quot;</span></span>
+  <span class="String"><span class="String">&quot;</span>Usain Bolt<span class="String">&quot;</span></span>
 ]
 
-awardMedals contenders...
+awardMedals contenders<span class="Keyword">...</span>
 
-alert &quot;Gold: &quot; + gold
-alert &quot;Silver: &quot; + silver
-alert &quot;The Field: &quot; + rest
-
-
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var awardMedals, contenders, gold, rest, silver,
-  __slice = [].slice;
+alert <span class="String"><span class="String">&quot;</span>Gold: <span class="String">&quot;</span></span> <span class="Keyword">+</span> gold
+alert <span class="String"><span class="String">&quot;</span>Silver: <span class="String">&quot;</span></span> <span class="Keyword">+</span> silver
+alert <span class="String"><span class="String">&quot;</span>The Field: <span class="String">&quot;</span></span> <span class="Keyword">+</span> rest
 
 
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> awardMedals, contenders, gold, rest, silver,
+  __slice <span class="Keyword">=</span> [].slice;
 
-gold = silver = rest = &quot;unknown&quot;;
 
-awardMedals = function() {
-  var first, others, second;
-  first = arguments[0], second = arguments[1], others = 3 &lt;= arguments.length ? __slice.call(arguments, 2) : [];
-  gold = first;
-  silver = second;
-  return rest = others;
+
+gold <span class="Keyword">=</span> silver <span class="Keyword">=</span> rest <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>unknown<span class="String">&quot;</span></span>;
+
+<span class="FunctionName">awardMedals</span> = <span class="Storage">function</span>() {
+  <span class="Storage">var</span> first, others, second;
+  first <span class="Keyword">=</span> arguments[<span class="Number">0</span>], second <span class="Keyword">=</span> arguments[<span class="Number">1</span>], others <span class="Keyword">=</span> <span class="Number">3</span> <span class="Keyword">&lt;=</span> arguments.<span class="LibraryConstant">length</span> ? __slice.<span class="LibraryFunction">call</span>(arguments, <span class="Number">2</span>) : [];
+  gold <span class="Keyword">=</span> first;
+  silver <span class="Keyword">=</span> second;
+  <span class="Keyword">return</span> rest <span class="Keyword">=</span> others;
 };
 
-contenders = [&quot;Michael Phelps&quot;, &quot;Liu Xiang&quot;, &quot;Yao Ming&quot;, &quot;Allyson Felix&quot;, &quot;Shawn Johnson&quot;, &quot;Roman Sebrle&quot;, &quot;Guo Jingjing&quot;, &quot;Tyson Gay&quot;, &quot;Asafa Powell&quot;, &quot;Usain Bolt&quot;];
+contenders <span class="Keyword">=</span> [<span class="String"><span class="String">&quot;</span>Michael Phelps<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Liu Xiang<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Yao Ming<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Allyson Felix<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Shawn Johnson<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Roman Sebrle<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Guo Jingjing<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Tyson Gay<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Asafa Powell<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Usain Bolt<span class="String">&quot;</span></span>];
 
-awardMedals.apply(null, contenders);
+awardMedals.<span class="LibraryFunction">apply</span>(<span class="BuiltInConstant">null</span>, contenders);
 
-alert(&quot;Gold: &quot; + gold);
+<span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span>Gold: <span class="String">&quot;</span></span> <span class="Keyword">+</span> gold);
 
-alert(&quot;Silver: &quot; + silver);
+<span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span>Silver: <span class="String">&quot;</span></span> <span class="Keyword">+</span> silver);
 
-alert(&quot;The Field: &quot; + rest);
-</pre><script>window.example15 = "gold = silver = rest = \"unknown\"\n\nawardMedals = (first, second, others...) ->\n  gold   = first\n  silver = second\n  rest   = others\n\ncontenders = [\n  \"Michael Phelps\"\n  \"Liu Xiang\"\n  \"Yao Ming\"\n  \"Allyson Felix\"\n  \"Shawn Johnson\"\n  \"Roman Sebrle\"\n  \"Guo Jingjing\"\n  \"Tyson Gay\"\n  \"Asafa Powell\"\n  \"Usain Bolt\"\n]\n\nawardMedals contenders...\n\nalert \"Gold: \" + gold\nalert \"Silver: \" + silver\nalert \"The Field: \" + rest\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example15);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+<span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span>The Field: <span class="String">&quot;</span></span> <span class="Keyword">+</span> rest);
+</pre><script>window.example15 = "gold = silver = rest = \"unknown\"\n\nawardMedals = (first, second, others...) ->\n  gold   = first\n  silver = second\n  rest   = others\n\ncontenders = [\n  \"Michael Phelps\"\n  \"Liu Xiang\"\n  \"Yao Ming\"\n  \"Allyson Felix\"\n  \"Shawn Johnson\"\n  \"Roman Sebrle\"\n  \"Guo Jingjing\"\n  \"Tyson Gay\"\n  \"Asafa Powell\"\n  \"Usain Bolt\"\n]\n\nawardMedals contenders...\n\nalert \"Gold: \" + gold\nalert \"Silver: \" + silver\nalert \"The Field: \" + rest\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example15);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var awardMedals, contenders, gold, rest, silver,
   __slice = [].slice;
 
@@ -1604,39 +1604,39 @@ alert("The Field: " + rest);
       Unlike for loops, array comprehensions are expressions, and can be returned
       and assigned.
     </p>
-    <div class='code' ><pre class="idle"># Eat lunch.
-eat food for food in ['toast', 'cheese', 'wine']
+    <div class='code' ><pre class="idle"><span class="Comment"><span class="Comment">#</span> Eat lunch.</span>
+eat food <span class="Keyword">for</span> food <span class="Keyword">in</span> [<span class="String"><span class="String">'</span>toast<span class="String">'</span></span>, <span class="String"><span class="String">'</span>cheese<span class="String">'</span></span>, <span class="String"><span class="String">'</span>wine<span class="String">'</span></span>]
 
-# Fine five course dining.
-courses = ['greens', 'caviar', 'truffles', 'roast', 'cake']
-menu i + 1, dish for dish, i in courses
+<span class="Comment"><span class="Comment">#</span> Fine five course dining.</span>
+courses <span class="Keyword">=</span> [<span class="String"><span class="String">'</span>greens<span class="String">'</span></span>, <span class="String"><span class="String">'</span>caviar<span class="String">'</span></span>, <span class="String"><span class="String">'</span>truffles<span class="String">'</span></span>, <span class="String"><span class="String">'</span>roast<span class="String">'</span></span>, <span class="String"><span class="String">'</span>cake<span class="String">'</span></span>]
+menu i <span class="Keyword">+</span> <span class="Number">1</span>, dish <span class="Keyword">for</span> dish, i <span class="Keyword">in</span> courses
 
-# Health conscious meal.
-foods = ['broccoli', 'spinach', 'chocolate']
-eat food for food in foods when food isnt 'chocolate'
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var courses, dish, food, foods, i, _i, _j, _k, _len, _len1, _len2, _ref;
+<span class="Comment"><span class="Comment">#</span> Health conscious meal.</span>
+foods <span class="Keyword">=</span> [<span class="String"><span class="String">'</span>broccoli<span class="String">'</span></span>, <span class="String"><span class="String">'</span>spinach<span class="String">'</span></span>, <span class="String"><span class="String">'</span>chocolate<span class="String">'</span></span>]
+eat food <span class="Keyword">for</span> food <span class="Keyword">in</span> foods <span class="Keyword">when</span> food <span class="Keyword">isnt</span> <span class="String"><span class="String">'</span>chocolate<span class="String">'</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> courses, dish, food, foods, i, _i, _j, _k, _len, _len1, _len2, _ref;
 
 
 
-_ref = ['toast', 'cheese', 'wine'];
-for (_i = 0, _len = _ref.length; _i &lt; _len; _i++) {
-  food = _ref[_i];
+_ref <span class="Keyword">=</span> [<span class="String"><span class="String">'</span>toast<span class="String">'</span></span>, <span class="String"><span class="String">'</span>cheese<span class="String">'</span></span>, <span class="String"><span class="String">'</span>wine<span class="String">'</span></span>];
+<span class="Keyword">for</span> (_i <span class="Keyword">=</span> <span class="Number">0</span>, _len <span class="Keyword">=</span> _ref.<span class="LibraryConstant">length</span>; _i <span class="Keyword">&lt;</span> _len; _i<span class="Keyword">++</span>) {
+  food <span class="Keyword">=</span> _ref[_i];
   eat(food);
 }
 
-courses = ['greens', 'caviar', 'truffles', 'roast', 'cake'];
+courses <span class="Keyword">=</span> [<span class="String"><span class="String">'</span>greens<span class="String">'</span></span>, <span class="String"><span class="String">'</span>caviar<span class="String">'</span></span>, <span class="String"><span class="String">'</span>truffles<span class="String">'</span></span>, <span class="String"><span class="String">'</span>roast<span class="String">'</span></span>, <span class="String"><span class="String">'</span>cake<span class="String">'</span></span>];
 
-for (i = _j = 0, _len1 = courses.length; _j &lt; _len1; i = ++_j) {
-  dish = courses[i];
-  menu(i + 1, dish);
+<span class="Keyword">for</span> (i <span class="Keyword">=</span> _j <span class="Keyword">=</span> <span class="Number">0</span>, _len1 <span class="Keyword">=</span> courses.<span class="LibraryConstant">length</span>; _j <span class="Keyword">&lt;</span> _len1; i <span class="Keyword">=</span> <span class="Keyword">++</span>_j) {
+  dish <span class="Keyword">=</span> courses[i];
+  menu(i <span class="Keyword">+</span> <span class="Number">1</span>, dish);
 }
 
-foods = ['broccoli', 'spinach', 'chocolate'];
+foods <span class="Keyword">=</span> [<span class="String"><span class="String">'</span>broccoli<span class="String">'</span></span>, <span class="String"><span class="String">'</span>spinach<span class="String">'</span></span>, <span class="String"><span class="String">'</span>chocolate<span class="String">'</span></span>];
 
-for (_k = 0, _len2 = foods.length; _k &lt; _len2; _k++) {
-  food = foods[_k];
-  if (food !== 'chocolate') {
+<span class="Keyword">for</span> (_k <span class="Keyword">=</span> <span class="Number">0</span>, _len2 <span class="Keyword">=</span> foods.<span class="LibraryConstant">length</span>; _k <span class="Keyword">&lt;</span> _len2; _k<span class="Keyword">++</span>) {
+  food <span class="Keyword">=</span> foods[_k];
+  <span class="Keyword">if</span> (food <span class="Keyword">!</span><span class="Keyword">==</span> <span class="String"><span class="String">'</span>chocolate<span class="String">'</span></span>) {
     eat(food);
   }
 }
@@ -1649,22 +1649,22 @@ for (_k = 0, _len2 = foods.length; _k &lt; _len2; _k++) {
       in fixed-size increments, you can use a range to specify the start and
       end of your comprehension.
     </p>
-    <div class='code' ><pre class="idle">countdown = (num for num in [10..1])
+    <div class='code' ><pre class="idle">countdown <span class="Keyword">=</span> (num <span class="Keyword">for</span> num <span class="Keyword">in</span> [<span class="Number">10</span><span class="Keyword">..</span><span class="Number">1</span>])
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var countdown, num;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> countdown, num;
 
 
 
-countdown = (function() {
-  var _i, _results;
-  _results = [];
-  for (num = _i = 10; _i &gt;= 1; num = --_i) {
-    _results.push(num);
+countdown <span class="Keyword">=</span> (<span class="Storage">function</span>() {
+  <span class="Storage">var</span> _i, _results;
+  _results <span class="Keyword">=</span> [];
+  <span class="Keyword">for</span> (num <span class="Keyword">=</span> _i <span class="Keyword">=</span> <span class="Number">10</span>; _i <span class="Keyword">&gt;=</span> <span class="Number">1</span>; num <span class="Keyword">=</span> <span class="Keyword">--</span>_i) {
+    _results.<span class="LibraryFunction">push</span>(num);
   }
-  return _results;
+  <span class="Keyword">return</span> _results;
 })();
-</pre><script>window.example17 = "countdown = (num for num in [10..1])\n\nalert countdown"</script><div class='minibutton load' onclick='javascript: loadConsole(example17);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example17 = "countdown = (num for num in [10..1])\n\nalert countdown"</script><div class='minibutton load' onclick='javascript: loadConsole(example17);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var countdown, num;
 
 
@@ -1697,31 +1697,31 @@ countdown = (function() {
       an object. Use <tt>of</tt> to signal comprehension over the properties of
       an object instead of the values in an array.
     </p>
-    <div class='code' ><pre class="idle">yearsOld = max: 10, ida: 9, tim: 11
+    <div class='code' ><pre class="idle">yearsOld <span class="Keyword">=</span> max: <span class="Number">10</span>, ida: <span class="Number">9</span>, tim: <span class="Number">11</span>
 
-ages = for child, age of yearsOld
-  &quot;#{child} is #{age}&quot;
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var age, ages, child, yearsOld;
+ages <span class="Keyword">=</span> <span class="Keyword">for</span> child, age <span class="Keyword">of</span> yearsOld
+  <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>child<span class="String">}</span></span> is <span class="String"><span class="String">#{</span>age<span class="String">}</span></span><span class="String">&quot;</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> age, ages, child, yearsOld;
 
 
 
-yearsOld = {
-  max: 10,
-  ida: 9,
-  tim: 11
+yearsOld <span class="Keyword">=</span> {
+  max: <span class="Number">10</span>,
+  ida: <span class="Number">9</span>,
+  tim: <span class="Number">11</span>
 };
 
-ages = (function() {
-  var _results;
-  _results = [];
-  for (child in yearsOld) {
-    age = yearsOld[child];
-    _results.push(&quot;&quot; + child + &quot; is &quot; + age);
+ages <span class="Keyword">=</span> (<span class="Storage">function</span>() {
+  <span class="Storage">var</span> _results;
+  _results <span class="Keyword">=</span> [];
+  <span class="Keyword">for</span> (child <span class="Keyword">in</span> yearsOld) {
+    age <span class="Keyword">=</span> yearsOld[child];
+    _results.<span class="LibraryFunction">push</span>(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> child <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> is <span class="String">&quot;</span></span> <span class="Keyword">+</span> age);
   }
-  return _results;
+  <span class="Keyword">return</span> _results;
 })();
-</pre><script>window.example18 = "yearsOld = max: 10, ida: 9, tim: 11\n\nages = for child, age of yearsOld\n  \"#{child} is #{age}\"\n\nalert ages.join(\", \")"</script><div class='minibutton load' onclick='javascript: loadConsole(example18);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example18 = "yearsOld = max: 10, ida: 9, tim: 11\n\nages = for child, age of yearsOld\n  \"#{child} is #{age}\"\n\nalert ages.join(\", \")"</script><div class='minibutton load' onclick='javascript: loadConsole(example18);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var age, ages, child, yearsOld;
 
 
@@ -1754,41 +1754,41 @@ ages = (function() {
       as an expression, returning an array containing the result of each iteration
       through the loop.
     </p>
-    <div class='code' ><pre class="idle"># Econ 101
-if this.studyingEconomics
-  buy()  while supply &gt; demand
-  sell() until supply &gt; demand
+    <div class='code' ><pre class="idle"><span class="Comment"><span class="Comment">#</span> Econ 101</span>
+<span class="Keyword">if</span> <span class="Variable">this</span>.studyingEconomics
+  buy()  <span class="Keyword">while</span> supply <span class="Keyword">&gt;</span> demand
+  sell() <span class="Keyword">until</span> supply <span class="Keyword">&gt;</span> demand
 
-# Nursery Rhyme
-num = 6
-lyrics = while num -= 1
-  &quot;#{num} little monkeys, jumping on the bed.
-    One fell out and bumped his head.&quot;
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var lyrics, num;
+<span class="Comment"><span class="Comment">#</span> Nursery Rhyme</span>
+num <span class="Keyword">=</span> <span class="Number">6</span>
+lyrics <span class="Keyword">=</span> <span class="Keyword">while</span> num <span class="Keyword">-</span><span class="Keyword">=</span> <span class="Number">1</span>
+  <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>num<span class="String">}</span></span> little monkeys, jumping on the bed.</span>
+<span class="String">    One fell out and bumped his head.<span class="String">&quot;</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> lyrics, num;
 
 
 
-if (this.studyingEconomics) {
-  while (supply &gt; demand) {
+<span class="Keyword">if</span> (<span class="Variable">this</span>.studyingEconomics) {
+  <span class="Keyword">while</span> (supply <span class="Keyword">&gt;</span> demand) {
     buy();
   }
-  while (!(supply &gt; demand)) {
+  <span class="Keyword">while</span> (<span class="Keyword">!</span>(supply <span class="Keyword">&gt;</span> demand)) {
     sell();
   }
 }
 
-num = 6;
+num <span class="Keyword">=</span> <span class="Number">6</span>;
 
-lyrics = (function() {
-  var _results;
-  _results = [];
-  while (num -= 1) {
-    _results.push(&quot;&quot; + num + &quot; little monkeys, jumping on the bed.    One fell out and bumped his head.&quot;);
+lyrics <span class="Keyword">=</span> (<span class="Storage">function</span>() {
+  <span class="Storage">var</span> _results;
+  _results <span class="Keyword">=</span> [];
+  <span class="Keyword">while</span> (num <span class="Keyword">-</span><span class="Keyword">=</span> <span class="Number">1</span>) {
+    _results.<span class="LibraryFunction">push</span>(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> num <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> little monkeys, jumping on the bed.    One fell out and bumped his head.<span class="String">&quot;</span></span>);
   }
-  return _results;
+  <span class="Keyword">return</span> _results;
 })();
-</pre><script>window.example19 = "# Econ 101\nif this.studyingEconomics\n  buy()  while supply > demand\n  sell() until supply > demand\n\n# Nursery Rhyme\nnum = 6\nlyrics = while num -= 1\n  \"#{num} little monkeys, jumping on the bed.\n    One fell out and bumped his head.\"\n\nalert lyrics.join(\"\\n\")"</script><div class='minibutton load' onclick='javascript: loadConsole(example19);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example19 = "# Econ 101\nif this.studyingEconomics\n  buy()  while supply > demand\n  sell() until supply > demand\n\n# Nursery Rhyme\nnum = 6\nlyrics = while num -= 1\n  \"#{num} little monkeys, jumping on the bed.\n    One fell out and bumped his head.\"\n\nalert lyrics.join(\"\\n\")"</script><div class='minibutton load' onclick='javascript: loadConsole(example19);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var lyrics, num;
 
 
@@ -1824,22 +1824,22 @@ lyrics = (function() {
       provides the <tt>do</tt> keyword, which immediately invokes a passed function,
       forwarding any arguments.
     </p>
-    <div class='code' ><pre class="idle">for filename in list
-  do (filename) -&gt;
-    fs.readFile filename, (err, contents) -&gt;
-      compile filename, contents.toString()
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var filename, _fn, _i, _len;
+    <div class='code' ><pre class="idle"><span class="Keyword">for</span> filename <span class="Keyword">in</span> list
+  <span class="Keyword">do</span> <span class="FunctionArgument">(filename)</span> <span class="Storage">-&gt;</span>
+    fs.readFile filename, <span class="FunctionArgument">(err, contents)</span> <span class="Storage">-&gt;</span>
+      compile filename, contents.<span class="LibraryFunction">toString</span>()
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> filename, _fn, _i, _len;
 
 
 
-_fn = function(filename) {
-  return fs.readFile(filename, function(err, contents) {
-    return compile(filename, contents.toString());
+<span class="FunctionName">_fn</span> = <span class="Storage">function</span>(<span class="FunctionArgument">filename</span>) {
+  <span class="Keyword">return</span> fs.readFile(filename, <span class="Storage">function</span>(err, contents) {
+    <span class="Keyword">return</span> <span class="LibraryFunction">compile</span>(filename, contents.<span class="LibraryFunction">toString</span>());
   });
 };
-for (_i = 0, _len = list.length; _i &lt; _len; _i++) {
-  filename = list[_i];
+<span class="Keyword">for</span> (_i <span class="Keyword">=</span> <span class="Number">0</span>, _len <span class="Keyword">=</span> list.<span class="LibraryConstant">length</span>; _i <span class="Keyword">&lt;</span> _len; _i<span class="Keyword">++</span>) {
+  filename <span class="Keyword">=</span> list[_i];
   _fn(filename);
 }
 </pre><script>window.example20 = "for filename in list\n  do (filename) ->\n    fs.readFile filename, (err, contents) ->\n      compile filename, contents.toString()"</script><div class='minibutton load' onclick='javascript: loadConsole(example20);'>load</div><br class='clear' /></div>
@@ -1851,30 +1851,30 @@ for (_i = 0, _len = list.length; _i &lt; _len; _i++) {
       With two dots (<tt>3..6</tt>), the range is inclusive (<tt>3, 4, 5, 6</tt>);
       with three dots (<tt>3...6</tt>), the range excludes the end (<tt>3, 4, 5</tt>).
     </p>
-    <div class='code' ><pre class="idle">numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    <div class='code' ><pre class="idle">numbers <span class="Keyword">=</span> [<span class="Number">1</span>, <span class="Number">2</span>, <span class="Number">3</span>, <span class="Number">4</span>, <span class="Number">5</span>, <span class="Number">6</span>, <span class="Number">7</span>, <span class="Number">8</span>, <span class="Number">9</span>]
 
-start   = numbers[0..2]
+start   <span class="Keyword">=</span> numbers[<span class="Number">0</span><span class="Keyword">..</span><span class="Number">2</span>]
 
-middle  = numbers[3...6]
+middle  <span class="Keyword">=</span> numbers[<span class="Number">3</span><span class="Keyword">...</span><span class="Number">6</span>]
 
-end     = numbers[6..]
+end     <span class="Keyword">=</span> numbers[<span class="Number">6</span><span class="Keyword">..</span>]
 
-copy    = numbers[..]
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var copy, end, middle, numbers, start;
+copy    <span class="Keyword">=</span> numbers[<span class="Keyword">..</span>]
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> copy, end, middle, numbers, start;
 
 
 
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+numbers <span class="Keyword">=</span> [<span class="Number">1</span>, <span class="Number">2</span>, <span class="Number">3</span>, <span class="Number">4</span>, <span class="Number">5</span>, <span class="Number">6</span>, <span class="Number">7</span>, <span class="Number">8</span>, <span class="Number">9</span>];
 
-start = numbers.slice(0, 3);
+start <span class="Keyword">=</span> numbers.<span class="LibraryFunction">slice</span>(<span class="Number">0</span>, <span class="Number">3</span>);
 
-middle = numbers.slice(3, 6);
+middle <span class="Keyword">=</span> numbers.<span class="LibraryFunction">slice</span>(<span class="Number">3</span>, <span class="Number">6</span>);
 
-end = numbers.slice(6);
+end <span class="Keyword">=</span> numbers.<span class="LibraryFunction">slice</span>(<span class="Number">6</span>);
 
-copy = numbers.slice(0);
-</pre><script>window.example21 = "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nstart   = numbers[0..2]\n\nmiddle  = numbers[3...6]\n\nend     = numbers[6..]\n\ncopy    = numbers[..]\n\nalert middle"</script><div class='minibutton load' onclick='javascript: loadConsole(example21);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+copy <span class="Keyword">=</span> numbers.<span class="LibraryFunction">slice</span>(<span class="Number">0</span>);
+</pre><script>window.example21 = "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nstart   = numbers[0..2]\n\nmiddle  = numbers[3...6]\n\nend     = numbers[6..]\n\ncopy    = numbers[..]\n\nalert middle"</script><div class='minibutton load' onclick='javascript: loadConsole(example21);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var copy, end, middle, numbers, start;
 
 
@@ -1893,22 +1893,22 @@ copy = numbers.slice(0);
       The same syntax can be used with assignment to replace a segment of an array
       with new values, splicing it.
     </p>
-    <div class='code' ><pre class="idle">numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    <div class='code' ><pre class="idle">numbers <span class="Keyword">=</span> [<span class="Number">0</span>, <span class="Number">1</span>, <span class="Number">2</span>, <span class="Number">3</span>, <span class="Number">4</span>, <span class="Number">5</span>, <span class="Number">6</span>, <span class="Number">7</span>, <span class="Number">8</span>, <span class="Number">9</span>]
 
-numbers[3..6] = [-3, -4, -5, -6]
+numbers[<span class="Number">3</span><span class="Keyword">..</span><span class="Number">6</span>] <span class="Keyword">=</span> [<span class="Keyword">-</span><span class="Number">3</span>, <span class="Keyword">-</span><span class="Number">4</span>, <span class="Keyword">-</span><span class="Number">5</span>, <span class="Keyword">-</span><span class="Number">6</span>]
 
 
 
  
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var numbers, _ref;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> numbers, _ref;
 
 
 
-numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+numbers <span class="Keyword">=</span> [<span class="Number">0</span>, <span class="Number">1</span>, <span class="Number">2</span>, <span class="Number">3</span>, <span class="Number">4</span>, <span class="Number">5</span>, <span class="Number">6</span>, <span class="Number">7</span>, <span class="Number">8</span>, <span class="Number">9</span>];
 
-[].splice.apply(numbers, [3, 4].concat(_ref = [-3, -4, -5, -6])), _ref;
-</pre><script>window.example22 = "numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nnumbers[3..6] = [-3, -4, -5, -6]\n\nalert numbers"</script><div class='minibutton load' onclick='javascript: loadConsole(example22);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+[].splice.<span class="LibraryFunction">apply</span>(numbers, [<span class="Number">3</span>, <span class="Number">4</span>].<span class="LibraryFunction">concat</span>(_ref <span class="Keyword">=</span> [<span class="Keyword">-</span><span class="Number">3</span>, <span class="Keyword">-</span><span class="Number">4</span>, <span class="Keyword">-</span><span class="Number">5</span>, <span class="Keyword">-</span><span class="Number">6</span>])), _ref;
+</pre><script>window.example22 = "numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nnumbers[3..6] = [-3, -4, -5, -6]\n\nalert numbers"</script><div class='minibutton load' onclick='javascript: loadConsole(example22);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var numbers, _ref;
 
 
@@ -1930,36 +1930,36 @@ numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
       pushed down into each possible branch of execution in the function
       below.
     </p>
-    <div class='code' ><pre class="idle">grade = (student) -&gt;
-  if student.excellentWork
-    &quot;A+&quot;
-  else if student.okayStuff
-    if student.triedHard then &quot;B&quot; else &quot;B-&quot;
-  else
-    &quot;C&quot;
+    <div class='code' ><pre class="idle"><span class="FunctionName">grad<span class="FunctionName">e</span> </span>=<span class="FunctionArgument"> (student)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(student)</span> <span class="Storage">-&gt;</span>
+  <span class="Keyword">if</span> student.excellentWork
+    <span class="String"><span class="String">&quot;</span>A+<span class="String">&quot;</span></span>
+  <span class="Keyword">else</span> <span class="Keyword">if</span> student.okayStuff
+    <span class="Keyword">if</span> student.triedHard <span class="Keyword">then</span> <span class="String"><span class="String">&quot;</span>B<span class="String">&quot;</span></span> <span class="Keyword">else</span> <span class="String"><span class="String">&quot;</span>B-<span class="String">&quot;</span></span>
+  <span class="Keyword">else</span>
+    <span class="String"><span class="String">&quot;</span>C<span class="String">&quot;</span></span>
 
-eldest = if 24 &gt; 21 then &quot;Liz&quot; else &quot;Ike&quot;
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var eldest, grade;
+eldest <span class="Keyword">=</span> <span class="Keyword">if</span> <span class="Number">24</span> <span class="Keyword">&gt;</span> <span class="Number">21</span> <span class="Keyword">then</span> <span class="String"><span class="String">&quot;</span>Liz<span class="String">&quot;</span></span> <span class="Keyword">else</span> <span class="String"><span class="String">&quot;</span>Ike<span class="String">&quot;</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> eldest, grade;
 
 
 
-grade = function(student) {
-  if (student.excellentWork) {
-    return &quot;A+&quot;;
-  } else if (student.okayStuff) {
-    if (student.triedHard) {
-      return &quot;B&quot;;
-    } else {
-      return &quot;B-&quot;;
+<span class="FunctionName">grade</span> = <span class="Storage">function</span>(<span class="FunctionArgument">student</span>) {
+  <span class="Keyword">if</span> (student.excellentWork) {
+    <span class="Keyword">return</span> <span class="String"><span class="String">&quot;</span>A+<span class="String">&quot;</span></span>;
+  } <span class="Keyword">else</span> <span class="Keyword">if</span> (student.okayStuff) {
+    <span class="Keyword">if</span> (student.triedHard) {
+      <span class="Keyword">return</span> <span class="String"><span class="String">&quot;</span>B<span class="String">&quot;</span></span>;
+    } <span class="Keyword">else</span> {
+      <span class="Keyword">return</span> <span class="String"><span class="String">&quot;</span>B-<span class="String">&quot;</span></span>;
     }
-  } else {
-    return &quot;C&quot;;
+  } <span class="Keyword">else</span> {
+    <span class="Keyword">return</span> <span class="String"><span class="String">&quot;</span>C<span class="String">&quot;</span></span>;
   }
 };
 
-eldest = 24 &gt; 21 ? &quot;Liz&quot; : &quot;Ike&quot;;
-</pre><script>window.example23 = "grade = (student) ->\n  if student.excellentWork\n    \"A+\"\n  else if student.okayStuff\n    if student.triedHard then \"B\" else \"B-\"\n  else\n    \"C\"\n\neldest = if 24 > 21 then \"Liz\" else \"Ike\"\n\nalert eldest"</script><div class='minibutton load' onclick='javascript: loadConsole(example23);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+eldest <span class="Keyword">=</span> <span class="Number">24</span> <span class="Keyword">&gt;</span> <span class="Number">21</span> ? <span class="String"><span class="String">&quot;</span>Liz<span class="String">&quot;</span></span> : <span class="String"><span class="String">&quot;</span>Ike<span class="String">&quot;</span></span>;
+</pre><script>window.example23 = "grade = (student) ->\n  if student.excellentWork\n    \"A+\"\n  else if student.okayStuff\n    if student.triedHard then \"B\" else \"B-\"\n  else\n    \"C\"\n\neldest = if 24 > 21 then \"Liz\" else \"Ike\"\n\nalert eldest"</script><div class='minibutton load' onclick='javascript: loadConsole(example23);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var eldest, grade;
 
 
@@ -1989,16 +1989,16 @@ eldest = 24 > 21 ? "Liz" : "Ike";
       Because variable declarations occur at the top of scope, assignment can
       be used within expressions, even for variables that haven't been seen before:
     </p>
-    <div class='code' ><pre class="idle">six = (one = 1) + (two = 2) + (three = 3)
+    <div class='code' ><pre class="idle">six <span class="Keyword">=</span> (one <span class="Keyword">=</span> <span class="Number">1</span>) <span class="Keyword">+</span> (two <span class="Keyword">=</span> <span class="Number">2</span>) <span class="Keyword">+</span> (three <span class="Keyword">=</span> <span class="Number">3</span>)
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var one, six, three, two;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> one, six, three, two;
 
 
 
-six = (one = 1) + (two = 2) + (three = 3);
-</pre><script>window.example24 = "six = (one = 1) + (two = 2) + (three = 3)\n\nalert six"</script><div class='minibutton load' onclick='javascript: loadConsole(example24);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+six <span class="Keyword">=</span> (one <span class="Keyword">=</span> <span class="Number">1</span>) <span class="Keyword">+</span> (two <span class="Keyword">=</span> <span class="Number">2</span>) <span class="Keyword">+</span> (three <span class="Keyword">=</span> <span class="Number">3</span>);
+</pre><script>window.example24 = "six = (one = 1) + (two = 2) + (three = 3)\n\nalert six"</script><div class='minibutton load' onclick='javascript: loadConsole(example24);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var one, six, three, two;
 
 
@@ -2011,23 +2011,23 @@ six = (one = 1) + (two = 2) + (three = 3);
       by wrapping them in a closure. This lets you do useful things, like assign
       the result of a comprehension to a variable:
     </p>
-    <div class='code' ><pre class="idle"># The first ten global properties.
+    <div class='code' ><pre class="idle"><span class="Comment"><span class="Comment">#</span> The first ten global properties.</span>
 
-globals = (name for name of window)[0...10]
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var globals, name;
+globals <span class="Keyword">=</span> (name <span class="Keyword">for</span> name <span class="Keyword">of</span> <span class="LibraryClassType">window</span>)[<span class="Number">0</span><span class="Keyword">...</span><span class="Number">10</span>]
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> globals, name;
 
 
 
-globals = ((function() {
-  var _results;
-  _results = [];
-  for (name in window) {
-    _results.push(name);
+globals <span class="Keyword">=</span> ((<span class="Storage">function</span>() {
+  <span class="Storage">var</span> _results;
+  _results <span class="Keyword">=</span> [];
+  <span class="Keyword">for</span> (name <span class="Keyword">in</span> <span class="LibraryClassType">window</span>) {
+    _results.<span class="LibraryFunction">push</span>(name);
   }
-  return _results;
-})()).slice(0, 10);
-</pre><script>window.example25 = "# The first ten global properties.\n\nglobals = (name for name of window)[0...10]\n\nalert globals"</script><div class='minibutton load' onclick='javascript: loadConsole(example25);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+  <span class="Keyword">return</span> _results;
+})()).<span class="LibraryFunction">slice</span>(<span class="Number">0</span>, <span class="Number">10</span>);
+</pre><script>window.example25 = "# The first ten global properties.\n\nglobals = (name for name of window)[0...10]\n\nalert globals"</script><div class='minibutton load' onclick='javascript: loadConsole(example25);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var globals, name;
 
 
@@ -2046,26 +2046,26 @@ globals = ((function() {
       into a function call:
     </p>
     <div class='code' ><pre class="idle">alert(
-  try
-    nonexistent / undefined
-  catch error
-    &quot;And the error is ... #{error}&quot;
+  <span class="Keyword">try</span>
+    nonexistent <span class="Keyword">/</span> <span class="BuiltInConstant">undefined</span>
+  <span class="Keyword">catch</span> error
+    <span class="String"><span class="String">&quot;</span>And the error is ... <span class="String"><span class="String">#{</span>error<span class="String">}</span></span><span class="String">&quot;</span></span>
 )
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var error;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> error;
 
 
 
-alert((function() {
-  try {
-    return nonexistent / void 0;
-  } catch (_error) {
-    error = _error;
-    return &quot;And the error is ... &quot; + error;
+<span class="LibraryFunction">alert</span>((<span class="Storage">function</span>() {
+  <span class="Keyword">try</span> {
+    <span class="Keyword">return</span> nonexistent / <span class="Storage">void</span> <span class="Number">0</span>;
+  } <span class="Keyword">catch</span> (_error) {
+    error <span class="Keyword">=</span> _error;
+    <span class="Keyword">return</span> <span class="String"><span class="String">&quot;</span>And the error is ... <span class="String">&quot;</span></span> <span class="Keyword">+</span> error;
   }
 })());
-</pre><script>window.example26 = "alert(\n  try\n    nonexistent / undefined\n  catch error\n    \"And the error is ... #{error}\"\n)\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example26);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example26 = "alert(\n  try\n    nonexistent / undefined\n  catch error\n    \"And the error is ... #{error}\"\n)\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example26);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var error;
 
 
@@ -2141,43 +2141,43 @@ alert((function() {
       <tr><td><tt>in</tt></td><td><i><small>no JS equivalent</small></i></td></tr>
     </table>
 
-    <div class='code' ><pre class="idle">launch() if ignition is on
+    <div class='code' ><pre class="idle">launch() <span class="Keyword">if</span> ignition <span class="Keyword">is</span> <span class="BuiltInConstant">on</span>
 
-volume = 10 if band isnt SpinalTap
+volume <span class="Keyword">=</span> <span class="Number">10</span> <span class="Keyword">if</span> band <span class="Keyword">isnt</span> SpinalTap
 
-letTheWildRumpusBegin() unless answer is no
+letTheWildRumpusBegin() <span class="Keyword">unless</span> answer <span class="Keyword">is</span> <span class="BuiltInConstant">no</span>
 
-if car.speed &lt; limit then accelerate()
+<span class="Keyword">if</span> car.speed <span class="Keyword">&lt;</span> limit <span class="Keyword">then</span> accelerate()
 
-winner = yes if pick in [47, 92, 13]
+winner <span class="Keyword">=</span> <span class="BuiltInConstant">yes</span> <span class="Keyword">if</span> pick <span class="Keyword">in</span> [<span class="Number">47</span>, <span class="Number">92</span>, <span class="Number">13</span>]
 
-print inspect &quot;My name is #{@name}&quot;
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var volume, winner;
+print inspect <span class="String"><span class="String">&quot;</span>My name is <span class="String"><span class="String">#{</span><span class="Variable">@name</span><span class="String">}</span></span><span class="String">&quot;</span></span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> volume, winner;
 
 
 
-if (ignition === true) {
+<span class="Keyword">if</span> (ignition <span class="Keyword">===</span> <span class="BuiltInConstant">true</span>) {
   launch();
 }
 
-if (band !== SpinalTap) {
-  volume = 10;
+<span class="Keyword">if</span> (band <span class="Keyword">!</span><span class="Keyword">==</span> SpinalTap) {
+  volume <span class="Keyword">=</span> <span class="Number">10</span>;
 }
 
-if (answer !== false) {
+<span class="Keyword">if</span> (answer <span class="Keyword">!</span><span class="Keyword">==</span> <span class="BuiltInConstant">false</span>) {
   letTheWildRumpusBegin();
 }
 
-if (car.speed &lt; limit) {
+<span class="Keyword">if</span> (car.speed <span class="Keyword">&lt;</span> limit) {
   accelerate();
 }
 
-if (pick === 47 || pick === 92 || pick === 13) {
-  winner = true;
+<span class="Keyword">if</span> (pick <span class="Keyword">===</span> <span class="Number">47</span> <span class="Keyword">||</span> pick <span class="Keyword">===</span> <span class="Number">92</span> <span class="Keyword">||</span> pick <span class="Keyword">===</span> <span class="Number">13</span>) {
+  winner <span class="Keyword">=</span> <span class="BuiltInConstant">true</span>;
 }
 
-print(inspect(&quot;My name is &quot; + this.name));
+<span class="LibraryFunction">print</span>(inspect(<span class="String"><span class="String">&quot;</span>My name is <span class="String">&quot;</span></span> <span class="Keyword">+</span> <span class="Variable">this</span>.<span class="LibraryConstant">name</span>));
 </pre><script>window.example27 = "launch() if ignition is on\n\nvolume = 10 if band isnt SpinalTap\n\nletTheWildRumpusBegin() unless answer is no\n\nif car.speed < limit then accelerate()\n\nwinner = yes if pick in [47, 92, 13]\n\nprint inspect \"My name is #{@name}\"\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example27);'>load</div><br class='clear' /></div>
 
     <p>
@@ -2192,12 +2192,12 @@ print(inspect(&quot;My name is &quot; + this.name));
       It can also be used for safer conditional assignment than <tt>||=</tt>
       provides, for cases where you may be handling numbers or strings.
     </p>
-    <div class='code' ><pre class="idle">solipsism = true if mind? and not world?
+    <div class='code' ><pre class="idle">solipsism <span class="Keyword">=</span> <span class="BuiltInConstant">true</span> <span class="Keyword">if</span> mind<span class="Keyword">?</span> <span class="Keyword">and</span> <span class="Keyword">not</span> world<span class="Keyword">?</span>
 
-speed = 0
-speed ?= 15
+speed <span class="Keyword">=</span> <span class="Number">0</span>
+speed <span class="Keyword">?</span><span class="Keyword">=</span> <span class="Number">15</span>
 
-footprints = yeti ? &quot;bear&quot;
+footprints <span class="Keyword">=</span> yeti <span class="Keyword">?</span> <span class="String"><span class="String">&quot;</span>bear<span class="String">&quot;</span></span>
 
 
 
@@ -2205,23 +2205,23 @@ footprints = yeti ? &quot;bear&quot;
 
 
  
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var footprints, solipsism, speed;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> footprints, solipsism, speed;
 
 
 
-if ((typeof mind !== &quot;undefined&quot; &amp;&amp; mind !== null) &amp;&amp; (typeof world === &quot;undefined&quot; || world === null)) {
-  solipsism = true;
+<span class="Keyword">if</span> ((<span class="Keyword">typeof</span> mind <span class="Keyword">!</span><span class="Keyword">==</span> <span class="String"><span class="String">&quot;</span>undefined<span class="String">&quot;</span></span> <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> mind <span class="Keyword">!</span><span class="Keyword">==</span> <span class="BuiltInConstant">null</span>) <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> (<span class="Keyword">typeof</span> world <span class="Keyword">===</span> <span class="String"><span class="String">&quot;</span>undefined<span class="String">&quot;</span></span> <span class="Keyword">||</span> world <span class="Keyword">===</span> <span class="BuiltInConstant">null</span>)) {
+  solipsism <span class="Keyword">=</span> <span class="BuiltInConstant">true</span>;
 }
 
-speed = 0;
+speed <span class="Keyword">=</span> <span class="Number">0</span>;
 
-if (speed == null) {
-  speed = 15;
+<span class="Keyword">if</span> (speed <span class="Keyword">==</span> <span class="BuiltInConstant">null</span>) {
+  speed <span class="Keyword">=</span> <span class="Number">15</span>;
 }
 
-footprints = typeof yeti !== &quot;undefined&quot; &amp;&amp; yeti !== null ? yeti : &quot;bear&quot;;
-</pre><script>window.example28 = "solipsism = true if mind? and not world?\n\nspeed = 0\nspeed ?= 15\n\nfootprints = yeti ? \"bear\"\n\nalert footprints"</script><div class='minibutton load' onclick='javascript: loadConsole(example28);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+footprints <span class="Keyword">=</span> <span class="Keyword">typeof</span> yeti <span class="Keyword">!</span><span class="Keyword">==</span> <span class="String"><span class="String">&quot;</span>undefined<span class="String">&quot;</span></span> <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> yeti <span class="Keyword">!</span><span class="Keyword">==</span> <span class="BuiltInConstant">null</span> ? yeti : <span class="String"><span class="String">&quot;</span>bear<span class="String">&quot;</span></span>;
+</pre><script>window.example28 = "solipsism = true if mind? and not world?\n\nspeed = 0\nspeed ?= 15\n\nfootprints = yeti ? \"bear\"\n\nalert footprints"</script><div class='minibutton load' onclick='javascript: loadConsole(example28);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var footprints, solipsism, speed;
 
 
@@ -2246,13 +2246,13 @@ footprints = typeof yeti !== "undefined" && yeti !== null ? yeti : "bear";
       result, if the chain is broken, <b>undefined</b> is returned instead of
       the <b>TypeError</b> that would be raised otherwise.
     </p>
-    <div class='code' ><pre class="idle">zip = lottery.drawWinner?().address?.zipcode
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var zip, _ref;
+    <div class='code' ><pre class="idle">zip <span class="Keyword">=</span> lottery.drawWinner<span class="Keyword">?</span>().address<span class="Keyword">?</span>.zipcode
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> zip, _ref;
 
 
 
-zip = typeof lottery.drawWinner === &quot;function&quot; ? (_ref = lottery.drawWinner().address) != null ? _ref.zipcode : void 0 : void 0;
+zip <span class="Keyword">=</span> <span class="Keyword">typeof</span> lottery.drawWinner <span class="Keyword">===</span> <span class="String"><span class="String">&quot;</span>function<span class="String">&quot;</span></span> ? (_ref <span class="Keyword">=</span> lottery.drawWinner().address) <span class="Keyword">!</span><span class="Keyword">=</span> <span class="BuiltInConstant">null</span> ? _ref.zipcode : <span class="Storage">void</span> <span class="Number">0</span> : <span class="Storage">void</span> <span class="Number">0</span>;
 </pre><script>window.example29 = "zip = lottery.drawWinner?().address?.zipcode\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example29);'>load</div><br class='clear' /></div>
     <p>
       Soaking up nulls is similar to Ruby's
@@ -2286,24 +2286,24 @@ zip = typeof lottery.drawWinner === &quot;function&quot; ? (_ref = lottery.drawW
       Constructor functions are named, to better support helpful stack traces.
       In the first class in the example below, <tt>this.constructor.name is "Animal"</tt>.
     </p>
-    <div class='code' ><pre class="idle">class Animal
-  constructor: (@name) -&gt;
+    <div class='code' ><pre class="idle"><span class="Storage">class</span> <span class="TypeName">Animal</span>
+  <span class="FunctionName">constructo<span class="FunctionName">r</span></span>:<span class="FunctionArgument"> (@name)</span> <span class="Storage">-&gt;</span><span class="Keyword">:</span> <span class="FunctionArgument">(@name)</span> <span class="Storage">-&gt;</span>
 
-  move: (meters) -&gt;
-    alert @name + &quot; moved #{meters}m.&quot;
+  <span class="FunctionName">mov<span class="FunctionName">e</span></span>:<span class="FunctionArgument"> (meters)</span> <span class="Storage">-&gt;</span><span class="Keyword">:</span> <span class="FunctionArgument">(meters)</span> <span class="Storage">-&gt;</span>
+    alert <span class="Variable">@name</span> <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> moved <span class="String"><span class="String">#{</span>meters<span class="String">}</span></span>m.<span class="String">&quot;</span></span>
 
-class Snake extends Animal
-  move: -&gt;
-    alert &quot;Slithering...&quot;
-    super 5
+<span class="Storage">class</span> <span class="TypeName">Snake</span> <span class="Keyword">extends</span> <span class="InheritedClass">Animal</span>
+  <span class="FunctionName">mov<span class="FunctionName">e</span></span>: <span class="Storage">-&gt;</span><span class="Keyword">:</span> <span class="Storage">-&gt;</span>
+    alert <span class="String"><span class="String">&quot;</span>Slithering...<span class="String">&quot;</span></span>
+    <span class="Keyword">super</span> <span class="Number">5</span>
 
-class Horse extends Animal
-  move: -&gt;
-    alert &quot;Galloping...&quot;
-    super 45
+<span class="Storage">class</span> <span class="TypeName">Horse</span> <span class="Keyword">extends</span> <span class="InheritedClass">Animal</span>
+  <span class="FunctionName">mov<span class="FunctionName">e</span></span>: <span class="Storage">-&gt;</span><span class="Keyword">:</span> <span class="Storage">-&gt;</span>
+    alert <span class="String"><span class="String">&quot;</span>Galloping...<span class="String">&quot;</span></span>
+    <span class="Keyword">super</span> <span class="Number">45</span>
 
-sam = new Snake &quot;Sammy the Python&quot;
-tom = new Horse &quot;Tommy the Palomino&quot;
+sam <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">Snake</span> <span class="String"><span class="String">&quot;</span>Sammy the Python<span class="String">&quot;</span></span>
+tom <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">Horse</span> <span class="String"><span class="String">&quot;</span>Tommy the Palomino<span class="String">&quot;</span></span>
 
 sam.move()
 tom.move()
@@ -2311,68 +2311,68 @@ tom.move()
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var Animal, Horse, Snake, sam, tom, _ref, _ref1,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> Animal, Horse, Snake, sam, tom, _ref, _ref1,
+  __hasProp <span class="Keyword">=</span> {}.hasOwnProperty,
+  <span class="FunctionName">__extends</span> = <span class="Storage">function</span>(<span class="FunctionArgument">child, parent</span>) { <span class="Keyword">for</span> (<span class="Storage">var</span> key <span class="Keyword">in</span> parent) { <span class="Keyword">if</span> (__hasProp.<span class="LibraryFunction">call</span>(parent, key)) child[key] <span class="Keyword">=</span> parent[key]; } <span class="Storage">function</span> <span class="FunctionName">ctor</span>() { <span class="Variable">this</span>.<span class="LibraryConstant">constructor</span> <span class="Keyword">=</span> child; } <span class="LibraryClassType">ctor</span>.<span class="LibraryConstant">prototype</span> = parent.<span class="LibraryConstant">prototype</span>; <span class="LibraryClassType">child</span>.<span class="LibraryConstant">prototype</span> = <span class="Keyword">new</span> <span class="TypeName">ctor</span>(); child.__super__ <span class="Keyword">=</span> parent.<span class="LibraryConstant">prototype</span>; <span class="Keyword">return</span> child; };
 
 
 
-Animal = (function() {
-  function Animal(name) {
-    this.name = name;
+Animal <span class="Keyword">=</span> (<span class="Storage">function</span>() {
+  <span class="Storage">function</span> <span class="FunctionName">Animal</span>(<span class="FunctionArgument">name</span>) {
+    <span class="Variable">this</span>.<span class="LibraryConstant">name</span> <span class="Keyword">=</span> name;
   }
 
-  Animal.prototype.move = function(meters) {
-    return alert(this.name + (&quot; moved &quot; + meters + &quot;m.&quot;));
+  <span class="LibraryClassType">Animal</span>.<span class="LibraryConstant">prototype</span>.<span class="FunctionName">move</span> = <span class="Storage">function</span>(<span class="FunctionArgument">meters</span>) {
+    <span class="Keyword">return</span> <span class="LibraryFunction">alert</span>(<span class="Variable">this</span>.<span class="LibraryConstant">name</span> <span class="Keyword">+</span> (<span class="String"><span class="String">&quot;</span> moved <span class="String">&quot;</span></span> <span class="Keyword">+</span> meters <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>m.<span class="String">&quot;</span></span>));
   };
 
-  return Animal;
+  <span class="Keyword">return</span> Animal;
 
 })();
 
-Snake = (function(_super) {
+Snake <span class="Keyword">=</span> (<span class="Storage">function</span>(_super) {
   __extends(Snake, _super);
 
-  function Snake() {
-    _ref = Snake.__super__.constructor.apply(this, arguments);
-    return _ref;
+  <span class="Storage">function</span> <span class="FunctionName">Snake</span>() {
+    _ref <span class="Keyword">=</span> Snake.__super__.<span class="LibraryConstant">constructor</span>.<span class="LibraryFunction">apply</span>(<span class="Variable">this</span>, arguments);
+    <span class="Keyword">return</span> _ref;
   }
 
-  Snake.prototype.move = function() {
-    alert(&quot;Slithering...&quot;);
-    return Snake.__super__.move.call(this, 5);
+  <span class="LibraryClassType">Snake</span>.<span class="LibraryConstant">prototype</span>.<span class="FunctionName">move</span> = <span class="Storage">function</span>() {
+    <span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span>Slithering...<span class="String">&quot;</span></span>);
+    <span class="Keyword">return</span> Snake.__super__.move.<span class="LibraryFunction">call</span>(<span class="Variable">this</span>, <span class="Number">5</span>);
   };
 
-  return Snake;
+  <span class="Keyword">return</span> Snake;
 
 })(Animal);
 
-Horse = (function(_super) {
+Horse <span class="Keyword">=</span> (<span class="Storage">function</span>(_super) {
   __extends(Horse, _super);
 
-  function Horse() {
-    _ref1 = Horse.__super__.constructor.apply(this, arguments);
-    return _ref1;
+  <span class="Storage">function</span> <span class="FunctionName">Horse</span>() {
+    _ref1 <span class="Keyword">=</span> Horse.__super__.<span class="LibraryConstant">constructor</span>.<span class="LibraryFunction">apply</span>(<span class="Variable">this</span>, arguments);
+    <span class="Keyword">return</span> _ref1;
   }
 
-  Horse.prototype.move = function() {
-    alert(&quot;Galloping...&quot;);
-    return Horse.__super__.move.call(this, 45);
+  <span class="LibraryClassType">Horse</span>.<span class="LibraryConstant">prototype</span>.<span class="FunctionName">move</span> = <span class="Storage">function</span>() {
+    <span class="LibraryFunction">alert</span>(<span class="String"><span class="String">&quot;</span>Galloping...<span class="String">&quot;</span></span>);
+    <span class="Keyword">return</span> Horse.__super__.move.<span class="LibraryFunction">call</span>(<span class="Variable">this</span>, <span class="Number">45</span>);
   };
 
-  return Horse;
+  <span class="Keyword">return</span> Horse;
 
 })(Animal);
 
-sam = new Snake(&quot;Sammy the Python&quot;);
+sam <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">Snake</span>(<span class="String"><span class="String">&quot;</span>Sammy the Python<span class="String">&quot;</span></span>);
 
-tom = new Horse(&quot;Tommy the Palomino&quot;);
+tom <span class="Keyword">=</span> <span class="Keyword">new</span> <span class="TypeName">Horse</span>(<span class="String"><span class="String">&quot;</span>Tommy the Palomino<span class="String">&quot;</span></span>);
 
 sam.move();
 
 tom.move();
-</pre><script>window.example30 = "class Animal\n  constructor: (@name) ->\n\n  move: (meters) ->\n    alert @name + \" moved #{meters}m.\"\n\nclass Snake extends Animal\n  move: ->\n    alert \"Slithering...\"\n    super 5\n\nclass Horse extends Animal\n  move: ->\n    alert \"Galloping...\"\n    super 45\n\nsam = new Snake \"Sammy the Python\"\ntom = new Horse \"Tommy the Palomino\"\n\nsam.move()\ntom.move()\n\n\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example30);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example30 = "class Animal\n  constructor: (@name) ->\n\n  move: (meters) ->\n    alert @name + \" moved #{meters}m.\"\n\nclass Snake extends Animal\n  move: ->\n    alert \"Slithering...\"\n    super 5\n\nclass Horse extends Animal\n  move: ->\n    alert \"Galloping...\"\n    super 45\n\nsam = new Snake \"Sammy the Python\"\ntom = new Horse \"Tommy the Palomino\"\n\nsam.move()\ntom.move()\n\n\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example30);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var Animal, Horse, Snake, sam, tom, _ref, _ref1,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -2442,16 +2442,16 @@ tom.move();
       quick access to an object's prototype; and <tt>super()</tt>
       is converted into a call against the immediate ancestor's method of the same name.
     </p>
-    <div class='code' ><pre class="idle">String::dasherize = -&gt;
-  this.replace /_/g, &quot;-&quot;
+    <div class='code' ><pre class="idle"><span class="FunctionName">String::dasheriz<span class="FunctionName">e</span> </span>= <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="Storage">-&gt;</span>
+  <span class="Variable">this</span>.replace <span class="String">/_/g</span>, <span class="String"><span class="String">&quot;</span>-<span class="String">&quot;</span></span>
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
 
 
-String.prototype.dasherize = function() {
-  return this.replace(/_/g, &quot;-&quot;);
+<span class="LibraryClassType">String</span>.<span class="LibraryConstant">prototype</span>.<span class="FunctionName">dasherize</span> = <span class="Storage">function</span>() {
+  <span class="Keyword">return</span> <span class="Variable">this</span>.<span class="LibraryFunction">replace</span>(<span class="String"><span class="String">/</span>_<span class="String">/</span>g</span>, <span class="String"><span class="String">&quot;</span>-<span class="String">&quot;</span></span>);
 };
-</pre><script>window.example31 = "String::dasherize = ->\n  this.replace /_/g, \"-\"\n\nalert \"one_two\".dasherize()"</script><div class='minibutton load' onclick='javascript: loadConsole(example31);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example31 = "String::dasherize = ->\n  this.replace /_/g, \"-\"\n\nalert \"one_two\".dasherize()"</script><div class='minibutton load' onclick='javascript: loadConsole(example31);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 
 
 String.prototype.dasherize = function() {
@@ -2477,26 +2477,26 @@ String.prototype.dasherize = function() {
       on the right to the variables on the left. In the simplest case, it can be
       used for parallel assignment:
     </p>
-    <div class='code' ><pre class="idle">theBait   = 1000
-theSwitch = 0
+    <div class='code' ><pre class="idle">theBait   <span class="Keyword">=</span> <span class="Number">1000</span>
+theSwitch <span class="Keyword">=</span> <span class="Number">0</span>
 
-[theBait, theSwitch] = [theSwitch, theBait]
+<span class="Keyword">[</span>theBait, theSwitch<span class="Keyword">] =</span> [theSwitch, theBait]
 
 
 
 
  
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var theBait, theSwitch, _ref;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> theBait, theSwitch, _ref;
 
 
 
-theBait = 1000;
+theBait <span class="Keyword">=</span> <span class="Number">1000</span>;
 
-theSwitch = 0;
+theSwitch <span class="Keyword">=</span> <span class="Number">0</span>;
 
-_ref = [theSwitch, theBait], theBait = _ref[0], theSwitch = _ref[1];
-</pre><script>window.example32 = "theBait   = 1000\ntheSwitch = 0\n\n[theBait, theSwitch] = [theSwitch, theBait]\n\nalert theBait"</script><div class='minibutton load' onclick='javascript: loadConsole(example32);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+_ref <span class="Keyword">=</span> [theSwitch, theBait], theBait <span class="Keyword">=</span> _ref[<span class="Number">0</span>], theSwitch <span class="Keyword">=</span> _ref[<span class="Number">1</span>];
+</pre><script>window.example32 = "theBait   = 1000\ntheSwitch = 0\n\n[theBait, theSwitch] = [theSwitch, theBait]\n\nalert theBait"</script><div class='minibutton load' onclick='javascript: loadConsole(example32);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var theBait, theSwitch, _ref;
 
 
@@ -2511,26 +2511,26 @@ _ref = [theSwitch, theBait], theBait = _ref[0], theSwitch = _ref[1];
       But it's also helpful for dealing with functions that return multiple
       values.
     </p>
-    <div class='code' ><pre class="idle">weatherReport = (location) -&gt;
-  # Make an Ajax request to fetch the weather...
-  [location, 72, &quot;Mostly Sunny&quot;]
+    <div class='code' ><pre class="idle"><span class="FunctionName">weatherRepor<span class="FunctionName">t</span> </span>=<span class="FunctionArgument"> (location)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(location)</span> <span class="Storage">-&gt;</span>
+  <span class="Comment"><span class="Comment">#</span> Make an Ajax request to fetch the weather...</span>
+  [location, <span class="Number">72</span>, <span class="String"><span class="String">&quot;</span>Mostly Sunny<span class="String">&quot;</span></span>]
 
-[city, temp, forecast] = weatherReport &quot;Berkeley, CA&quot;
-
-
-
-
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var city, forecast, temp, weatherReport, _ref;
+<span class="Keyword">[</span>city, temp, forecast<span class="Keyword">] =</span> weatherReport <span class="String"><span class="String">&quot;</span>Berkeley, CA<span class="String">&quot;</span></span>
 
 
 
-weatherReport = function(location) {
-  return [location, 72, &quot;Mostly Sunny&quot;];
+
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> city, forecast, temp, weatherReport, _ref;
+
+
+
+<span class="FunctionName">weatherReport</span> = <span class="Storage">function</span>(<span class="FunctionArgument">location</span>) {
+  <span class="Keyword">return</span> [location, <span class="Number">72</span>, <span class="String"><span class="String">&quot;</span>Mostly Sunny<span class="String">&quot;</span></span>];
 };
 
-_ref = weatherReport(&quot;Berkeley, CA&quot;), city = _ref[0], temp = _ref[1], forecast = _ref[2];
-</pre><script>window.example33 = "weatherReport = (location) ->\n  # Make an Ajax request to fetch the weather...\n  [location, 72, \"Mostly Sunny\"]\n\n[city, temp, forecast] = weatherReport \"Berkeley, CA\"\n\nalert forecast"</script><div class='minibutton load' onclick='javascript: loadConsole(example33);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+_ref <span class="Keyword">=</span> weatherReport(<span class="String"><span class="String">&quot;</span>Berkeley, CA<span class="String">&quot;</span></span>), city <span class="Keyword">=</span> _ref[<span class="Number">0</span>], temp <span class="Keyword">=</span> _ref[<span class="Number">1</span>], forecast <span class="Keyword">=</span> _ref[<span class="Number">2</span>];
+</pre><script>window.example33 = "weatherReport = (location) ->\n  # Make an Ajax request to fetch the weather...\n  [location, 72, \"Mostly Sunny\"]\n\n[city, temp, forecast] = weatherReport \"Berkeley, CA\"\n\nalert forecast"</script><div class='minibutton load' onclick='javascript: loadConsole(example33);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var city, forecast, temp, weatherReport, _ref;
 
 
@@ -2545,36 +2545,36 @@ _ref = weatherReport("Berkeley, CA"), city = _ref[0], temp = _ref[1], forecast =
       Destructuring assignment can be used with any depth of array and object nesting,
       to help pull out deeply nested properties.
     </p>
-    <div class='code' ><pre class="idle">futurists =
-  sculptor: &quot;Umberto Boccioni&quot;
-  painter:  &quot;Vladimir Burliuk&quot;
+    <div class='code' ><pre class="idle">futurists <span class="Keyword">=</span>
+  sculptor: <span class="String"><span class="String">&quot;</span>Umberto Boccioni<span class="String">&quot;</span></span>
+  painter:  <span class="String"><span class="String">&quot;</span>Vladimir Burliuk<span class="String">&quot;</span></span>
   poet:
-    name:   &quot;F.T. Marinetti&quot;
+    name:   <span class="String"><span class="String">&quot;</span>F.T. Marinetti<span class="String">&quot;</span></span>
     address: [
-      &quot;Via Roma 42R&quot;
-      &quot;Bellagio, Italy 22021&quot;
+      <span class="String"><span class="String">&quot;</span>Via Roma 42R<span class="String">&quot;</span></span>
+      <span class="String"><span class="String">&quot;</span>Bellagio, Italy 22021<span class="String">&quot;</span></span>
     ]
 
-{poet: {name, address: [street, city]}} = futurists
+<span class="Keyword">{</span>poet: {name, address: [street, city]}<span class="Keyword">} =</span> futurists
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var city, futurists, name, street, _ref, _ref1;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> city, futurists, name, street, _ref, _ref1;
 
 
 
-futurists = {
-  sculptor: &quot;Umberto Boccioni&quot;,
-  painter: &quot;Vladimir Burliuk&quot;,
+futurists <span class="Keyword">=</span> {
+  sculptor: <span class="String"><span class="String">&quot;</span>Umberto Boccioni<span class="String">&quot;</span></span>,
+  painter: <span class="String"><span class="String">&quot;</span>Vladimir Burliuk<span class="String">&quot;</span></span>,
   poet: {
-    name: &quot;F.T. Marinetti&quot;,
-    address: [&quot;Via Roma 42R&quot;, &quot;Bellagio, Italy 22021&quot;]
+    name: <span class="String"><span class="String">&quot;</span>F.T. Marinetti<span class="String">&quot;</span></span>,
+    address: [<span class="String"><span class="String">&quot;</span>Via Roma 42R<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Bellagio, Italy 22021<span class="String">&quot;</span></span>]
   }
 };
 
-_ref = futurists.poet, name = _ref.name, (_ref1 = _ref.address, street = _ref1[0], city = _ref1[1]);
-</pre><script>window.example34 = "futurists =\n  sculptor: \"Umberto Boccioni\"\n  painter:  \"Vladimir Burliuk\"\n  poet:\n    name:   \"F.T. Marinetti\"\n    address: [\n      \"Via Roma 42R\"\n      \"Bellagio, Italy 22021\"\n    ]\n\n{poet: {name, address: [street, city]}} = futurists\n\nalert name + \" - \" + street"</script><div class='minibutton load' onclick='javascript: loadConsole(example34);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+_ref <span class="Keyword">=</span> futurists.poet, name <span class="Keyword">=</span> _ref.<span class="LibraryConstant">name</span>, (_ref1 <span class="Keyword">=</span> _ref.address, street <span class="Keyword">=</span> _ref1[<span class="Number">0</span>], city <span class="Keyword">=</span> _ref1[<span class="Number">1</span>]);
+</pre><script>window.example34 = "futurists =\n  sculptor: \"Umberto Boccioni\"\n  painter:  \"Vladimir Burliuk\"\n  poet:\n    name:   \"F.T. Marinetti\"\n    address: [\n      \"Via Roma 42R\"\n      \"Bellagio, Italy 22021\"\n    ]\n\n{poet: {name, address: [street, city]}} = futurists\n\nalert name + \" - \" + street"</script><div class='minibutton load' onclick='javascript: loadConsole(example34);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var city, futurists, name, street, _ref, _ref1;
 
 
@@ -2593,25 +2593,25 @@ _ref = futurists.poet, name = _ref.name, (_ref1 = _ref.address, street = _ref1[0
     <p>
       Destructuring assignment can even be combined with splats.
     </p>
-    <div class='code' ><pre class="idle">tag = &quot;&lt;impossible&gt;&quot;
+    <div class='code' ><pre class="idle">tag <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>&lt;impossible&gt;<span class="String">&quot;</span></span>
 
-[open, contents..., close] = tag.split(&quot;&quot;)
-
-
+<span class="Keyword">[</span>open, contents..., close<span class="Keyword">] =</span> tag.split(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span>)
 
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var close, contents, open, tag, _i, _ref,
-  __slice = [].slice;
+
+
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> close, contents, open, tag, _i, _ref,
+  __slice <span class="Keyword">=</span> [].slice;
 
 
 
-tag = &quot;&lt;impossible&gt;&quot;;
+tag <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>&lt;impossible&gt;<span class="String">&quot;</span></span>;
 
-_ref = tag.split(&quot;&quot;), open = _ref[0], contents = 3 &lt;= _ref.length ? __slice.call(_ref, 1, _i = _ref.length - 1) : (_i = 1, []), close = _ref[_i++];
-</pre><script>window.example35 = "tag = \"<impossible>\"\n\n[open, contents..., close] = tag.split(\"\")\n\nalert contents.join(\"\")"</script><div class='minibutton load' onclick='javascript: loadConsole(example35);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+_ref <span class="Keyword">=</span> tag.<span class="LibraryFunction">split</span>(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span>), open <span class="Keyword">=</span> _ref[<span class="Number">0</span>], contents <span class="Keyword">=</span> <span class="Number">3</span> <span class="Keyword">&lt;=</span> _ref.<span class="LibraryConstant">length</span> ? __slice.<span class="LibraryFunction">call</span>(_ref, <span class="Number">1</span>, _i <span class="Keyword">=</span> _ref.<span class="LibraryConstant">length</span> <span class="Keyword">-</span> <span class="Number">1</span>) : (_i <span class="Keyword">=</span> <span class="Number">1</span>, []), close <span class="Keyword">=</span> _ref[_i<span class="Keyword">++</span>];
+</pre><script>window.example35 = "tag = \"<impossible>\"\n\n[open, contents..., close] = tag.split(\"\")\n\nalert contents.join(\"\")"</script><div class='minibutton load' onclick='javascript: loadConsole(example35);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var close, contents, open, tag, _i, _ref,
   __slice = [].slice;
 
@@ -2640,23 +2640,23 @@ _ref = tag.split(""), open = _ref[0], contents = 3 <= _ref.length ? __slice.call
       to use with <tt>bind</tt>. Functions created with the fat arrow are able to access
       properties of the <tt>this</tt> where they're defined.
     </p>
-    <div class='code' ><pre class="idle">Account = (customer, cart) -&gt;
-  @customer = customer
-  @cart = cart
+    <div class='code' ><pre class="idle"><span class="FunctionName">Accoun<span class="FunctionName">t</span> </span>=<span class="FunctionArgument"> (customer, cart)</span> <span class="Storage">-&gt;</span><span class="Keyword">=</span> <span class="FunctionArgument">(customer, cart)</span> <span class="Storage">-&gt;</span>
+  <span class="Variable">@customer</span> <span class="Keyword">=</span> customer
+  <span class="Variable">@cart</span> <span class="Keyword">=</span> cart
 
-  $('.shopping_cart').bind 'click', (event) =&gt;
-    @customer.purchase @cart
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var Account;
+  $(<span class="String"><span class="String">'</span>.shopping_cart<span class="String">'</span></span>).bind <span class="String"><span class="String">'</span>click<span class="String">'</span></span>, <span class="FunctionArgument">(event)</span> <span class="Storage">=&gt;</span>
+    <span class="Variable">@customer</span>.purchase <span class="Variable">@cart</span>
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> Account;
 
 
 
-Account = function(customer, cart) {
-  var _this = this;
-  this.customer = customer;
-  this.cart = cart;
-  return $('.shopping_cart').bind('click', function(event) {
-    return _this.customer.purchase(_this.cart);
+<span class="FunctionName">Account</span> = <span class="Storage">function</span>(<span class="FunctionArgument">customer, cart</span>) {
+  <span class="Storage">var</span> _this <span class="Keyword">=</span> <span class="Variable">this</span>;
+  <span class="Variable">this</span>.customer <span class="Keyword">=</span> customer;
+  <span class="Variable">this</span>.cart <span class="Keyword">=</span> cart;
+  <span class="Keyword">return</span> <span class="Keyword">$</span>(<span class="String"><span class="String">'</span>.shopping_cart<span class="String">'</span></span>).bind(<span class="String"><span class="String">'</span>click<span class="String">'</span></span>, <span class="Storage">function</span>(<span class="LibraryClassType">event</span>) {
+    <span class="Keyword">return</span> _this.customer.purchase(_this.cart);
   });
 };
 </pre><script>window.example36 = "Account = (customer, cart) ->\n  @customer = customer\n  @cart = cart\n\n  $('.shopping_cart').bind 'click', (event) =>\n    @customer.purchase @cart"</script><div class='minibutton load' onclick='javascript: loadConsole(example36);'>load</div><br class='clear' /></div>
@@ -2678,21 +2678,21 @@ Account = function(customer, cart) {
       snippets of JavaScript within your CoffeeScript, you can
       use backticks to pass it straight through.
     </p>
-    <div class='code' ><pre class="idle">hi = `function() {
-  return [document.title, &quot;Hello JavaScript&quot;].join(&quot;: &quot;);
-}`
+    <div class='code' ><pre class="idle">hi <span class="Keyword">=</span> <span class="String"><span class="String">`</span>function() {</span>
+<span class="String">  return [document.title, &quot;Hello JavaScript&quot;].join(&quot;: &quot;);</span>
+<span class="String">}<span class="String">`</span></span>
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var hi;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> hi;
 
 
 
-hi = function() {
-  return [document.title, &quot;Hello JavaScript&quot;].join(&quot;: &quot;);
+<span class="FunctionName">hi</span> = <span class="Storage">function</span>() {
+  <span class="Keyword">return</span> [<span class="LibraryClassType">document</span>.<span class="LibraryConstant">title</span>, <span class="String"><span class="String">&quot;</span>Hello JavaScript<span class="String">&quot;</span></span>].<span class="LibraryFunction">join</span>(<span class="String"><span class="String">&quot;</span>: <span class="String">&quot;</span></span>);
 };
-</pre><script>window.example37 = "hi = `function() {\n  return [document.title, \"Hello JavaScript\"].join(\": \");\n}`\n\nalert hi()"</script><div class='minibutton load' onclick='javascript: loadConsole(example37);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+</pre><script>window.example37 = "hi = `function() {\n  return [document.title, \"Hello JavaScript\"].join(\": \");\n}`\n\nalert hi()"</script><div class='minibutton load' onclick='javascript: loadConsole(example37);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var hi;
 
 
@@ -2717,41 +2717,41 @@ hi = function() {
       values for each <b>when</b> clause. If any of the values match, the clause
       runs.
     </p>
-    <div class='code' ><pre class="idle">switch day
-  when &quot;Mon&quot; then go work
-  when &quot;Tue&quot; then go relax
-  when &quot;Thu&quot; then go iceFishing
-  when &quot;Fri&quot;, &quot;Sat&quot;
-    if day is bingoDay
+    <div class='code' ><pre class="idle"><span class="Keyword">switch</span> day
+  <span class="Keyword">when</span> <span class="String"><span class="String">&quot;</span>Mon<span class="String">&quot;</span></span> <span class="Keyword">then</span> go work
+  <span class="Keyword">when</span> <span class="String"><span class="String">&quot;</span>Tue<span class="String">&quot;</span></span> <span class="Keyword">then</span> go relax
+  <span class="Keyword">when</span> <span class="String"><span class="String">&quot;</span>Thu<span class="String">&quot;</span></span> <span class="Keyword">then</span> go iceFishing
+  <span class="Keyword">when</span> <span class="String"><span class="String">&quot;</span>Fri<span class="String">&quot;</span></span>, <span class="String"><span class="String">&quot;</span>Sat<span class="String">&quot;</span></span>
+    <span class="Keyword">if</span> day <span class="Keyword">is</span> bingoDay
       go bingo
       go dancing
-  when &quot;Sun&quot; then go church
-  else go work
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
+  <span class="Keyword">when</span> <span class="String"><span class="String">&quot;</span>Sun<span class="String">&quot;</span></span> <span class="Keyword">then</span> go church
+  <span class="Keyword">else</span> go work
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
 
 
-switch (day) {
-  case &quot;Mon&quot;:
-    go(work);
-    break;
-  case &quot;Tue&quot;:
-    go(relax);
-    break;
-  case &quot;Thu&quot;:
-    go(iceFishing);
-    break;
-  case &quot;Fri&quot;:
-  case &quot;Sat&quot;:
-    if (day === bingoDay) {
-      go(bingo);
-      go(dancing);
+<span class="Keyword">switch</span> (day) {
+  <span class="Keyword">case</span> <span class="String"><span class="String">&quot;</span>Mon<span class="String">&quot;</span></span>:
+    <span class="LibraryFunction">go</span>(work);
+    <span class="Keyword">break</span>;
+  <span class="Keyword">case</span> <span class="String"><span class="String">&quot;</span>Tue<span class="String">&quot;</span></span>:
+    <span class="LibraryFunction">go</span>(relax);
+    <span class="Keyword">break</span>;
+  <span class="Keyword">case</span> <span class="String"><span class="String">&quot;</span>Thu<span class="String">&quot;</span></span>:
+    <span class="LibraryFunction">go</span>(iceFishing);
+    <span class="Keyword">break</span>;
+  <span class="Keyword">case</span> <span class="String"><span class="String">&quot;</span>Fri<span class="String">&quot;</span></span>:
+  <span class="Keyword">case</span> <span class="String"><span class="String">&quot;</span>Sat<span class="String">&quot;</span></span>:
+    <span class="Keyword">if</span> (day <span class="Keyword">===</span> bingoDay) {
+      <span class="LibraryFunction">go</span>(bingo);
+      <span class="LibraryFunction">go</span>(dancing);
     }
-    break;
-  case &quot;Sun&quot;:
-    go(church);
-    break;
-  default:
-    go(work);
+    <span class="Keyword">break</span>;
+  <span class="Keyword">case</span> <span class="String"><span class="String">&quot;</span>Sun<span class="String">&quot;</span></span>:
+    <span class="LibraryFunction">go</span>(church);
+    <span class="Keyword">break</span>;
+  <span class="Keyword">default</span>:
+    <span class="LibraryFunction">go</span>(work);
 }
 </pre><script>window.example38 = "switch day\n  when \"Mon\" then go work\n  when \"Tue\" then go relax\n  when \"Thu\" then go iceFishing\n  when \"Fri\", \"Sat\"\n    if day is bingoDay\n      go bingo\n      go dancing\n  when \"Sun\" then go church\n  else go work"</script><div class='minibutton load' onclick='javascript: loadConsole(example38);'>load</div><br class='clear' /></div>
 
@@ -2761,26 +2761,26 @@ switch (day) {
       Try/catch statements are just about the same as JavaScript (although
       they work as expressions).
     </p>
-    <div class='code' ><pre class="idle">try
+    <div class='code' ><pre class="idle"><span class="Keyword">try</span>
   allHellBreaksLoose()
   catsAndDogsLivingTogether()
-catch error
+<span class="Keyword">catch</span> error
   print error
-finally
+<span class="Keyword">finally</span>
   cleanUp()
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var error;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> error;
 
 
 
-try {
+<span class="Keyword">try</span> {
   allHellBreaksLoose();
   catsAndDogsLivingTogether();
-} catch (_error) {
-  error = _error;
-  print(error);
-} finally {
+} <span class="Keyword">catch</span> (_error) {
+  error <span class="Keyword">=</span> _error;
+  <span class="LibraryFunction">print</span>(error);
+} <span class="Keyword">finally</span> {
   cleanUp();
 }
 </pre><script>window.example39 = "try\n  allHellBreaksLoose()\n  catsAndDogsLivingTogether()\ncatch error\n  print error\nfinally\n  cleanUp()\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example39);'>load</div><br class='clear' /></div>
@@ -2793,20 +2793,20 @@ try {
       from Python &mdash; making it easy to test if a value falls within a
       certain range.
     </p>
-    <div class='code' ><pre class="idle">cholesterol = 127
+    <div class='code' ><pre class="idle">cholesterol <span class="Keyword">=</span> <span class="Number">127</span>
 
-healthy = 200 &gt; cholesterol &gt; 60
-
-
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var cholesterol, healthy;
+healthy <span class="Keyword">=</span> <span class="Number">200</span> <span class="Keyword">&gt;</span> cholesterol <span class="Keyword">&gt;</span> <span class="Number">60</span>
 
 
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> cholesterol, healthy;
 
-cholesterol = 127;
 
-healthy = (200 &gt; cholesterol &amp;&amp; cholesterol &gt; 60);
-</pre><script>window.example40 = "cholesterol = 127\n\nhealthy = 200 > cholesterol > 60\n\nalert healthy"</script><div class='minibutton load' onclick='javascript: loadConsole(example40);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+
+cholesterol <span class="Keyword">=</span> <span class="Number">127</span>;
+
+healthy <span class="Keyword">=</span> (<span class="Number">200</span> <span class="Keyword">&gt;</span> cholesterol <span class="Keyword">&amp;</span><span class="Keyword">&amp;</span> cholesterol <span class="Keyword">&gt;</span> <span class="Number">60</span>);
+</pre><script>window.example40 = "cholesterol = 127\n\nhealthy = 200 > cholesterol > 60\n\nalert healthy"</script><div class='minibutton load' onclick='javascript: loadConsole(example40);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var cholesterol, healthy;
 
 
@@ -2823,26 +2823,26 @@ healthy = (200 > cholesterol && cholesterol > 60);
       strings allow for interpolated values, using <tt>#{ ... }</tt>,
       and single-quoted strings are literal.
     </p>
-    <div class='code' ><pre class="idle">author = &quot;Wittgenstein&quot;
-quote  = &quot;A picture is a fact. -- #{ author }&quot;
+    <div class='code' ><pre class="idle">author <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Wittgenstein<span class="String">&quot;</span></span>
+quote  <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>A picture is a fact. -- <span class="String"><span class="String">#{</span> author <span class="String">}</span></span><span class="String">&quot;</span></span>
 
-sentence = &quot;#{ 22 / 7 } is a decent approximation of π&quot;
-
-
+sentence <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span> <span class="Number">22</span> <span class="Keyword">/</span> <span class="Number">7</span> <span class="String">}</span></span> is a decent approximation of π<span class="String">&quot;</span></span>
 
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var author, quote, sentence;
+
+
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> author, quote, sentence;
 
 
 
-author = &quot;Wittgenstein&quot;;
+author <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Wittgenstein<span class="String">&quot;</span></span>;
 
-quote = &quot;A picture is a fact. -- &quot; + author;
+quote <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>A picture is a fact. -- <span class="String">&quot;</span></span> <span class="Keyword">+</span> author;
 
-sentence = &quot;&quot; + (22 / 7) + &quot; is a decent approximation of π&quot;;
-</pre><script>window.example41 = "author = \"Wittgenstein\"\nquote  = \"A picture is a fact. -- #{ author }\"\n\nsentence = \"#{ 22 / 7 } is a decent approximation of π\"\n\nalert sentence"</script><div class='minibutton load' onclick='javascript: loadConsole(example41);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+sentence <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> (<span class="Number">22</span> / <span class="Number">7</span>) <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span> is a decent approximation of π<span class="String">&quot;</span></span>;
+</pre><script>window.example41 = "author = \"Wittgenstein\"\nquote  = \"A picture is a fact. -- #{ author }\"\n\nsentence = \"#{ 22 / 7 } is a decent approximation of π\"\n\nalert sentence"</script><div class='minibutton load' onclick='javascript: loadConsole(example41);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var author, quote, sentence;
 
 
@@ -2856,21 +2856,21 @@ sentence = "" + (22 / 7) + " is a decent approximation of π";
     <p>
       Multiline strings are allowed in CoffeeScript.
     </p>
-    <div class='code' ><pre class="idle">mobyDick = &quot;Call me Ishmael. Some years ago --
- never mind how long precisely -- having little
- or no money in my purse, and nothing particular
- to interest me on shore, I thought I would sail
- about a little and see the watery part of the
- world...&quot;
+    <div class='code' ><pre class="idle">mobyDick <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Call me Ishmael. Some years ago --</span>
+<span class="String"> never mind how long precisely -- having little</span>
+<span class="String"> or no money in my purse, and nothing particular</span>
+<span class="String"> to interest me on shore, I thought I would sail</span>
+<span class="String"> about a little and see the watery part of the</span>
+<span class="String"> world...<span class="String">&quot;</span></span>
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var mobyDick;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> mobyDick;
 
 
 
-mobyDick = &quot;Call me Ishmael. Some years ago -- never mind how long precisely -- having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world...&quot;;
-</pre><script>window.example42 = "mobyDick = \"Call me Ishmael. Some years ago --\n never mind how long precisely -- having little\n or no money in my purse, and nothing particular\n to interest me on shore, I thought I would sail\n about a little and see the watery part of the\n world...\"\n\nalert mobyDick"</script><div class='minibutton load' onclick='javascript: loadConsole(example42);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+mobyDick <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>Call me Ishmael. Some years ago -- never mind how long precisely -- having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world...<span class="String">&quot;</span></span>;
+</pre><script>window.example42 = "mobyDick = \"Call me Ishmael. Some years ago --\n never mind how long precisely -- having little\n or no money in my purse, and nothing particular\n to interest me on shore, I thought I would sail\n about a little and see the watery part of the\n world...\"\n\nalert mobyDick"</script><div class='minibutton load' onclick='javascript: loadConsole(example42);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var mobyDick;
 
 
@@ -2883,19 +2883,19 @@ mobyDick = "Call me Ishmael. Some years ago -- never mind how long precisely -- 
       indentation level that begins the block is maintained throughout, so
       you can keep it all aligned with the body of your code.
     </p>
-    <div class='code' ><pre class="idle">html = &quot;&quot;&quot;
-       &lt;strong&gt;
-         cup of coffeescript
-       &lt;/strong&gt;
-       &quot;&quot;&quot;
+    <div class='code' ><pre class="idle">html <span class="Keyword">=</span> <span class="String"><span class="String">&quot;&quot;&quot;</span></span>
+<span class="String">       &lt;strong&gt;</span>
+<span class="String">         cup of coffeescript</span>
+<span class="String">       &lt;/strong&gt;</span>
+<span class="String">       <span class="String">&quot;&quot;&quot;</span></span>
        
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var html;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> html;
 
 
 
-html = &quot;&lt;strong&gt;\n  cup of coffeescript\n&lt;/strong&gt;&quot;;
-</pre><script>window.example43 = "html = \"\"\"\n       <strong>\n         cup of coffeescript\n       </strong>\n       \"\"\"\n\nalert html"</script><div class='minibutton load' onclick='javascript: loadConsole(example43);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.2a
+html <span class="Keyword">=</span> <span class="String"><span class="String">&quot;</span>&lt;strong&gt;<span class="UserDefinedConstant">\n</span>  cup of coffeescript<span class="UserDefinedConstant">\n</span>&lt;/strong&gt;<span class="String">&quot;</span></span>;
+</pre><script>window.example43 = "html = \"\"\"\n       <strong>\n         cup of coffeescript\n       </strong>\n       \"\"\"\n\nalert html"</script><div class='minibutton load' onclick='javascript: loadConsole(example43);'>load</div><div class='minibutton ok' onclick='javascript: // Generated by IcedCoffeeScript 1.6.3-f
 var html;
 
 
@@ -2911,18 +2911,18 @@ html = "<strong>\n  cup of coffeescript\n</strong>";
       the top of a file. Block comments, which mirror the syntax for block strings,
       are preserved in the generated code.
     </p>
-    <div class='code' ><pre class="idle">###
-SkinnyMochaHalfCaffScript Compiler v1.0
-Released under the MIT License
-###
+    <div class='code' ><pre class="idle"><span class="Comment"><span class="Comment">###</span></span>
+<span class="Comment">SkinnyMochaHalfCaffScript Compiler v1.0</span>
+<span class="Comment">Released under the MIT License</span>
+<span class="Comment"><span class="Comment">###</span></span>
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-/*
-SkinnyMochaHalfCaffScript Compiler v1.0
-Released under the MIT License
-*/
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
 
+<span class="Comment"><span class="Comment">/*</span></span>
+<span class="Comment">SkinnyMochaHalfCaffScript Compiler v1.0</span>
+<span class="Comment">Released under the MIT License</span>
+<span class="Comment"><span class="Comment">*/</span></span>
 
 </pre><script>window.example44 = "###\nSkinnyMochaHalfCaffScript Compiler v1.0\nReleased under the MIT License\n###\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example44);'>load</div><br class='clear' /></div>
 
@@ -2935,23 +2935,23 @@ Released under the MIT License
       block regexes are delimited by <tt>///</tt> and go a long way towards making complex
       regular expressions readable. To quote from the CoffeeScript source:
     </p>
-    <div class='code' ><pre class="idle">OPERATOR = /// ^ (
-  ?: [-=]&gt;             # function
-   | [-+*/%&lt;&gt;&amp;|^!?=]=  # compound assign / compare
-   | &gt;&gt;&gt;=?             # zero-fill right shift
-   | ([-+:])\1         # doubles
-   | ([&amp;|&lt;&gt;])\2=?      # logic / shift
-   | \?\.              # soak access
-   | \.{2,3}           # range or splat
-) ///
+    <div class='code' ><pre class="idle">OPERATOR <span class="Keyword">=</span> <span class="String">/// ^ (</span>
+<span class="String">  ?: [-=]&gt;             <span class="Comment"><span class="Comment">#</span> function</span></span>
+<span class="String">   | [-+*/%&lt;&gt;&amp;|^!?=]=  <span class="Comment"><span class="Comment">#</span> compound assign / compare</span></span>
+<span class="String">   | &gt;&gt;&gt;=?             <span class="Comment"><span class="Comment">#</span> zero-fill right shift</span></span>
+<span class="String">   | ([-+:])\1         <span class="Comment"><span class="Comment">#</span> doubles</span></span>
+<span class="String">   | ([&amp;|&lt;&gt;])\2=?      <span class="Comment"><span class="Comment">#</span> logic / shift</span></span>
+<span class="String">   | \?\.              <span class="Comment"><span class="Comment">#</span> soak access</span></span>
+<span class="String">   | \.{2,3}           <span class="Comment"><span class="Comment">#</span> range or splat</span></span>
+<span class="String">) ///</span>
 
 
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var OPERATOR;
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> OPERATOR;
 
 
 
-OPERATOR = /^(?:[-=]&gt;|[-+*\/%&lt;&gt;&amp;|^!?=]=|&gt;&gt;&gt;=?|([-+:])\1|([&amp;|&lt;&gt;])\2=?|\?\.|\.{2,3})/;
+OPERATOR <span class="Keyword">=</span><span class="String"> <span class="String">/</span>^(?:[-=]&gt;|[-+*<span class="UserDefinedConstant">\/</span>%&lt;&gt;&amp;|^!?=]=|&gt;&gt;&gt;=?|([-+:])<span class="UserDefinedConstant">\1</span>|([&amp;|&lt;&gt;])<span class="UserDefinedConstant">\2</span>=?|<span class="UserDefinedConstant">\?</span><span class="UserDefinedConstant">\.</span>|<span class="UserDefinedConstant">\.</span>{2,3})<span class="String">/</span></span>;
 </pre><script>window.example45 = "OPERATOR = /// ^ (\n  ?: [-=]>             # function\n   | [-+*/%<>&|^!?=]=  # compound assign / compare\n   | >>>=?             # zero-fill right shift\n   | ([-+:])\\1         # doubles\n   | ([&|<>])\\2=?      # logic / shift\n   | \\?\\.              # soak access\n   | \\.{2,3}           # range or splat\n) ///\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example45);'>load</div><br class='clear' /></div>
 
     <h2>
@@ -2977,30 +2977,30 @@ OPERATOR = /^(?:[-=]&gt;|[-+*\/%&lt;&gt;&amp;|^!?=]=|&gt;&gt;&gt;=?|([-+:])\1|([
       be made available in the <tt>options</tt> object. Here's a task that uses
       the Node.js API to rebuild CoffeeScript's parser:
     </p>
-    <div class='code' ><pre class="idle">fs = require 'fs'
+    <div class='code' ><pre class="idle">fs <span class="Keyword">=</span> <span class="LibraryFunction">require</span> <span class="String"><span class="String">'</span>fs<span class="String">'</span></span>
 
-option '-o', '--output [DIR]', 'directory for compiled code'
+option <span class="String"><span class="String">'</span>-o<span class="String">'</span></span>, <span class="String"><span class="String">'</span>--output [DIR]<span class="String">'</span></span>, <span class="String"><span class="String">'</span>directory for compiled code<span class="String">'</span></span>
 
-task 'build:parser', 'rebuild the Jison parser', (options) -&gt;
-  require 'jison'
-  code = require('./lib/grammar').parser.generate()
-  dir  = options.output or 'lib'
-  fs.writeFile &quot;#{dir}/parser.js&quot;, code
-</pre><pre class="idle">// Generated by IcedCoffeeScript 1.6.2a
-var fs;
+task <span class="String"><span class="String">'</span>build:parser<span class="String">'</span></span>, <span class="String"><span class="String">'</span>rebuild the Jison parser<span class="String">'</span></span>, <span class="FunctionArgument">(options)</span> <span class="Storage">-&gt;</span>
+  <span class="LibraryFunction">require</span> <span class="String"><span class="String">'</span>jison<span class="String">'</span></span>
+  code <span class="Keyword">=</span> <span class="LibraryFunction">require</span>(<span class="String"><span class="String">'</span>./lib/grammar<span class="String">'</span></span>).parser.generate()
+  dir  <span class="Keyword">=</span> options.output <span class="Keyword">or</span> <span class="String"><span class="String">'</span>lib<span class="String">'</span></span>
+  fs.writeFile <span class="String"><span class="String">&quot;</span><span class="String"><span class="String">#{</span>dir<span class="String">}</span></span>/parser.js<span class="String">&quot;</span></span>, code
+</pre><pre class="idle"><span class="Comment"><span class="Comment">//</span> Generated by IcedCoffeeScript 1.6.3-f</span>
+<span class="Storage">var</span> fs;
 
 
 
-fs = require('fs');
+fs <span class="Keyword">=</span> require(<span class="String"><span class="String">'</span>fs<span class="String">'</span></span>);
 
-option('-o', '--output [DIR]', 'directory for compiled code');
+option(<span class="String"><span class="String">'</span>-o<span class="String">'</span></span>, <span class="String"><span class="String">'</span>--output [DIR]<span class="String">'</span></span>, <span class="String"><span class="String">'</span>directory for compiled code<span class="String">'</span></span>);
 
-task('build:parser', 'rebuild the Jison parser', function(options) {
-  var code, dir;
-  require('jison');
-  code = require('./lib/grammar').parser.generate();
-  dir = options.output || 'lib';
-  return fs.writeFile(&quot;&quot; + dir + &quot;/parser.js&quot;, code);
+task(<span class="String"><span class="String">'</span>build:parser<span class="String">'</span></span>, <span class="String"><span class="String">'</span>rebuild the Jison parser<span class="String">'</span></span>, <span class="Storage">function</span>(options) {
+  <span class="Storage">var</span> code, dir;
+  require(<span class="String"><span class="String">'</span>jison<span class="String">'</span></span>);
+  code <span class="Keyword">=</span> require(<span class="String"><span class="String">'</span>./lib/grammar<span class="String">'</span></span>).parser.generate();
+  dir <span class="Keyword">=</span> options.output <span class="Keyword">||</span> <span class="String"><span class="String">'</span>lib<span class="String">'</span></span>;
+  <span class="Keyword">return</span> fs.writeFile(<span class="String"><span class="String">&quot;</span><span class="String">&quot;</span></span> <span class="Keyword">+</span> dir <span class="Keyword">+</span> <span class="String"><span class="String">&quot;</span>/parser.js<span class="String">&quot;</span></span>, code);
 });
 </pre><script>window.example46 = "fs = require 'fs'\n\noption '-o', '--output [DIR]', 'directory for compiled code'\n\ntask 'build:parser', 'rebuild the Jison parser', (options) ->\n  require 'jison'\n  code = require('./lib/grammar').parser.generate()\n  dir  = options.output or 'lib'\n  fs.writeFile \"#{dir}/parser.js\", code"</script><div class='minibutton load' onclick='javascript: loadConsole(example46);'>load</div><br class='clear' /></div>
     <p>

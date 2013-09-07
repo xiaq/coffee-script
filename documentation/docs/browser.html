@@ -49,16 +49,6 @@
               </a>
             
               
-              <a class="source" href="iced.html">
-                iced.coffee
-              </a>
-            
-              
-              <a class="source" href="icedlib.html">
-                icedlib.coffee
-              </a>
-            
-              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -121,11 +111,13 @@
               <p>This <strong>Browser</strong> compatibility layer extends core CoffeeScript functions
 to make things work smoothly when compiling code directly in the browser.
 We add support for loading remote Coffee scripts via <strong>XHR</strong>, and
-<code>text/coffeescript</code> script tags, source maps via data-URLs, and so on.</p>
+<code>text/coffeescript</code> script tags, source maps via data-URLs, and so on.
+</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>CoffeeScript = require <span class="string">'./coffee-script'</span>
+            <div class="content"><div class='highlight'><pre>
+CoffeeScript = require <span class="string">'./coffee-script'</span>
 CoffeeScript.require = require
 compile = CoffeeScript.compile</pre></div></div>
             
@@ -138,7 +130,8 @@ compile = CoffeeScript.compile</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Use standard JavaScript <code>eval</code> to eval code.</p>
+              <p>Use standard JavaScript <code>eval</code> to eval code.
+</p>
 
             </div>
             
@@ -155,7 +148,8 @@ compile = CoffeeScript.compile</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Running code does not provide access to this scope.</p>
+              <p>Running code does not provide access to this scope.
+</p>
 
             </div>
             
@@ -173,7 +167,8 @@ compile = CoffeeScript.compile</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>If we&#39;re not in a browser environment, we&#39;re finished with the public API.</p>
+              <p>If we&#39;re not in a browser environment, we&#39;re finished with the public API.
+</p>
 
             </div>
             
@@ -190,7 +185,8 @@ compile = CoffeeScript.compile</pre></div></div>
               </div>
               <p>Include source maps where possible. If we&#39;ve got a base64 encoder, a
 JSON serializer, and tools for escaping unicode characters, we&#39;re good to go.
-Ported from <a href="https://developer.mozilla.org/en-US/docs/DOM/window.btoa">https://developer.mozilla.org/en-US/docs/DOM/window.btoa</a></p>
+Ported from <a href="https://developer.mozilla.org/en-US/docs/DOM/window.btoa">https://developer.mozilla.org/en-US/docs/DOM/window.btoa</a>
+</p>
 
             </div>
             
@@ -210,7 +206,8 @@ Ported from <a href="https://developer.mozilla.org/en-US/docs/DOM/window.btoa">h
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Load a remote script from the current domain via XHR.</p>
+              <p>Load a remote script from the current domain via XHR.
+</p>
 
             </div>
             
@@ -242,7 +239,8 @@ Ported from <a href="https://developer.mozilla.org/en-US/docs/DOM/window.btoa">h
               </div>
               <p>Activate CoffeeScript in the browser by having it compile and evaluate
 all script tags with a content-type of <code>text/coffeescript</code>.
-This happens on page load.</p>
+This happens on page load.
+</p>
 
             </div>
             
@@ -274,7 +272,8 @@ This happens on page load.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Listen for window load, both in decent browsers and in IE.</p>
+              <p>Listen for window load, both in decent browsers and in IE.
+</p>
 
             </div>
             

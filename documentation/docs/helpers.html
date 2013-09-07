@@ -49,16 +49,6 @@
               </a>
             
               
-              <a class="source" href="iced.html">
-                iced.coffee
-              </a>
-            
-              
-              <a class="source" href="icedlib.html">
-                icedlib.coffee
-              </a>
-            
-              
               <a class="source" href="index.html">
                 index.coffee
               </a>
@@ -120,13 +110,10 @@
               </div>
               <p>This file contains the common helper functions that we&#39;d like to share among
 the <strong>Lexer</strong>, <strong>Rewriter</strong>, and the <strong>Nodes</strong>. Merge objects, flatten
-arrays, count characters, that sort of thing.</p>
-<p>Peek at the beginning of a given string to see if it matches a sequence.</p>
+arrays, count characters, that sort of thing.
+</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">starts</span></span> = (string, literal, start) -&gt;
-  literal <span class="keyword">is</span> string.substr start, literal.length</pre></div></div>
             
         </li>
         
@@ -137,13 +124,13 @@ arrays, count characters, that sort of thing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Peek at the end of a given string to see if it matches a sequence.</p>
+              <p>Peek at the beginning of a given string to see if it matches a sequence.
+</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">ends</span></span> = (string, literal, back) -&gt;
-  len = literal.length
-  literal <span class="keyword">is</span> string.substr string.length - len - (back <span class="keyword">or</span> <span class="number">0</span>), len</pre></div></div>
+            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">starts</span></span> = (string, literal, start) -&gt;
+  literal <span class="keyword">is</span> string.substr start, literal.length</pre></div></div>
             
         </li>
         
@@ -154,11 +141,14 @@ arrays, count characters, that sort of thing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Repeat a string <code>n</code> times.</p>
+              <p>Peek at the end of a given string to see if it matches a sequence.
+</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>exports.repeat = <span class="function"><span class="title">repeat</span></span> = (str, n) -&gt;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">ends</span></span> = (string, literal, back) -&gt;
+  len = literal.length
+  literal <span class="keyword">is</span> string.substr string.length - len - (back <span class="keyword">or</span> <span class="number">0</span>), len</pre></div></div>
             
         </li>
         
@@ -169,7 +159,24 @@ arrays, count characters, that sort of thing.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Use clever algorithm to have O(log(n)) string concatenation operations.</p>
+              <p>Repeat a string <code>n</code> times.
+</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.repeat = <span class="function"><span class="title">repeat</span></span> = (str, n) -&gt;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Use clever algorithm to have O(log(n)) string concatenation operations.
+</p>
 
             </div>
             
@@ -183,13 +190,14 @@ arrays, count characters, that sort of thing.</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Trim out all falsy values from an array.</p>
+              <p>Trim out all falsy values from an array.
+</p>
 
             </div>
             
@@ -199,13 +207,14 @@ arrays, count characters, that sort of thing.</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Count the number of occurrences of a string in a string.</p>
+              <p>Count the number of occurrences of a string in a string.
+</p>
 
             </div>
             
@@ -218,15 +227,16 @@ arrays, count characters, that sort of thing.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Merge objects, returning a fresh copy with attributes from both sides.
 Used every time <code>Base#compile</code> is called, to allow properties in the
-options hash to propagate down the tree without polluting other branches.</p>
+options hash to propagate down the tree without polluting other branches.
+</p>
 
             </div>
             
@@ -236,13 +246,14 @@ options hash to propagate down the tree without polluting other branches.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Extend a source object with the properties of another object (shallow copy).</p>
+              <p>Extend a source object with the properties of another object (shallow copy).
+</p>
 
             </div>
             
@@ -254,14 +265,15 @@ options hash to propagate down the tree without polluting other branches.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Return a flattened version of an array.
-Handy for getting a list of <code>children</code> from the nodes.</p>
+Handy for getting a list of <code>children</code> from the nodes.
+</p>
 
             </div>
             
@@ -277,14 +289,15 @@ Handy for getting a list of <code>children</code> from the nodes.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Delete a key from an object, returning the value. Useful when a node is
-looking for a particular method in an options hash.</p>
+looking for a particular method in an options hash.
+</p>
 
             </div>
             
@@ -296,34 +309,18 @@ looking for a particular method in an options hash.</p>
         </li>
         
         
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>Gets the last item of an array(-like) object.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>exports.last = <span class="function"><span class="title">last</span></span> = (array, back) -&gt; array[array.length - (back <span class="keyword">or</span> <span class="number">0</span>) - <span class="number">1</span>]</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Typical Array::some</p>
+              <p>Gets the last item of an array(-like) object.
+</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>exports.some = Array::some ? (fn) -&gt;
-  <span class="keyword">return</span> <span class="literal">true</span> <span class="keyword">for</span> e <span class="keyword">in</span> <span class="keyword">this</span> <span class="keyword">when</span> fn e
-  <span class="literal">false</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>exports.last = <span class="function"><span class="title">last</span></span> = (array, back) -&gt; array[array.length - (back <span class="keyword">or</span> <span class="number">0</span>) - <span class="number">1</span>]</pre></div></div>
             
         </li>
         
@@ -334,9 +331,28 @@ looking for a particular method in an options hash.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
+              <p>Typical Array::some
+</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.some = Array::some ? (fn) -&gt;
+  <span class="keyword">return</span> <span class="literal">true</span> <span class="keyword">for</span> e <span class="keyword">in</span> <span class="keyword">this</span> <span class="keyword">when</span> fn e
+  <span class="literal">false</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
               <p>Simple function for inverting Literate CoffeeScript code by putting the
 documentation in comments, producing a string of CoffeeScript code that
-can be compiled &quot;normally&quot;.</p>
+can be compiled &quot;normally&quot;.
+</p>
 
             </div>
             
@@ -354,14 +370,15 @@ can be compiled &quot;normally&quot;.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Merge two jison-style location data objects together.
-If <code>last</code> is not provided, this will simply return <code>first</code>.</p>
+If <code>last</code> is not provided, this will simply return <code>first</code>.
+</p>
 
             </div>
             
@@ -377,15 +394,16 @@ If <code>last</code> is not provided, this will simply return <code>first</code>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>This returns a function which takes an object as a parameter, and if that
 object is an AST node, updates that object&#39;s locationData.
-The object is returned either way.</p>
+The object is returned either way.
+</p>
 
             </div>
             
@@ -399,14 +417,15 @@ The object is returned either way.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Convert jison location data to a string.
-<code>obj</code> can be a token, or a locationData.</p>
+<code>obj</code> can be a token, or a locationData.
+</p>
 
             </div>
             
@@ -423,13 +442,14 @@ The object is returned either way.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>A <code>.coffee.md</code> compatible version of <code>basename</code>, that returns the file sans-extension.</p>
+              <p>A <code>.coffee.md</code> compatible version of <code>basename</code>, that returns the file sans-extension.
+</p>
 
             </div>
             
@@ -446,32 +466,18 @@ The object is returned either way.</p>
         </li>
         
         
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>Determine if a filename represents a (Iced)?CoffeeScript file.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">isCoffee</span></span> = (file) -&gt; <span class="regexp">/\.((lit)?coffee|coffee\.md|\.iced)$/</span>.test file</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Determine if a filename represents a Literate CoffeeScript file.</p>
+              <p>Determine if a filename represents a CoffeeScript file.
+</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">isLiterate</span></span> = (file) -&gt; <span class="regexp">/\.(litcoffee|coffee\.md)$/</span>.test file</pre></div></div>
+            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">isCoffee</span></span> = (file) -&gt; <span class="regexp">/\.((lit)?coffee|coffee\.md)$/</span>.test file</pre></div></div>
             
         </li>
         
@@ -482,8 +488,25 @@ The object is returned either way.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
+              <p>Determine if a filename represents a Literate CoffeeScript file.
+</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.<span class="function"><span class="title">isLiterate</span></span> = (file) -&gt; <span class="regexp">/\.(litcoffee|coffee\.md)$/</span>.test file</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
               <p>Throws a SyntaxError with a source file location data attached to it in a
-property called <code>location</code>.</p>
+property called <code>location</code>.
+</p>
 
             </div>
             
@@ -497,15 +520,17 @@ property called <code>location</code>.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Creates a nice error message like, following the &quot;standard&quot; format</p>
+              <p>Creates a nice error message like, following the &quot;standard&quot; format
+</p>
 <p><filename>:<line>:<col>: <message> plus the line with the error and a marker
-showing where the error is.</p>
+showing where the error is.
+</p>
 
             </div>
             
@@ -519,13 +544,14 @@ showing where the error is.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Show only the first line on multi-line errors.</p>
+              <p>Show only the first line on multi-line errors.
+</p>
 
             </div>
             
@@ -546,18 +572,20 @@ showing where the error is.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Uncomment to add stacktrace.
-message += &quot;\n#{error.stack}&quot;</p>
+message += &quot;\n#{error.stack}&quot;
+</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  message</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+  message</pre></div></div>
             
         </li>
         

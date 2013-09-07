@@ -88,15 +88,17 @@ task 'build:parser', 'rebuild the Jison parser (run build first)', ->
 task 'build:ultraviolet', 'build and install the Ultraviolet syntax highlighter', ->
   exec 'plist2syntax ../coffee-script-tmbundle/Syntaxes/CoffeeScript.tmLanguage', (err) ->
     throw err if err
-    exec 'sudo mv coffeescript.yaml /usr/local/lib/ruby/gems/1.8/gems/ultraviolet-0.10.2/syntax/coffeescript.syntax'
-
+    exec "sed -e 's/while/while|await|defer/' < coffeescript.yaml > ics.yaml", (err) ->
+      throw err if err
+      exec 'sudo cp ics.yaml /var/lib/gems/1.9.1/gems/textpow-1.3.1/lib/textpow/syntax/source.coffeescript.syntax'
 
 jsGenLib = (name) ->
   """
-      require['./#{name}'] = new function() {
-        var exports = this;
+      require['./#{name}'] = (function() {
+        var exports = {}, module = { exports : exports };
         #{fs.readFileSync "lib/coffee-script/#{name}.js"}
-      };
+        return module.exports;
+      })();
   """
     
 jsMinify = (code) ->
@@ -262,20 +264,15 @@ runTests = (CoffeeScript) ->
     log "failed #{failures.length} and #{message}", red
     for fail in failures
       {error, filename, description, source}  = fail
-      jsFilename         = filename.replace(/\.coffee$/,'.js')
-      match              = error.stack?.match(new RegExp(fail.file+":(\\d+):(\\d+)"))
-      match              = error.stack?.match(/on line (\d+):/) unless match
-      [match, line, col] = match if match
       console.log ''
       log "  #{description}", red if description
       log "  #{error.stack}", red
-      log "  #{jsFilename}: line #{line ? 'unknown'}, column #{col ? 'unknown'}", red
       console.log "  #{source}" if source
     return
 
   # Run every test in the `test` folder, recording failures.
   files = fs.readdirSync 'test'
-  for file in files when file.match /\.(lit)?coffee$/i
+  for file in files when helpers.isCoffee file
     console.log "XX #{file}"
     literate = helpers.isLiterate file
     currentFile = filename = path.join 'test', file

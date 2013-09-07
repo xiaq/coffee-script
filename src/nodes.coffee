@@ -36,8 +36,8 @@ exports.CodeFragment = class CodeFragment
     @locationData = parent?.locationData
     @type = parent?.constructor?.name or 'unknown'
 
-  toString: () ->
-    "#{@code}#{[if @locationData then ": " + locationDataToString(@locationData)]}"
+  toString:   ->
+    "#{@code}#{if @locationData then ": " + locationDataToString(@locationData) else ''}"
 
 # Convert an array of CodeFragments into a string.
 fragmentsToText = (fragments) ->
@@ -334,7 +334,8 @@ exports.Base = class Base
   # For this node and all descendents, set the location data to `locationData`
   # if the location data is not already set.
   updateLocationDataIfMissing: (locationData) ->
-    @locationData or= locationData
+    return this if @locationData
+    @locationData = locationData
 
     @eachChild (child) ->
       child.updateLocationDataIfMissing locationData
@@ -503,7 +504,7 @@ exports.Block = class Block extends Base
     if i
       rest = @expressions.splice i, 9e9
       [spaced,    @spaced] = [@spaced, no]
-      [fragments, @spaced] = [(@compileNode o), spaced]
+      [fragments, @spaced] = [@compileNode(o), spaced]
       @expressions = rest
     post = @compileNode o
     {scope} = o
@@ -514,10 +515,10 @@ exports.Block = class Block extends Base
         fragments.push @makeCode '\n' if i
         fragments.push @makeCode "#{@tab}var "
         if declars
-          fragments.push @makeCode(scope.declaredVariables().join ', ')
+          fragments.push @makeCode scope.declaredVariables().join(', ')
         if assigns
           fragments.push @makeCode ",\n#{@tab + TAB}" if declars
-          fragments.push @makeCode (scope.assignedVariables().join ",\n#{@tab + TAB}")
+          fragments.push @makeCode scope.assignedVariables().join(",\n#{@tab + TAB}")
         fragments.push @makeCode ";\n#{if @spaced then '\n' else ''}"
       else if fragments.length and post.length
         fragments.push @makeCode "\n"
@@ -773,9 +774,9 @@ exports.Return = class Return extends Base
 
     answer = []
     # TODO: If we call expression.compile() here twice, we'll sometimes get back different results!
-    answer.push @makeCode(@tab + "return#{[" " if @expression]}")
+    answer.push @makeCode @tab + "return#{if @expression then " " else ""}"
     if @expression
-      answer = answer.concat @expression.compileToFragments(o, LEVEL_PAREN)
+      answer = answer.concat @expression.compileToFragments o, LEVEL_PAREN
     answer.push @makeCode ";"
     return answer
 
@@ -898,6 +899,15 @@ exports.Value = class Value extends Base
       suffix = @properties.pop()
     return new Slot i, this, suffix
 
+  icedToSlotAccess : () ->
+    # See bug #78 in the ICS repository. We're concerned about this case:
+    #    await foo defer { @x }
+    # In this situation, `@x` will be represented as a value with the `this`
+    # property set to `true`, and properties[0] will have the name of the
+    # dictionary key that's needed (already as an `Access` instance)
+    if @this then @properties[0]
+    else new Access @
+
 #### Comment
 
 # CoffeeScript passes through block comments as JavaScript block comments
@@ -910,9 +920,9 @@ exports.Comment = class Comment extends Base
   makeReturn:      THIS
 
   compileNode: (o, level) ->
-    code = "/*#{multident @comment, @tab}#{if '\n' in @comment then "\n#{@tab}" else ''}*/\n"
+    code = "/*#{multident @comment, @tab}#{if '\n' in @comment then "\n#{@tab}" else ''}*/"
     code = o.indent + code if (level or o.level) is LEVEL_TOP
-    [@makeCode code]
+    [@makeCode("\n"), @makeCode(code)]
 
 #### Call
 
@@ -1008,7 +1018,7 @@ exports.Call = class Call extends Base
       fragments.push @makeCode preface
     else
       if @isNew then fragments.push @makeCode 'new '
-      fragments.push (@variable.compileToFragments(o, LEVEL_ACCESS))...
+      fragments.push @variable.compileToFragments(o, LEVEL_ACCESS)...
       fragments.push @makeCode "("
     fragments.push compiledArgs...
     fragments.push @makeCode ")"
@@ -1103,7 +1113,7 @@ exports.Index = class Index extends Base
   children: ['index']
 
   compileToFragments: (o) ->
-    [].concat @makeCode("["), (@index.compileToFragments o, LEVEL_PAREN), @makeCode("]")
+    [].concat @makeCode("["), @index.compileToFragments(o, LEVEL_PAREN), @makeCode("]")
 
   isComplex: ->
     @index.isComplex()
@@ -1282,9 +1292,10 @@ exports.Obj = class Obj extends Base
   icedToSlot : (i) ->
     for prop in @properties
       if prop instanceof Assign
-        (prop.value.icedToSlot i).addAccess prop.variable
+        (prop.value.icedToSlot i).addAccess prop.variable.icedToSlotAccess()
       else if prop instanceof Value
-        (prop.icedToSlot i).addAccess prop
+        access = prop.icedToSlotAccess()
+        (prop.icedToSlot i).addAccess access
 
 #### Arr
 
@@ -1308,7 +1319,7 @@ exports.Arr = class Arr extends Base
       if index
         answer.push @makeCode ", "
       answer.push fragments...
-    if (fragmentsToText answer).indexOf('\n') >= 0
+    if fragmentsToText(answer).indexOf('\n') >= 0
       answer.unshift @makeCode "[\n#{o.indent}"
       answer.push @makeCode "\n#{@tab}]"
     else
@@ -1388,7 +1399,7 @@ exports.Class = class Class extends Base
             if func.bound
               func.context = name
           else
-            assign.variable = new Value(new Literal(name), [(new Access new Literal 'prototype'), new Access base ])
+            assign.variable = new Value(new Literal(name), [(new Access new Literal 'prototype'), new Access base])
             if func instanceof Code and func.bound
               @boundFuncs.push base
               func.bound = no
@@ -1616,7 +1627,7 @@ exports.Assign = class Assign extends Base
            left.base.value != "this" and not o.scope.check left.base.value
       @variable.error "the variable \"#{left.base.value}\" can't be assigned with #{@context} because it has not been declared before"
     if "?" in @context then o.isExistentialEquals = true
-    new Op(@context[...-1], left, new Assign(right, @value, '=') ).compileToFragments o
+    new Op(@context[...-1], left, new Assign(right, @value, '=')).compileToFragments o
 
   # Compile the assignment from an array splice literal, using JavaScript's
   # `Array#splice` method.
@@ -2127,7 +2138,7 @@ exports.Op = class Op extends Base
     not @second
 
   isComplex: ->
-    not (@isUnary() and (@operator in ['+', '-'])) or @first.isComplex()
+    not (@isUnary() and @operator in ['+', '-']) or @first.isComplex()
 
   # Am I capable of
   # [Python-style comparison chaining](http://docs.python.org/reference/expressions.html#notin)?
@@ -2231,7 +2242,7 @@ exports.Op = class Op extends Base
     plusMinus = op in ['+', '-']
     parts.push [@makeCode(' ')] if op in ['new', 'typeof', 'delete'] or
                       plusMinus and @first instanceof Op and @first.operator is op
-    if (plusMinus && @first instanceof Op) or (op is 'new' and @first.isStatement o)
+    if (plusMinus and @first instanceof Op) or (op is 'new' and @first.isStatement o)
       @first = new Parens @first
     parts.push @first.compileToFragments o, LEVEL_OP
     parts.reverse() if @flip
@@ -2274,7 +2285,7 @@ exports.In = class In extends Base
     [sub, ref] = @object.cache o, LEVEL_LIST
     fragments = [].concat @makeCode(utility('indexOf') + ".call("), @array.compileToFragments(o, LEVEL_LIST),
       @makeCode(", "), ref, @makeCode(") " + if @negated then '< 0' else '>= 0')
-    return fragments if (fragmentsToText sub) is (fragmentsToText ref)
+    return fragments if fragmentsToText(sub) is fragmentsToText(ref)
     fragments = sub.concat @makeCode(', '), fragments
     if o.level < LEVEL_LIST then fragments else @wrapInBraces fragments
 
@@ -2311,8 +2322,16 @@ exports.Defer = class Defer extends Base
     @slots = flatten (a.icedToSlot i for a,i in args)
     @params = []
     @vars = []
+    @custom = false
 
   children : ['slots' ]
+
+  # Most deferrals are not "custom", meaning they assume
+  # __iced_deferrals as a `this` object.  Rendezvous and others
+  # are custom, since there is an object that's acting as `this`
+  setCustom : () ->
+    @custom = true
+    @
 
   # Count hidden parameters up from 1.  Make a note of which parameter
   # we passed out.  Return a copy of that parameter, in case we mutate
@@ -2368,7 +2387,7 @@ exports.Defer = class Defer extends Base
       else
         a.add new Index i_lit
         if s.access
-          a.add new Access s.access
+          a.add s.access
         if not s.suffix # case 1
           lit = s.value.compile o, LEVEL_TOP
           if lit is "_"
@@ -2396,10 +2415,17 @@ exports.Defer = class Defer extends Base
     call = new Call outer_fn, args
 
   transform : (o) ->
-    # fn is 'Deferrals.defer'
-    fn = new Value new Literal iced.const.deferrals
     meth = new Value new Literal iced.const.defer_method
-    fn.add new Access meth
+
+    # In the custom case, there's a foo.defer, and we're going to 
+    # use the `foo` as the this object.  Otherwise, we'll
+    # use the `__iced_deferrals` in the current scope as the `this` object
+    if @custom
+      fn = meth
+    else
+      fn = new Value new Literal iced.const.deferrals
+      # now, fn is '__iced_deferrals.defer'
+      fn.add new Access meth
 
     # There is one argument to Deferrals.defer(), which is a dictionary.
     # The dictionary currently only has one slot: assign_fn, which
@@ -2414,6 +2440,11 @@ exports.Defer = class Defer extends Base
     ln_rhs = new Value new Literal @lineno
     ln_assign = new Assign ln_lhs, ln_rhs, "object"
     assignments.push ln_assign
+    if @custom
+      context_lhs = new Value new Literal iced.const.context
+      context_rhs = new Value new Literal iced.const.deferrals
+      context_assign = new Assign context_lhs, context_rhs, "object"
+      assignments.push context_assign
     o = new Obj assignments
 
     # Return the final call
@@ -2456,7 +2487,10 @@ exports.Await = class Await extends Base
 
     if o.filename?
       fn_lhs = new Value new Literal iced.const.filename
-      fn_rhs = new Value new Literal '"' + o.filename + '"'
+
+      # Replace '\' with '\\' to make the emitted code safe for Windows
+      # paths.  See Issue #84. Thanks to @Deathspike for this patch
+      fn_rhs = new Value new Literal '"' + o.filename.replace('\\', '\\\\') + '"'
       fn_assignment = new Assign fn_lhs, fn_rhs, "object"
       assignments.push fn_assignment
 
@@ -2615,7 +2649,8 @@ exports.Try = class Try extends Base
     else
       []
 
-    ensurePart = if @ensure then ([].concat @makeCode(" finally {\n"), (@ensure.compileToFragments o, LEVEL_TOP), @makeCode("\n#{@tab}}")) else []
+    ensurePart = if @ensure then ([].concat @makeCode(" finally {\n"), @ensure.compileToFragments(o, LEVEL_TOP),
+      @makeCode("\n#{@tab}}")) else []
 
     [].concat @makeCode("#{@tab}try {\n"),
       tryPart,
@@ -2637,7 +2672,7 @@ exports.Throw = class Throw extends Base
   makeReturn: THIS
 
   compileNode: (o) ->
-    [].concat @makeCode(@tab + "throw "), (@expression.compileToFragments o), @makeCode(";")
+    [].concat @makeCode(@tab + "throw "), @expression.compileToFragments(o), @makeCode(";")
 
 #### Existence
 
@@ -2711,6 +2746,7 @@ exports.For = class For extends While
     @pattern = @name instanceof Value
     @index.error 'indexes do not apply to range loops' if @range and @index
     @name.error 'cannot pattern match over range loops' if @range and @pattern
+    @index.error 'cannot use own with for-in' if @own and not @object
     @returns = false
 
   children: ['body', 'source', 'guard', 'step']
@@ -2935,7 +2971,7 @@ exports.Switch = class Switch extends Base
     idt1 = o.indent + TAB
     idt2 = o.indent = idt1 + TAB
     fragments = [].concat @makeCode(@tab + "switch ("),
-      (if @subject then @subject.compileToFragments(o, LEVEL_PAREN) else @makeCode("false")),
+      (if @subject then @subject.compileToFragments(o, LEVEL_PAREN) else @makeCode "false"),
       @makeCode(") {\n")
     for [conditions, block], i in @cases
       for cond in flatten [conditions]
@@ -2988,6 +3024,7 @@ exports.If = class If extends Base
     else
       @isChain  = elseBody instanceof If
       @elseBody = @ensureBlock elseBody
+      @elseBody.updateLocationDataIfMissing elseBody.locationData
     this
 
   # The **If** only compiles into a statement if either of its bodies needs

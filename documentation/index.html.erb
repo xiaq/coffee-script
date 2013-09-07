@@ -9,7 +9,7 @@
     js = File.read("documentation/js/#{file}.js")
     js.gsub!(/__iced_deferrals/, "__id");
     cshtml = Uv.parse(cs, 'xhtml', 'coffeescript', false, 'idle', false)
-    jshtml = Uv.parse(js, 'xhtml', 'javascript', false, 'idle', false)
+    jshtml = Uv.parse(js, 'xhtml', 'js', false, 'idle', false)
     append = executable  == true ? '' : "alert(#{executable});"
     if executable and executable != true
       cs.sub!(/(\S)\s*\Z/m, "\\1\n\nalert #{executable}")
@@ -183,7 +183,7 @@
 
     <p>
       <b>Latest Version:</b>
-      <a href="http://github.com/maxtaco/coffee-script/tarball/iced2">1.6.2b</a>
+      <a href="http://github.com/maxtaco/coffee-script/tarball/iced2">1.6.3-f</a>
     </p>
 
     <h2>
