@@ -30,6 +30,8 @@
   },
   "devDependencies": {
     "uglify-js":  "~2.2",
-    "jison":      ">=0.2.0"
+    "jison":      ">=0.2.0",
+    "eco" :       "*",
+    "highlight.js" : "*"
   }
 }

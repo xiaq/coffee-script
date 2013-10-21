@@ -1,64 +1,64 @@
-pre.idle .InheritedClass {
+pre.tomorrow .InheritedClass {
 }
-pre.idle .TypeName {
+pre.tomorrow .TypeName {
    color: #469df6;
 }
-pre.idle .Number {
+pre.tomorrow .Number {
 }
-pre.idle .LibraryVariable {
+pre.tomorrow .LibraryVariable {
    color: #469df6;
 }
-pre.idle .Storage {
+pre.tomorrow .Storage {
    color: #f29a70;
 }
-pre.idle .line-numbers {
+pre.tomorrow .line-numbers {
    background-color: #BAD6FD;
    color: #fff;
 }
-pre.idle {
+pre.tomorrow code {
    background-color: #5b4e3a;
    color: #fff;
 }
-pre.idle .StringInterpolation {
-   color: #990000;
+pre.tomorrow .subst {
+   color: #fb8548;
 }
-pre.idle .TagName {
+pre.tomorrow .TagName {
 }
-pre.idle .LibraryConstant {
+pre.tomorrow .LibraryConstant {
    color: #469df6;
 }
-pre.idle .FunctionArgument {
+pre.tomorrow .FunctionArgument {
    color: #6dcff6;
 }
-pre.idle .BuiltInConstant {
+pre.tomorrow .number {
    color: #469df6;
 }
-pre.idle .Invalid {
+pre.tomorrow .Invalid {
    background-color: #990000;
    color: #FFFFFF;
 }
-pre.idle .LibraryClassType {
+pre.tomorrow .LibraryClassType {
    color: #469df6;
 }
-pre.idle .LibraryFunction {
+pre.tomorrow .LibraryFunction {
    color: #469df6;
 }
-pre.idle .TagAttribute {
+pre.tomorrow .TagAttribute {
 }
-pre.idle .Keyword {
+pre.tomorrow .keyword {
    color: #f29a70;
 }
-pre.idle .UserDefinedConstant {
+pre.tomorrow .UserDefinedConstant {
 }
-pre.idle .String {
+pre.tomorrow .string {
    color: #fbc548;
 }
-pre.idle .FunctionName {
+pre.tomorrow .function {
    color: #469df6;
 }
-pre.idle .Variable {
+pre.tomorrow .Variable {
   color: #469df6;
 }
-pre.idle .Comment {
-   color: #acacac;
+pre.tomorrow .comment {
+   color: #a28330;
 }
