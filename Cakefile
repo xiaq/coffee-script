@@ -206,7 +206,6 @@ task 'doc:site', 'watch and continually rebuild the documentation for the websit
     throw err if err
   do renderDocuments = ->
     tmp = (fs.readFileSync source, 'utf-8')
-    console.log tmp
     rendered = eco.render tmp,
       counter: 0
       code_for: code_for
