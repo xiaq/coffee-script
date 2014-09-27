@@ -2413,6 +2413,7 @@ exports.Defer = class Defer extends Base
     super()
     @slots = flatten (a.icedToSlot i for a,i in args)
     @params = []
+    @deferParams = []
     @vars = []
     @custom = false
 
@@ -2432,6 +2433,10 @@ exports.Defer = class Defer extends Base
     l = "#{iced.const.slot}_#{@params.length + 1}"
     @params.push new Param new Literal l
     new Value new Literal l
+
+  newDeferParam : ->
+    l = "__defer_#{@deferParams.length + 1}"
+    @deferParams.push new Param new Literal l
 
   #
   # makeAssignFn
@@ -2477,6 +2482,7 @@ exports.Defer = class Defer extends Base
         @vars.push slot
         assign = new Assign slot, call
       else
+        @newDeferParam()
         a.add new Index i_lit
         if s.access
           a.add s.access
@@ -2501,7 +2507,7 @@ exports.Defer = class Defer extends Base
       assignments.push assign
 
     block = new Block assignments
-    inner_fn = new Code [], block, 'icedgen'
+    inner_fn = new Code @deferParams, block, 'icedgen'
     outer_block = new Block [ new Return inner_fn ]
     outer_fn = new Code @params, outer_block, 'icedgen'
     call = new Call outer_fn, args
