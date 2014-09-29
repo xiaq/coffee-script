@@ -2435,7 +2435,7 @@ exports.Defer = class Defer extends Base
     new Value new Literal l
 
   newDeferParam : ->
-    l = "__defer_#{@deferParams.length + 1}"
+    l = "#{iced.const.defer_arg}#{@deferParams.length + 1}"
     @deferParams.push new Param new Literal l
 
   #

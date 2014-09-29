@@ -600,6 +600,19 @@ atest 'defer + class member assignments', (cb) ->
   await c.f defer z
   cb(c.x is 3 and c.y is 4 and z is 5,  {})
 
+atest 'arity is correct on defer-generated functions', (cb) ->
+  arity = 0
+  myfn = (tcb) ->
+    console.log "in myfn..."
+    console.log tcb.toString()
+    arity = tcb.length
+    console.log tcb.length
+    tcb 0,1,2
+  await myfn defer a,b,c
+  console.log "huh?"
+  console.log arity
+  cb(arity is 3, {})
+
 # helper to assert that a string should fail compilation
 cantCompile = (code) ->
   throws -> CoffeeScript.compile code
