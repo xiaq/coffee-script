@@ -1708,13 +1708,14 @@ exports.Assign = class Assign extends Base
 # When for the purposes of walking the contents of a function body, the Code
 # has no *children* -- they're within the inner scope.
 exports.Code = class Code extends Base
-  constructor: (params, body, tag) ->
+  constructor: (params, body, tag, isAsync) ->
     super()
     @params  = params or []
     @body    = body or new Block
     @icedgen = tag is 'icedgen'
     @icedPassedDeferral = null
     @bound   = tag is 'boundfunc' or @icedgen
+    @isAsync = isAsync
     @isGenerator = @body.contains (node) ->
       node instanceof Op and node.operator in ['yield', 'yield*']
 
@@ -1850,6 +1851,12 @@ exports.Code = class Code extends Base
       rhs = new Value new Literal r
       lhs = new Value new Literal iced.const.k
       @body.unshift(new Assign lhs, rhs, null, { icedlocal : yes } )
+
+    # handle async
+    if @isAsync
+      @body = new Block [
+        new Op('new', new Call(new Literal('Promise'), [
+          new Code [], @body, '->', false]))]
 
   # we are icing as a feature of all of our children.  However, if we
   # are iced, it's not the case that our parent is iced!

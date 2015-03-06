@@ -126,6 +126,8 @@ exports.Lexer = class Lexer
         @seenFor = yes
       else if tag is 'UNLESS'
         tag = 'IF'
+      else if tag is 'ASYNC'
+        @tagParameters()
       else if tag in UNARY
         tag = 'UNARY'
       else if tag in RELATION
@@ -743,6 +745,9 @@ COFFEE_KEYWORDS = ['undefined', 'then', 'unless', 'until', 'loop', 'of', 'by', '
 
 # iced additions
 COFFEE_KEYWORDS = COFFEE_KEYWORDS.concat [ 'await', 'defer' ]
+
+# async addition
+COFFEE_KEYWORDS = COFFEE_KEYWORDS.concat [ 'async' ]
 
 COFFEE_ALIAS_MAP =
   and  : '&&'
